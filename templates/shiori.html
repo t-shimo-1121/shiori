@@ -104,21 +104,14 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
 .trip .cover-cap .count b{font-size:1rem;vertical-align:0;}
 
 /* ───────── タブ ───────── */
-.tabs{
+.tabs{ /* 等幅で画面内に並べる（横スクロールにしない）。列の数は冊ごとに --cols で決まる */
   position:sticky;top:env(safe-area-inset-top);z-index:30;
-  display:flex;gap:.25rem;
+  display:grid;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));gap:.25rem;
   padding:.55rem .4rem .6rem;margin:0 -.4rem .75rem;
-  background:linear-gradient(var(--paper) 80%, hsla(var(--h-base),30%,94%,0));
-  overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;
-  scrollbar-width:none;scroll-padding-inline:.4rem;
+  background:linear-gradient(var(--paper) 85%, hsla(var(--h-base),30%,94%,0));
 }
-.tabs::-webkit-scrollbar{display:none;}
-/* 端にまだタブがある時だけ、その端をうっすら消して「続きがある」と分かるように */
-.tabs.fr{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 2rem),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 2rem),transparent);}
-.tabs.fl{-webkit-mask-image:linear-gradient(90deg,transparent,#000 2rem);mask-image:linear-gradient(90deg,transparent,#000 2rem);}
-.tabs.fl.fr{-webkit-mask-image:linear-gradient(90deg,transparent,#000 2rem,#000 calc(100% - 2rem),transparent);mask-image:linear-gradient(90deg,transparent,#000 2rem,#000 calc(100% - 2rem),transparent);}
 .tab-btn{
-  flex:1 0 auto;min-width:4.2rem;
+  min-width:0;
   font-family:var(--font-body);font-weight:700;font-size:.72rem;white-space:nowrap;
   padding:.6rem .45rem;border-radius:11px;border:1px solid var(--line);
   background:var(--panel);color:var(--ink-2);cursor:pointer;
@@ -126,8 +119,7 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
   transition:transform .12s, background .15s, color .15s, border-color .15s;
   -webkit-tap-highlight-color:transparent;
 }
-.tab-btn.t0{flex-grow:1.2;}
-.tab-btn small{display:block;font-size:.62rem;font-weight:500;opacity:.75;letter-spacing:.02em;margin-top:.1rem;white-space:nowrap;}
+.tab-btn small{display:block;font-size:.62rem;font-weight:500;opacity:.75;letter-spacing:0;margin-top:.1rem;white-space:normal;line-height:1.25;overflow-wrap:anywhere;}
 .tab-btn:active{transform:scale(.96);}
 .tab-btn:focus-visible{outline:3px solid var(--brand);outline-offset:2px;}
 .tab-btn.active{color:#fff;border-color:transparent;box-shadow:0 4px 12px hsla(var(--h-base),30%,25%,.20);}
@@ -271,6 +263,14 @@ a.map:active{background:var(--c-bg);}
 }
 
 /* ───────── ポイント欄 ───────── */
+/* 費用の総額 */
+.total{background:var(--c-bg);}
+.tot-row{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem;}
+.tot-l{font-size:.8rem;font-weight:700;color:var(--c);letter-spacing:.06em;}
+.tot-v{font-family:var(--font-display);font-weight:900;font-size:1.5rem;line-height:1.2;font-variant-numeric:tabular-nums;color:var(--ink);}
+.tot-sub{margin-top:.2rem;display:flex;flex-wrap:wrap;gap:.1rem .7rem;font-size:.74rem;color:var(--ink-2);font-variant-numeric:tabular-nums;}
+.tot-sub b{font-weight:700;color:var(--ink);margin-left:.25rem;}
+.tot-ex{margin-top:.35rem;font-size:.72rem;line-height:1.5;color:var(--ink-3);}
 .note{padding:.75rem .75rem .85rem;background:var(--c-bg);border-top:1px dashed var(--line);}
 .note-h{font-size:.74rem;font-weight:700;color:var(--c);letter-spacing:.06em;margin-bottom:.3rem;}
 .note ul{list-style:none;}

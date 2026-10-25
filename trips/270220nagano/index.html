@@ -362,6 +362,11 @@ a.map:active{background:var(--c-bg);}
   .cover-frame img{filter:brightness(.86) saturate(.95);}
   .tl.now::after,.tag{color:hsl(var(--h-base),15%,10%);}
 }
+
+/* ── 全冊共通の変更（2026.10）：タブを等幅で画面内に・総額欄 ── */
+.tabs{display:grid!important;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));overflow:visible!important;-webkit-mask-image:none!important;mask-image:none!important;}
+.tab-btn{min-width:0!important;flex:none!important;}
+.tab-btn small{white-space:normal!important;overflow-wrap:anywhere;line-height:1.25;}
 </style>
 </head>
 <body>
@@ -421,7 +426,7 @@ a.map:active{background:var(--c-bg);}
   </div>
 
   <!-- ══════════ タブ ══════════ -->
-  <div class="tabs" role="tablist">
+  <div class="tabs" role="tablist" style="--cols:3">
     <button class="tab-btn t0 active" data-tab="pack" role="tab">準備<small>持ち物</small></button>
     <button class="tab-btn t1" data-tab="day1" role="tab">2/20 土<small>赤城山</small></button>
     <button class="tab-btn t2" data-tab="day2" role="tab">2/21 日<small>霧ヶ峰</small></button>
@@ -523,14 +528,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl stay" data-t="19:30"><div class="t-start">19:30</div><div class="t-dur">2:00</div><div class="t-ico"><svg class="ic"><use href="#i-bath"/></svg></div><div class="t-sum">大浴場・サウナ</div><div class="t-det">最上階の天然温泉。21:30から夜鳴きそば</div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">8:00</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">翌朝6:00起床</div></div>
       </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>12:15までに黒檜山の山頂に立てなければ、駒ヶ岳への周回をやめて往路を戻る。</li>
-          <li>前橋駅で荷物を預けて身軽に登る。帰りに受け取ってから高崎へ。</li>
-          <li>赤城山の登山バッジは大沼湖畔の土産店で。</li>
-        </ul>
-      </div>
     </div>
   </div><!-- /day1 -->
 
@@ -576,14 +573,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl stay" data-t="19:00"><div class="t-start">19:00</div><div class="t-dur">3:00</div><div class="t-ico"><svg class="ic"><use href="#i-eye"/></svg></div><div class="t-sum">雪上車ツアー・星空観測</div><div class="t-det">時刻は宿で確認</div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">8:00</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">翌朝6:00起床</div></div>
       </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>山頂駅まではリフト2本。歩くのは山頂駅と車山山頂の往復27分だけ。</li>
-          <li>帰りのバスが13:25までに茅野駅に着かなければ、電車を待たずにタクシーで上諏訪駅西口へ。</li>
-          <li>ふる里館の売店は現金のみ。美ヶ原のバッジ代を用意しておく。</li>
-        </ul>
-      </div>
     </div>
   </div><!-- /day2 -->
 
@@ -626,14 +615,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl stay" data-t="20:30"><div class="t-start">20:30</div><div class="t-dur">1:30</div><div class="t-ico"><svg class="ic"><use href="#i-gear"/></svg></div><div class="t-sum">荷造り・夜鳴きそば</div><div class="t-det">翌朝すぐ出られるようパッキングを済ませる</div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">9:00</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">翌朝7:00起床</div></div>
       </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>大雪原は吹きさらし。風が強ければ王ヶ鼻はカットして王ヶ頭から戻る。</li>
-          <li>送迎バスが10分ほど遅れても、上諏訪で14:32の普通に間に合う。</li>
-          <li>野乃松本に戻ったら洗濯と荷造りを済ませ、翌朝はすぐ出られるように。</li>
-        </ul>
-      </div>
     </div>
   </div><!-- /day3 -->
 
@@ -663,14 +644,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl" data-t="14:56"><div class="t-start">14:56</div><div class="t-dur">0:51</div><div class="t-ico"><svg class="ic"><use href="#i-bullet"/></svg></div><div class="t-sum">とき325号→新潟</div><div class="t-det">上越新幹線。<span class="hl">指定席を予約</span></div></div>
         <div class="tl" data-t="15:47"><div class="t-start">15:47</div><div class="t-dur">0:13</div><div class="t-ico"><svg class="ic"><use href="#i-pin"/></svg></div><div class="t-sum">新潟駅 到着</div><div class="t-det">駐車場で車を受け取り</div></div>
         <div class="tl stay" data-t="16:00"><div class="t-start">16:00</div><div class="t-dur">—</div><div class="t-ico"><svg class="ic"><use href="#i-car"/></svg></div><div class="t-sum">車→自宅</div><div class="t-det">お疲れさまでした</div></div>
-      </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>松本城は開場直後に入ると階段が混まない。</li>
-          <li>松本駅を9:40に出られなければ、9:52の特急しなの5号に切り替える。</li>
-          <li>長野駅では荷物をロッカーに預けてから善光寺へ。</li>
-        </ul>
       </div>
     </div>
   </div><!-- /day4 -->

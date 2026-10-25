@@ -372,6 +372,19 @@ a.map:active{background:var(--c-bg);}
   .cover-frame img{filter:brightness(.86) saturate(.95);}
   .tl.now::after,.tag{color:hsl(var(--h-base),15%,10%);}
 }
+
+/* ── 全冊共通の変更（2026.10）：タブを等幅で画面内に・総額欄 ── */
+.tabs{display:grid!important;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));overflow:visible!important;-webkit-mask-image:none!important;mask-image:none!important;}
+.tab-btn{min-width:0!important;flex:none!important;}
+.tab-btn small{white-space:normal!important;overflow-wrap:anywhere;line-height:1.25;}
+/* 費用の総額 */
+.total{background:var(--c-bg);}
+.tot-row{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem;}
+.tot-l{font-size:.8rem;font-weight:700;color:var(--c);letter-spacing:.06em;}
+.tot-v{font-family:var(--font-display);font-weight:900;font-size:1.5rem;line-height:1.2;font-variant-numeric:tabular-nums;color:var(--ink);}
+.tot-sub{margin-top:.2rem;display:flex;flex-wrap:wrap;gap:.1rem .7rem;font-size:.74rem;color:var(--ink-2);font-variant-numeric:tabular-nums;}
+.tot-sub b{font-weight:700;color:var(--ink);margin-left:.25rem;}
+.tot-ex{margin-top:.35rem;font-size:.72rem;line-height:1.5;color:var(--ink-3);}
 </style>
 </head>
 <body>
@@ -430,7 +443,7 @@ a.map:active{background:var(--c-bg);}
   </div>
 
   <!-- ══════════ タブ ══════════ -->
-  <div class="tabs" role="tablist">
+  <div class="tabs" role="tablist" style="--cols:3">
     <button class="tab-btn t0 active" data-tab="pack" role="tab">準備<small>持ち物・費用</small></button>
     <button class="tab-btn t1" data-tab="day1" role="tab">11/20 金<small>甲府</small></button>
     <button class="tab-btn t2" data-tab="day2" role="tab">11/21 土<small>瑞牆山</small></button>
@@ -485,6 +498,12 @@ a.map:active{background:var(--c-bg);}
         <span class="tag only" aria-hidden="true"><svg class="ic"><use href="#i-coin"/></svg></span>
         <div class="card-title">費用</div>
       </div>
+      <div class="mt total">
+        <div class="tot-row"><span class="tot-l">総額</span><span class="tot-v">約223,200円</span></div>
+        <div class="tot-sub"><span>交通<b>約89,200円</b></span><span>宿泊<b>134,045円</b></span></div>
+        <div class="tot-ex">乗車券・在来線は概算。ドーミーインはカード決済済み。現金が要るのはバスと富士見平小屋</div>
+      </div>
+
 
       <div class="mt">
         <div class="mt-h">交通費</div>
@@ -517,15 +536,6 @@ a.map:active{background:var(--c-bg);}
           <tfoot><tr><td colspan="2">小計</td><td>134,045円</td></tr></tfoot>
         </table>
       </div>
-
-      <div class="note">
-        <div class="note-h">総額の見込み</div>
-        <ul>
-          <li><span class="hl">約223,200円</span>　交通約89,200円＋宿泊134,045円</li>
-          <li>新幹線・特急券は予約済みの確定額。Suicaで払う乗車券・在来線は概算（小人は大人の半額）。ドーミーイン2泊はカード決済済み（入湯税・宿泊税は現地払い）。</li>
-          <li>現金が要るのはバスと富士見平小屋。</li>
-        </ul>
-      </div>
     </div>
 
   </div><!-- /pack -->
@@ -546,13 +556,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl" data-t="20:11"><div class="t-start">20:11</div><div class="t-dur">0:24</div><div class="t-ico"><svg class="ic"><use href="#i-walk"/></svg></div><div class="t-sum">徒歩→<a class="map" href="https://www.google.com/maps/search/?api=1&query=%E3%83%89%E3%83%BC%E3%83%9F%E3%83%BC%E3%82%A4%E3%83%B3%E7%94%B2%E5%BA%9C%E4%B8%B8%E3%81%AE%E5%86%85" target="_blank" rel="noopener">ドーミーイン</a></div><div class="t-det">甲府駅南口から約8分。ドーミーイン甲府丸の内、禁煙ツイン、朝食付、カード決済済み</div></div>
         <div class="tl stay" data-t="20:35"><div class="t-start">20:35</div><div class="t-dur">1:25</div><div class="t-ico"><svg class="ic"><use href="#i-bath"/></svg></div><div class="t-sum">洗濯・入浴</div><div class="t-det">最上階の天然温泉「勝運の湯」</div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">8:00</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">翌朝6:00起床</div></div>
-      </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>東京駅の乗換は15分。新幹線ホームから中央線1番線は離れているので、降りたらすぐ移動する。</li>
-          <li>行動食・水は翌朝、甲府駅へ向かう途中で買う。山小屋では買い足しが限られる。</li>
-        </ul>
       </div>
     </div>
   </div><!-- /day1 -->
@@ -590,15 +593,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl stay" data-t="17:30"><div class="t-start">17:30</div><div class="t-dur">1:00</div><div class="t-ico"><svg class="ic"><use href="#i-fork"/></svg></div><div class="t-sum">小屋の夕食</div><div class="t-det">名物のジビエ料理</div></div>
         <div class="tl stay" data-t="18:30"><div class="t-start">18:30</div><div class="t-dur">2:30</div><div class="t-ico"><svg class="ic"><use href="#i-gear"/></svg></div><div class="t-sum">自由</div></div>
         <div class="tl stay" data-t="21:00"><div class="t-start">21:00</div><div class="t-dur">7:45</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">消灯・就寝</div><div class="t-det">翌朝4:45起床</div></div>
-      </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>バスはSuica・カード不可で両替もできない。運賃分の小銭かスマホ決済を用意する。</li>
-          <li>山頂13:53発で小屋に戻るのは15:41。遅れたら山頂の滞在を削り、日没前の帰着を優先する。</li>
-          <li>山頂直下は梯子と鎖場。下りは一人ずつ、三点支持で。</li>
-          <li>富士見平小屋は寝具あり。夜は冷えるので防寒着を着て寝る。</li>
-        </ul>
       </div>
     </div>
   </div><!-- /day2 -->
@@ -644,14 +638,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl stay" data-t="18:45"><div class="t-start">18:45</div><div class="t-dur">3:15</div><div class="t-ico"><svg class="ic"><use href="#i-lodge"/></svg></div><div class="t-sum">洗濯・夕食・入浴</div><div class="t-det">ドーミーインPREMIUM渋谷神宮前。禁煙ダブル、朝食付、カード決済済み。先に<span class="hl">コインランドリーを回す</span>。2階の大浴場は超微細気泡・軟水風呂</div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">9:00</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">翌朝7:00起床</div></div>
       </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>下山の締切は14:25のバス。山頂を10:15に出てもバス停着は14:18なので、遅れそうなら山頂手前で引き返す。</li>
-          <li>砂払ノ頭から山頂は岩稜。凍結していればチェーンスパイクを着ける。</li>
-          <li>新宿は14番線（内回り）へ。15番線だと逆回りになる。</li>
-        </ul>
-      </div>
     </div>
   </div><!-- /day3 -->
 
@@ -680,13 +666,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl" data-t="13:40"><div class="t-start">13:40</div><div class="t-dur">2:02</div><div class="t-ico"><svg class="ic"><use href="#i-bullet"/></svg></div><div class="t-sum">とき323号→新潟</div><div class="t-det">上越新幹線・<span class="hl">6号車11番A・B・C席</span>、新幹線eチケで予約済み（Suicaで改札へ）。三連休最終日で混雑</div></div>
         <div class="tl" data-t="15:42"><div class="t-start">15:42</div><div class="t-dur">0:18</div><div class="t-ico"><svg class="ic"><use href="#i-pin"/></svg></div><div class="t-sum">新潟駅 到着</div><div class="t-det">駐車場で車を受け取り</div></div>
         <div class="tl stay" data-t="16:00"><div class="t-start">16:00</div><div class="t-dur">—</div><div class="t-ico"><svg class="ic"><use href="#i-car"/></svg></div><div class="t-sum">車→自宅</div><div class="t-det">お疲れさまでした</div></div>
-      </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>勤労感謝の日で三連休の最終日。新宿も東京駅も混むので、ロッカー回収と乗換は余裕を持って。</li>
-          <li>東京駅は中央線ホームが高い位置にあり、新幹線改札まで5分ほど歩く。</li>
-        </ul>
       </div>
     </div>
   </div><!-- /day4 -->

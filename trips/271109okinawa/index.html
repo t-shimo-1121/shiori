@@ -303,6 +303,11 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
   .tab-btn.active{color:hsl(var(--h-base),15%,10%);}
   .tl.now::after,.tag{color:hsl(var(--h-base),15%,10%);}
 }
+
+/* ── 全冊共通の変更（2026.10）：タブを等幅で画面内に・総額欄 ── */
+.tabs{display:grid!important;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));overflow:visible!important;-webkit-mask-image:none!important;mask-image:none!important;}
+.tab-btn{min-width:0!important;flex:none!important;}
+.tab-btn small{white-space:normal!important;overflow-wrap:anywhere;line-height:1.25;}
 </style>
 </head>
 <body>
@@ -348,7 +353,7 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
   </div>
 
   <!-- ══════════ タブ ══════════ -->
-  <div class="tabs" role="tablist">
+  <div class="tabs" role="tablist" style="--cols:4">
     <button class="tab-btn t0 active" data-tab="pack" role="tab">準備<small>手配・持ち物</small></button>
     <button class="tab-btn t1" data-tab="day1" role="tab">11/9<small>那覇へ</small></button>
     <button class="tab-btn t2" data-tab="day2" role="tab">11/10<small>本島南部</small></button>
@@ -530,17 +535,6 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
         <div class="tl" data-t="20:30"><div class="t-start">20:30</div><div class="t-dur">1:00</div><div class="t-ico"><svg class="ic"><use href="#i-walk"/></svg></div><div class="t-sum">ウミカジテラス 夜さんぽ</div><div class="t-det">ホテルから徒歩1分。白い建物が段々に並ぶ坂道。無理せず部屋で休んでもいい</div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">9:00</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">明日は9:00にタクシーが迎えに来る</div></div>
       </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>燕三条の停車時間は<span class="warn">1分</span>。3人には「発車5分前にはホームで待つ」とだけ伝えておけば確実。座席は新潟乗車の1席と燕三条乗車の3席を、最初から4席並びで取る。</li>
-          <li>朝がいちばん忙しい日。東京駅の乗り換えに12分しか取っていないので、<span class="warn">新潟駅では前の車両（東京寄り）に乗る</span>と階段が近い。</li>
-          <li>正殿内観覧は<span class="warn">事前予約が必須</span>。15:30の枠を取ってあるので、飛行機が遅れたときはここが崩れる。目安として14:20にホテルを出られなければ、公園に電話して枠をずらせないか聞く。</li>
-          <li>空港からまっすぐ首里城へ向かう手もある（空港から約20分）。飛行機が遅れ気味なら、スーツケースを空港の手荷物預かりに置いて直行したほうが確実。</li>
-          <li>荷物は全員機内持ち込みだけ。カウンターに並ばず、那覇でも受取を待たない。前の版より現地入りが15分早くなっている。</li>
-          <li>沖縄は本州より日の入りが遅い。17:20に湯船に入れば、ちょうど夕日の時間に間に合う。</li>
-        </ul>
-      </div>
     </div>
   </div><!-- /day1 -->
 
@@ -571,15 +565,6 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
         <div class="tl" data-t="20:30"><div class="t-start">20:30</div><div class="t-dur">1:30</div><div class="t-ico"><svg class="ic"><use href="#i-clock"/></svg></div><div class="t-sum">自由時間</div><div class="t-det">部屋で話すもよし、もう一度お風呂に行くもよし</div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">9:00</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">明日はチェックアウト10:15、帰りの荷造りは今夜のうちに</div></div>
       </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>10:30のスーパーエイサーに間に合わせるのがこの日の唯一の時間の縛り。9:00にホテルを出れば余裕がある。</li>
-          <li>玉泉洞は階段と坂が続く。しんどければ王国村側で待っていてもいいと、先に言っておく。</li>
-          <li>午後を丸ごと温泉にあててある。観光を1か所減らしてでも、この2時間は削らない。</li>
-          <li>おきなわワールドの最終入園は16:00。予定が押しても午前中に入っていれば問題ない。</li>
-        </ul>
-      </div>
     </div>
   </div><!-- /day2 -->
 
@@ -609,16 +594,6 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
         <div class="tl" data-t="18:12"><div class="t-start">18:12</div><div class="t-dur">1:42</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">上越新幹線 とき337号（東京→新潟）</div><div class="t-det">19:54 燕三条着 → 20:07 新潟着。土産と機内持ち込みの荷物は足元と網棚へ</div></div>
         <div class="tl stay" data-t="19:54"><div class="t-start">19:54</div><div class="t-dur">0:13</div><div class="t-ico"><svg class="ic"><use href="#i-home"/></svg></div><div class="t-sum">燕三条駅 到着 ── 父・母・遥香</div><div class="t-det">おつかれさまでした</div></div>
         <div class="tl stay" data-t="20:07"><div class="t-start">20:07</div><div class="t-dur">—</div><div class="t-ico"><svg class="ic"><use href="#i-home"/></svg></div><div class="t-sum">新潟駅 到着 ── 香澄</div><div class="t-det">おつかれさまでした</div></div>
-      </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>市場での買い物は1時間強。値段交渉より、店の人と話すのが楽しい場所。</li>
-          <li>那覇空港のチェックインは混みやすい。13:05に空港へ入れるよう、市場を12:45には出る。</li>
-          <li>羽田16:55着から東京18:12発まで約1時間15分。受取を待たない分ここに余裕があり、飛行機が40分遅れても間に合う。</li>
-          <li>燕三条は19:54着、新潟は20:07着。<span class="hl">降りる駅が違う</span>ので、車内で「次は燕三条」の放送が流れたら声をかける。</li>
-          <li>沖縄との気温差は10℃以上。羽田で羽織るものをすぐ出せるようにしておく。</li>
-        </ul>
       </div>
     </div>
   </div><!-- /day3 -->

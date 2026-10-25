@@ -443,7 +443,6 @@ function book(t){
     '<div class="spine"></div><div class="bd">'+
     '<h3>'+esc(t.title)+'</h3><div class="when tnum">'+md(t.start,true)+'</div>'+
     (t.places.length?'<div class="chips">'+t.places.map(function(p){return'<span class="chip">'+esc(p)+'</span>';}).join("")+'</div>':"")+
-    '<div class="meta tnum">'+t.versions+'版・最終更新 '+t.last.slice(5).replace("-","/")+'</div>'+
     '</div></a>';
 }
 function renderTrips(){
@@ -553,7 +552,7 @@ function km2(a){return (a>=1000?Math.round(a).toLocaleString():a.toFixed(a>=100?
 function sm(dt,dd,unit,bar){return '<dl class="sm"><dt>'+dt+'</dt><dd>'+dd+(unit?'<small>'+unit+'</small>':"")+'</dd>'+(bar!=null?'<div class="bar"><i style="width:'+bar+'%"></i></div>':"")+'</dl>';}
 function hyakuDone(){return PEAKS.filter(function(p){return p.n&&D(p.d)<=today;}).length;}
 
-var plReg="北海道";try{plReg=localStorage.getItem("arc-plreg")||"北海道";}catch(e){}
+var plReg="すべて";try{plReg=localStorage.getItem("arc-plreg")||"すべて";}catch(e){}
 /* 読みにくい市区町村のふりがな（地名の部分だけ） */
 var YOMI=LEDGER.YOMI;
 function cityName(nm){var y=YOMI[nm];if(!y)return esc(nm);var stem=nm.replace(/[市区町村]$/,"");
@@ -574,27 +573,35 @@ function renderPlaces(){
     sm("都道府県",vis.length,"/ 47",(vis.length/47*100).toFixed(1))+
     sm("市区町村",cs.length,"+ 予定 "+(CITIES.length-cs.length))+
     sm("海外",ABROAD.filter(been).length,"+ 予定 "+ABROAD.filter(function(a){return!been(a);}).length);
-  var tabs=REGIONS.map(function(r){var all=r[2]-r[1]+1,n=PREFS.filter(function(p){return p.no>=r[1]&&p.no<=r[2]&&been(p);}).length;return [r[0],n+"/"+all];})
+  var tabs=[["すべて",vis.length+"/47"]].concat(REGIONS.map(function(r){var all=r[2]-r[1]+1,n=PREFS.filter(function(p){return p.no>=r[1]&&p.no<=r[2]&&been(p);}).length;return [r[0],n+"/"+all];}))
     .concat([["海外",String(ABROAD.filter(been).length)]]);
-  if(!tabs.some(function(t){return t[0]===plReg;}))plReg="北海道";
+  if(!tabs.some(function(t){return t[0]===plReg;}))plReg="すべて";
   document.getElementById("pl-tabs").innerHTML=tabs.map(function(t){
     return '<button type="button" role="tab" data-r="'+t[0]+'" aria-selected="'+(t[0]===plReg)+'">'+t[0]+'<small>'+t[1]+'</small></button>';}).join("");
   /* 都道府県は北から。市区町村は県庁所在地を先頭に、あとは人口の多い順 */
-  var html;
-  if(plReg==="海外"){
-    html=ABROAD.map(function(a){var b=been(a);
+  function prefHtml(p){
+    var cs=CITIES.filter(function(c){return c.p===p.nm;}).sort(function(a,b){return ((b.nm===p.cap)-(a.nm===p.cap))||(b.pop-a.pop);});
+    var b=been(p);
+    return '<article class="pref'+(b?"":" plan")+'"><div class="pref-h"><span class="pref-n">'+p.nm+'</span>'+pvTag(p)+
+      '<span class="facts"><span>人口 <b>'+man(p.pop)+'</b></span><span>面積 <b>'+km2(p.area)+'</b></span></span>'+
+      '<span class="pref-ft">'+esc(p.ft)+'</span></div>'+(cs.length?'<div class="cities">'+cs.map(function(c){return cityRow(c,p);}).join("")+'</div>':"")+'</article>';
+  }
+  function regionHtml(r){
+    return PREFS.filter(function(p){return p.no>=r[1]&&p.no<=r[2];}).sort(function(a,b){return a.no-b.no;}).map(prefHtml).join("");
+  }
+  function abroadHtml(){
+    return ABROAD.map(function(a){var b=been(a);
       return '<article class="pref abroad'+(b?"":" plan")+'"><div class="pref-h"><span class="pref-n">'+a.nm+'</span>'+
         (b?"":'<span class="pv plan">'+planOf(a)+'</span>')+(a.sub?'<span class="facts">'+esc(a.sub)+'</span>':"")+'<span class="pref-ft">'+esc(a.ft)+'</span></div></article>';}).join("");
+  }
+  var html;
+  if(plReg==="すべて"){
+    html=REGIONS.map(function(r){var h=regionHtml(r);return h?'<section class="region"><h2>'+r[0]+'</h2>'+h+'</section>':"";}).join("")+
+      '<section class="region"><h2>海外</h2>'+abroadHtml()+'</section>';
+  }else if(plReg==="海外"){
+    html=abroadHtml();
   }else{
-    var r=REGIONS.filter(function(x){return x[0]===plReg;})[0];
-    var list=PREFS.filter(function(p){return p.no>=r[1]&&p.no<=r[2];}).sort(function(a,b){return a.no-b.no;});
-    html=list.map(function(p){
-      var cs=CITIES.filter(function(c){return c.p===p.nm;}).sort(function(a,b){return ((b.nm===p.cap)-(a.nm===p.cap))||(b.pop-a.pop);});
-      var b=been(p);
-      return '<article class="pref'+(b?"":" plan")+'"><div class="pref-h"><span class="pref-n">'+p.nm+'</span>'+pvTag(p)+
-        '<span class="facts"><span>人口 <b>'+man(p.pop)+'</b></span><span>面積 <b>'+km2(p.area)+'</b></span></span>'+
-        '<span class="pref-ft">'+esc(p.ft)+'</span></div>'+(cs.length?'<div class="cities">'+cs.map(function(c){return cityRow(c,p);}).join("")+'</div>':"")+'</article>';
-    }).join("")||'<div class="empty">まだ行っていません</div>';
+    html=regionHtml(REGIONS.filter(function(x){return x[0]===plReg;})[0])||'<div class="empty">まだ行っていません</div>';
   }
   document.getElementById("places").innerHTML=html;
 }

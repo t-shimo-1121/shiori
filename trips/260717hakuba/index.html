@@ -187,6 +187,11 @@ body{
 .todo-item.checked .todo-text{text-decoration:line-through;color:var(--ink-2);opacity:.6;}
 
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto;}.tab-panel.is-active{animation:none;}}
+
+/* ── 全冊共通の変更（2026.10）：タブを等幅で画面内に・総額欄 ── */
+.tabs{display:grid!important;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));overflow:visible!important;-webkit-mask-image:none!important;mask-image:none!important;}
+.tab-btn{min-width:0!important;flex:none!important;}
+.tab-btn small{white-space:normal!important;overflow-wrap:anywhere;line-height:1.25;}
 </style>
 </head>
 <body>
@@ -224,7 +229,7 @@ body{
   </div>
 
   <!-- ════ DAY TABS ════ -->
-  <div class="tabs" role="tablist">
+  <div class="tabs" role="tablist" style="--cols:3">
     <button class="tab-btn t0 active" data-tab="todo">持ち物</button>
     <button class="tab-btn t1" data-tab="day1">Day1</button>
     <button class="tab-btn t2" data-tab="day2">Day2</button>

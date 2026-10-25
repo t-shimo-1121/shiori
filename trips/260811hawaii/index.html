@@ -324,6 +324,10 @@ button.nav-chip{border:0; font:inherit; cursor:pointer; -webkit-appearance:none;
 }
 .fn-note{display:block; margin-top:5px; font-size:14px; line-height:1.55; color:#5f7d50; font-family:var(--f-hand);}
 .rsv-note{display:block; margin-top:5px; font-size:13.5px; line-height:1.55; color:var(--ink2); font-weight:600;}
+
+/* ── 全冊共通の変更（2026.10）：タブを等幅で画面内に・総額欄 ── */
+.daynav-inner{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible!important;gap:6px;}
+.nav-chip{min-width:0!important;flex:none!important;padding-left:4px!important;padding-right:4px!important;}
 </style>
 <noscript><style>.day{display:block !important;} .tabpanel{display:block !important;} .daynav{display:none;}</style></noscript>
 </head>

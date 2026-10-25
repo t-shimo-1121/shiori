@@ -327,6 +327,19 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
   .tab-panel{display:block !important;}
 }
 
+
+/* ── 全冊共通の変更（2026.10）：タブを等幅で画面内に・総額欄 ── */
+.tabs{display:grid!important;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));overflow:visible!important;-webkit-mask-image:none!important;mask-image:none!important;}
+.tab-btn{min-width:0!important;flex:none!important;}
+.tab-btn small{white-space:normal!important;overflow-wrap:anywhere;line-height:1.25;}
+/* 費用の総額 */
+.total{background:var(--c-bg);}
+.tot-row{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem;}
+.tot-l{font-size:.8rem;font-weight:700;color:var(--c);letter-spacing:.06em;}
+.tot-v{font-family:var(--font-display);font-weight:900;font-size:1.5rem;line-height:1.2;font-variant-numeric:tabular-nums;color:var(--ink);}
+.tot-sub{margin-top:.2rem;display:flex;flex-wrap:wrap;gap:.1rem .7rem;font-size:.74rem;color:var(--ink-2);font-variant-numeric:tabular-nums;}
+.tot-sub b{font-weight:700;color:var(--ink);margin-left:.25rem;}
+.tot-ex{margin-top:.35rem;font-size:.72rem;line-height:1.5;color:var(--ink-3);}
 </style>
 </head>
 <body>
@@ -378,7 +391,7 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
   </div>
 
   <!-- ══════════ タブ ══════════ -->
-  <div class="tabs" role="tablist">
+  <div class="tabs" role="tablist" style="--cols:3">
     <button class="tab-btn t0 active" data-tab="pack" role="tab">準備<small>持ち物</small></button>
     <button class="tab-btn t1" data-tab="day1" role="tab">9/19<span class="dow">土</span><small>伊吹山</small></button>
     <button class="tab-btn t2" data-tab="day2" role="tab">9/20<span class="dow">日</span><small>彦根→奈良</small></button>
@@ -438,6 +451,12 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
         <span class="tag"><svg class="ic"><use href="#i-coin"/></svg>費用</span>
         <div class="card-title">概算まとめ</div>
       </div>
+      <div class="mt total">
+        <div class="tot-row"><span class="tot-l">総額</span><span class="tot-v">約450,000円</span></div>
+        <div class="tot-sub"><span>交通<b>260,032円</b></span><span>宿泊<b>171,780円</b></span><span>観光<b>約18,000円</b></span></div>
+        <div class="tot-ex">含まない：飲食・お土産。宿泊費はカード決済済み。現金が要るのはそらかぜ号15,500円・八経ヶ岳のタクシー32,000円など</div>
+      </div>
+
 
       <div class="kv-block">
         <div class="kv-h">宿泊費 <span class="badge ok">小計 171,780円</span></div>
@@ -479,14 +498,6 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
           </tbody>
           <tfoot><tr><td colspan="2">小計</td><td>約18,000円</td></tr></tfoot>
         </table>
-      </div>
-
-      <div class="note">
-        <div class="note-h">総額の見込み</div>
-        <ul>
-          <li><span class="hl">約450,000円</span>　交通260,032円＋宿泊171,780円＋観光約18,000円（<span class="warn">飲食・お土産は別途</span>）</li>
-          <li>現地決済分もあるため、現金は多めに用意しておく。<span class="hl">宿泊費（171,780円）はクレジットカード決済済み</span>。現金が必要なのはそらかぜ号15,500円・八経ヶ岳タクシー32,000円など</li>
-        </ul>
       </div>
     </div>
 
@@ -537,15 +548,6 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
         <div class="tl" data-t="18:00"><div class="t-start">18:00</div><div class="t-dur">4:00</div><div class="t-ico"><svg class="ic"><use href="#i-fork"/></svg></div><div class="t-sum">夕食</div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">9:00</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">明日は彦根城観光のあと新幹線で名古屋へ</div></div>
       </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>登山に使わない荷物は関ケ原駅のコインロッカーへ。帰りの引き取りを忘れずに。</li>
-          <li><span class="warn">伊吹山では昼食休憩が取れない</span>。中部国際空港で行動食を確保しておく。</li>
-          <li>15:19 関ケ原発の快速に乗れれば、米原の乗換1回で 15:52 彦根着。</li>
-          <li>三中井・&amp;Anne は夕方に閉まる。自由時間は早めに動く。</li>
-        </ul>
-      </div>
     </div>
   </div><!-- /day1 -->
 
@@ -581,15 +583,6 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
         <div class="tl" data-t="21:38"><div class="t-start">21:38</div><div class="t-dur">0:05</div><div class="t-ico"><svg class="ic"><use href="#i-walk"/></svg></div><div class="t-sum">大和八木駅→ホテル</div><div class="t-det">駅至近</div></div>
         <div class="tl" data-t="21:43"><div class="t-start">21:43</div><div class="t-dur">0:47</div><div class="t-ico"><svg class="ic"><use href="#i-lodge"/></svg></div><div class="t-sum">CANDEO奈良橿原 チェックイン</div><div class="t-det">キングルーム・こあがりソファ有／109,980円 3日間朝食付・<span class="hl">クレジットカード決済済み</span></div></div>
         <div class="tl stay" data-t="22:30"><div class="t-start">22:30</div><div class="t-dur">8:30</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">荷物は夜のうちに分ける</div></div>
-      </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>米原の新幹線乗換は約15分の余裕あり。焦らず在来線改札を出てよい。</li>
-          <li>オープントップバスは<span class="warn">15:50集合・出発10分前厳守。遅れると自動キャンセルで返金なし</span>。屋根なし2階席で雨天はレインコート配布、傘・自撮り棒は使用不可。日焼け対策と防寒を。</li>
-          <li>夕食が19:30に終われば近鉄名古屋駅まで20分。<span class="hl">20:00発のひのとり</span>に余裕を持って乗れる。</li>
-          <li>ホテル着は21:43と遅い。翌朝はそらかぜ号8:15発なので就寝は手短に。</li>
-        </ul>
       </div>
     </div>
   </div><!-- /day2 -->
@@ -631,15 +624,6 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
         <div class="tl" data-t="16:00"><div class="t-start">16:00</div><div class="t-dur">3:10</div><div class="t-ico"><svg class="ic"><use href="#i-bus"/></svg></div><div class="t-sum">そらかぜ号 大台ヶ原→八木</div><div class="t-det">予約済・0101便 01号車／19:10 着・予約番号08308012261・7,750円／問合せ：奈良交通総合予約センター 0742-22-5110</div></div>
         <div class="tl" data-t="19:10"><div class="t-start">19:10</div><div class="t-dur">2:50</div><div class="t-ico"><svg class="ic"><use href="#i-fork"/></svg></div><div class="t-sum">夕食、ホテル、入浴</div><div class="t-det">千石タクシーから電話がある予定</div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">8:00</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">翌日の本格登山に備えて早めに</div></div>
-      </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>行きも帰りもバスは1本きり。8:15 発に乗り遅れない、16:00 発を逃さない。</li>
-          <li>11:30発〜15:16着なら、16:00発のバスまで44分のゆとり。売店と展望台にその時間を使える。</li>
-          <li>大台ヶ原は雨の多い山。晴れていてもレインウェアは必ずザックへ。</li>
-          <li>下山後の散策候補は大和八木駅前。駄菓子の老舗<span class="hl">藤本布袋堂</span> 南へ徒歩5分・みたらし団子、アメリカ雑貨<span class="hl">CHOPPERS &amp; LOVE'S</span> 駅南口すぐ、古民家の町並み「今井町」、タクシーで数分のアウトドア名店<span class="hl">Yosemite</span>。</li>
-        </ul>
       </div>
     </div>
   </div><!-- /day3 -->
@@ -695,15 +679,6 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
         <div class="tl" data-t="19:19"><div class="t-start">19:19</div><div class="t-dur">2:41</div><div class="t-ico"><svg class="ic"><use href="#i-bath"/></svg></div><div class="t-sum">スカイスパで入浴・夕食</div><div class="t-det">サウナ・露天風呂で疲れをリセット</div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">8:30</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div></div>
       </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>登山中は電波が入らない。連絡も地図の再ダウンロードもできない前提で動く。</li>
-          <li>9:30発〜16:18着はYAMAP実測どおりで<span class="warn">ゆとりはほぼゼロ</span>。遅れは即タクシーのお迎え時刻に響く。</li>
-          <li>17:00 のお迎えを逃すと自力で戻る手段がなくなる。16:18 下山がデッドライン。</li>
-          <li>散策候補は9/21と同じ。帰着が19時過ぎなので、寄るなら軽めに。</li>
-        </ul>
-      </div>
     </div>
   </div><!-- /day4 -->
 
@@ -728,12 +703,6 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
         <div class="tl" data-t="14:20"><div class="t-start">14:20</div><div class="t-dur">1:00</div><div class="t-ico"><svg class="ic"><use href="#i-plane"/></svg></div><div class="t-sum">ANA NH3173 伊丹→新潟</div><div class="t-det">IBEX運航／座席 7A・7B・8B／119,732円 決済済</div></div>
         <div class="tl" data-t="15:20"><div class="t-start">15:20</div><div class="t-dur">0:40</div><div class="t-ico"><svg class="ic"><use href="#i-car"/></svg></div><div class="t-sum">新潟空港→自宅</div></div>
         <div class="tl stay" data-t="16:00"><div class="t-start">16:00</div><div class="t-dur">—</div><div class="t-ico"><svg class="ic"><use href="#i-home"/></svg></div><div class="t-sum">帰宅</div><div class="t-det">おつかれさまでした</div></div>
-      </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>マルビル 12:55 発のリムジンバスが基準。買い物は 12:40 で切り上げる。</li>
-        </ul>
       </div>
     </div>
   </div><!-- /day5 -->

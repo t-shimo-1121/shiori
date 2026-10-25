@@ -358,6 +358,19 @@ a.map:active{background:var(--c-bg);}
   .cover-frame img{filter:brightness(.86) saturate(.95);}
   .tl.now::after,.tag{color:hsl(var(--h-base),15%,10%);}
 }
+
+/* ── 全冊共通の変更（2026.10）：タブを等幅で画面内に・総額欄 ── */
+.tabs{display:grid!important;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));overflow:visible!important;-webkit-mask-image:none!important;mask-image:none!important;}
+.tab-btn{min-width:0!important;flex:none!important;}
+.tab-btn small{white-space:normal!important;overflow-wrap:anywhere;line-height:1.25;}
+/* 費用の総額 */
+.total{background:var(--c-bg);}
+.tot-row{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem;}
+.tot-l{font-size:.8rem;font-weight:700;color:var(--c);letter-spacing:.06em;}
+.tot-v{font-family:var(--font-display);font-weight:900;font-size:1.5rem;line-height:1.2;font-variant-numeric:tabular-nums;color:var(--ink);}
+.tot-sub{margin-top:.2rem;display:flex;flex-wrap:wrap;gap:.1rem .7rem;font-size:.74rem;color:var(--ink-2);font-variant-numeric:tabular-nums;}
+.tot-sub b{font-weight:700;color:var(--ink);margin-left:.25rem;}
+.tot-ex{margin-top:.35rem;font-size:.72rem;line-height:1.5;color:var(--ink-3);}
 </style>
 </head>
 <body>
@@ -418,7 +431,7 @@ a.map:active{background:var(--c-bg);}
   </div>
 
   <!-- ══════════ タブ ══════════ -->
-  <div class="tabs" role="tablist">
+  <div class="tabs" role="tablist" style="--cols:4">
     <button class="tab-btn t0 active" data-tab="pack" role="tab">準備<small>持ち物・費用</small></button>
     <button class="tab-btn t1" data-tab="day1" role="tab">10/10 土<small>恐竜博物館</small></button>
     <button class="tab-btn t2" data-tab="day2" role="tab">10/11 日<small>荒島岳</small></button>
@@ -470,6 +483,12 @@ a.map:active{background:var(--c-bg);}
         <span class="tag only" aria-hidden="true"><svg class="ic"><use href="#i-coin"/></svg></span>
         <div class="card-title">費用</div>
       </div>
+      <div class="mt total">
+        <div class="tot-row"><span class="tot-l">総額</span><span class="tot-v">184,732円</span></div>
+        <div class="tot-sub"><span>交通<b>65,530円</b></span><span>宿泊<b>119,202円</b></span></div>
+        <div class="tot-ex">含まない：しらゆき2号（新潟→上越妙高）とタクシー代（金額未確定）</div>
+      </div>
+
 
       <div class="mt">
         <div class="mt-h">交通費</div>
@@ -497,14 +516,6 @@ a.map:active{background:var(--c-bg);}
           </tbody>
           <tfoot><tr><td colspan="2">小計</td><td>119,202円</td></tr></tfoot>
         </table>
-      </div>
-
-      <div class="note">
-        <div class="note-h">総額の見込み</div>
-        <ul>
-          <li><span class="hl">判明分合計 184,732円</span>　交通65,530円＋宿泊119,202円</li>
-          <li>10/10 しらゆき2号（新潟→上越妙高）の運賃とタクシー代（5本）は金額未確定のため、上の小計には含まれていない</li>
-        </ul>
       </div>
     </div>
 
@@ -536,14 +547,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl stay" data-t="17:15"><div class="t-start">17:15</div><div class="t-dur">4:45</div><div class="t-ico"><svg class="ic"><use href="#i-lodge"/></svg></div><div class="t-sum"><a class="map" href="https://www.google.com/maps/search/?api=1&query=%E5%8B%9D%E5%B1%B1%E3%83%8B%E3%83%A5%E3%83%BC%E3%83%9B%E3%83%86%E3%83%AB" target="_blank" rel="noopener">勝山ニューホテル</a></div><div class="t-det">ニュースタンダードツイン、大人2・子供1。予約上のチェックインは18:00。朝食付6:30〜10:00、大浴場17:00〜23:00。<span class="warn">夕食なし</span>。夕食はハニー新鮮館かコンビニで調達。<span class="warn">翌日7:00のタクシーを予約</span>。登山準備</div></div>
         <div class="sun set" data-t="17:26"><div class="s-t">17:26</div><div class="s-d"></div><div>日の入</div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">8:00</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">翌朝6:00起床</div></div>
-      </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>野外ツアーの券では常設展を観覧できない。常設展は WOW RIDE のオプションで買った観覧券で入る。</li>
-          <li>金沢4分・福井10分の乗換が続く。座席は降り口に近い側を取っておくと楽。</li>
-          <li>勝山ニューホテルは夕食が付いていない。到着後すぐに夕食の当てを決める（徒歩10分以内にコンビニ・ドラッグストアあり）。</li>
-        </ul>
       </div>
     </div>
   </div><!-- /day1 -->
@@ -592,14 +595,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl stay" data-t="19:00"><div class="t-start">19:00</div><div class="t-dur">3:00</div><div class="t-ico"><svg class="ic"><use href="#i-bath"/></svg></div><div class="t-sum">夕食・入浴・自由</div><div class="t-det">福井駅前で夕食（ソースカツ丼、越前そば、地魚）。天然温泉の大浴場</div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">8:00</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">翌朝6:00起床</div></div>
       </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>コースタイムは休憩込みで7時間36分。15:15のタクシーに間に合わせるには、山頂を12時までに出る。</li>
-          <li>チェックアウトしてそのまま登るので、登山中に荷物をどこへ置くかを先に決めておく。</li>
-          <li>日入は17:24。行程が押したらシャクナゲ平で引き返す判断を。</li>
-        </ul>
-      </div>
     </div>
   </div><!-- /day2 -->
 
@@ -630,14 +625,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl" data-t="13:09"><div class="t-start">13:09</div><div class="t-dur">1:58</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">しらゆき3号→新潟</div><div class="t-det">1号車3番A・B席・4番A席</div></div>
         <div class="tl" data-t="15:07"><div class="t-start">15:07</div><div class="t-dur">0:23</div><div class="t-ico"><svg class="ic"><use href="#i-pin"/></svg></div><div class="t-sum">新潟駅 到着</div><div class="t-det">駐車場で車を受け取り</div></div>
         <div class="tl stay" data-t="15:30"><div class="t-start">15:30</div><div class="t-dur">—</div><div class="t-ico"><svg class="ic"><use href="#i-car"/></svg></div><div class="t-sum">車→自宅</div><div class="t-det">お疲れさまでした</div></div>
-      </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>7:00にチェックアウトして歩けば、待ち時間ほぼゼロで09:00の始発便に間に合う。</li>
-          <li>遊覧船は波が高いと欠航。その場合は崖の上の遊歩道と商店街に振り替える。</li>
-          <li>昼食は芦原温泉駅の駅弁を新幹線で。11:05着から24分あるので焦らず選べる。</li>
-        </ul>
       </div>
     </div>
   </div><!-- /day3 -->

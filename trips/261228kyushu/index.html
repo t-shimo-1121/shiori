@@ -339,6 +339,11 @@ a.map:active{background:var(--c-bg);}
   .cover-frame img{filter:brightness(.86) saturate(.95);}
   .tl.now::after,.tag{color:hsl(var(--h-base),15%,10%);}
 }
+
+/* ── 全冊共通の変更（2026.10）：タブを等幅で画面内に・総額欄 ── */
+.tabs{display:grid!important;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));overflow:visible!important;-webkit-mask-image:none!important;mask-image:none!important;}
+.tab-btn{min-width:0!important;flex:none!important;}
+.tab-btn small{white-space:normal!important;overflow-wrap:anywhere;line-height:1.25;}
 </style>
 </head>
 <body>
@@ -391,7 +396,7 @@ a.map:active{background:var(--c-bg);}
   </div>
 
   <!-- ══════════ タブ ══════════ -->
-  <div class="tabs" role="tablist">
+  <div class="tabs" role="tablist" style="--cols:4">
     <button class="tab-btn t0 active" data-tab="pack" role="tab">準備<small>持ち物</small></button>
     <button class="tab-btn t1" data-tab="day1" role="tab">12/28 月<small>博多</small></button>
     <button class="tab-btn t2" data-tab="day2" role="tab">12/29 火<small>桜島</small></button>
@@ -461,14 +466,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl" data-t="22:30"><div class="t-start">22:30</div><div class="t-dur">0:40</div><div class="t-ico"><svg class="ic"><use href="#i-bath"/></svg></div><div class="t-sum">天然温泉の大浴場</div><div class="t-det">夜通し入れる。移動の疲れを抜く</div></div>
         <div class="tl stay" data-t="23:00"><div class="t-start">23:00</div><div class="t-dur">7:30</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">翌朝6:30起床。朝食はバイキングを軽く</div></div>
       </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>到着21:30と遅いので、この日は風呂に入って寝るだけ。</li>
-          <li>翌朝の新幹線は8:00発。7:40出発、荷造りは夜のうちに。</li>
-          <li>博多駅で翌朝の飲み物と行動食を買っておく。</li>
-        </ul>
-      </div>
     </div>
   </div><!-- /day1 -->
 
@@ -501,14 +498,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl" data-t="20:00"><div class="t-start">20:00</div><div class="t-dur">1:10</div><div class="t-ico"><svg class="ic"><use href="#i-bath"/></svg></div><div class="t-sum">天然砂むし温泉・元禄風呂</div><div class="t-det"><span class="hl">この旅の目玉のひとつ</span>。砂むしは大浴場カウンターで当日受付順</div></div>
         <div class="tl" data-t="21:10"><div class="t-start">21:10</div><div class="t-dur">0:50</div><div class="t-ico"><svg class="ic"><use href="#i-gear"/></svg></div><div class="t-sum">コインランドリー・登山準備</div><div class="t-det">明日の行動食と水を用意。<span class="hl">開聞岳の天気を確認</span></div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">8:00</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">翌朝6:00起床</div></div>
-      </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>鹿児島中央のロッカーが今日のかなめ。桜島に大荷物を持ち込まない。</li>
-          <li>フェリーは予約不要・高頻度。桜島では焦らなくてよい。</li>
-          <li>指宿枕崎線は本数が少ない。16:45発に間に合うよう16:30には改札を通る。</li>
-        </ul>
       </div>
     </div>
   </div><!-- /day2 -->
@@ -558,15 +547,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl" data-t="21:15"><div class="t-start">21:15</div><div class="t-dur">0:45</div><div class="t-ico"><svg class="ic"><use href="#i-bath"/></svg></div><div class="t-sum">展望大浴場・コインランドリー</div><div class="t-det">最上階の展望大浴場とサウナ。<span class="hl">えびの高原行きバスの運行を確認</span></div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">7:30</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">翌朝5:30起床。荷造りは今夜のうちに</div></div>
       </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>コースタイムは休憩込みで5時間35分（7.6km・のぼりくだり831m）。開聞駅との徒歩往復1時間20分が別にかかる。</li>
-          <li>指宿枕崎線は本数が命。戻る便を朝に決め、下山開始の締切にする。</li>
-          <li>924mでも下りは2時間25分。日入は17:24。</li>
-          <li>荷物は指宿駅なので、指宿経由で戻る動線を外れないこと。</li>
-        </ul>
-      </div>
     </div>
   </div><!-- /day3 -->
 
@@ -609,15 +589,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl" data-t="20:00"><div class="t-start">20:00</div><div class="t-dur">2:00</div><div class="t-ico"><svg class="ic"><use href="#i-clock"/></svg></div><div class="t-sum">部屋でゆっくり年越し</div><div class="t-det">旅の折り返し。写真を整理する時間に</div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">9:00</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">翌朝7:00起床。起きていたい人は自由に</div></div>
       </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>今日の成否はバス。えびの高原行きを前日夜に確認する。運休なら丸尾からタクシー。</li>
-          <li>コースタイムは休憩込みで3時間30分（4.8km・のぼりくだり536m）。山頂は強風、防寒具はすぐ出せる場所に。</li>
-          <li>登り自体は3座で最も楽。体力よりバスの時間勝負の日。</li>
-          <li>大晦日は飲食店の営業が読めない。念のため駅かコンビニで調達しておく。</li>
-        </ul>
-      </div>
     </div>
   </div><!-- /day4 -->
 
@@ -648,14 +619,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl" data-t="18:30"><div class="t-start">18:30</div><div class="t-dur">1:30</div><div class="t-ico"><svg class="ic"><use href="#i-fork"/></svg></div><div class="t-sum">熊本市街で夕食</div><div class="t-det">馬刺し、熊本ラーメン。<span class="warn">三が日は休業が多い</span>。<span class="hl">店を予約</span></div></div>
         <div class="tl" data-t="20:00"><div class="t-start">20:00</div><div class="t-dur">1:00</div><div class="t-ico"><svg class="ic"><use href="#i-gear"/></svg></div><div class="t-sum">コインランドリー・登山準備</div><div class="t-det"><span class="hl">阿蘇の火口規制と天気を確認</span>。規制ならルート変更</div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">8:00</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">翌朝6:00起床。最後の1座</div></div>
-      </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>霧島神宮は参拝より行き帰りの足が難所。タクシーは往復まとめて手配する。</li>
-          <li>連泊はここだけ。明日は登山装備だけで出られる形にしておく。</li>
-          <li>阿蘇の火口規制はこの夜に確認する。</li>
-        </ul>
       </div>
     </div>
   </div><!-- /day5 -->
@@ -703,15 +666,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl" data-t="20:00"><div class="t-start">20:00</div><div class="t-dur">1:00</div><div class="t-ico"><svg class="ic"><use href="#i-bath"/></svg></div><div class="t-sum">スカイスパ・コインランドリー</div><div class="t-det">登山装備はこれで終わり。明日は街の格好で動ける</div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">9:00</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">翌朝7:00起床。帰りの荷造りを済ませてから</div></div>
       </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>山が開いているかは最後までわからない。規制時の代替（杵島岳・烏帽子岳、仙酔峡ルート）を想定して出発する。</li>
-          <li>コースタイムは休憩込みで5時間16分（9.2km・のぼりくだり609m）。下山完了15:16、15:30のバスまで14分しかない。高岳を13:00までに出る。</li>
-          <li>火口周辺は火山ガス。異変があれば無理せず引き返す。</li>
-          <li>冬の阿蘇は凍結と強風。チェーンスパイクと防風着は必携。</li>
-        </ul>
-      </div>
     </div>
   </div><!-- /day6 -->
 
@@ -736,14 +690,6 @@ a.map:active{background:var(--c-bg);}
         <div class="tl" data-t="15:55"><div class="t-start">15:55</div><div class="t-dur">1:40</div><div class="t-ico"><svg class="ic"><use href="#i-plane"/></svg></div><div class="t-sum">FDA505便→新潟</div><div class="t-det">福岡空港→新潟空港</div></div>
         <div class="sun set" data-t="16:36"><div class="s-t">16:36</div><div class="s-d"></div><div>日の入</div></div>
         <div class="tl stay" data-t="17:35"><div class="t-start">17:35</div><div class="t-dur">—</div><div class="t-ico"><svg class="ic"><use href="#i-home"/></svg></div><div class="t-sum">新潟空港 到着</div><div class="t-det">おつかれさまでした。百名山3座、無事に登頂</div></div>
-      </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>博多の自由時間は約4時間。買い物先を先に決めておく。</li>
-          <li>1/3はUターンのピーク。保安検査混雑、14:10到着でも早すぎない。</li>
-          <li>山バッジ3枚と写真は帰る前に確認。</li>
-        </ul>
       </div>
     </div>
   </div><!-- /day7 -->

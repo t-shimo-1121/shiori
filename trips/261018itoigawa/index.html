@@ -328,6 +328,11 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
   .tab-btn.active{color:hsl(var(--h-base),15%,10%);}
   .tl.now::after,.tag{color:hsl(var(--h-base),15%,10%);}
 }
+
+/* ── 全冊共通の変更（2026.10）：タブを等幅で画面内に・総額欄 ── */
+.tabs{display:grid!important;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));overflow:visible!important;-webkit-mask-image:none!important;mask-image:none!important;}
+.tab-btn{min-width:0!important;flex:none!important;}
+.tab-btn small{white-space:normal!important;overflow-wrap:anywhere;line-height:1.25;}
 </style>
 </head>
 <body>
@@ -386,7 +391,7 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
   </div>
 
   <!-- ══════════ タブ ══════════ -->
-  <div class="tabs" role="tablist">
+  <div class="tabs" role="tablist" style="--cols:2">
     <button class="tab-btn t0 active" data-tab="pack" role="tab">準備<small>持ち物・費用</small></button>
     <button class="tab-btn t1" data-tab="day1" role="tab"><span id="tabdate">当日</span><small>青海の海岸</small></button>
   </div>
@@ -452,14 +457,6 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
       <div class="mt" id="findsCard">
         <div class="mt-h">この日の収穫</div>
         <div id="finds"></div>
-      </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>海岸は波打ち際がすぐ深くなる。子どもは波に背を向けずに探す。</li>
-          <li>鑑定した石は上の「この日の収穫」に並ぶ。ミュージアムで本物と見比べよう。</li>
-          <li>ヒスイ峡（小滝川・青海川）は天然記念物で採取禁止。拾うのは海岸だけ。</li>
-        </ul>
       </div>
     </div>
   </div><!-- /day1 -->

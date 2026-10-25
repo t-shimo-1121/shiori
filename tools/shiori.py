@@ -99,7 +99,6 @@ def card(n, day, next_wake):
     if day.get('stats'):
         stats = '      <div class="mt">\n        <div class="stats stats-%d">%s</div>\n      </div>\n' % (len(day['stats']), ''.join(
             '<div class="s"><div class="n">%s</div><div class="l">%s</div></div>' % (inline(a), inline(b)) for a, b in day['stats']))
-    notes = '\n'.join('          <li>%s</li>' % inline(x) for x in day.get('notes', []))
     return '''  <!-- ══════════ Day%d ══════════ -->
   <div class="tab-panel" id="day%d">
     <div class="card day%d" data-date="%s">
@@ -110,16 +109,10 @@ def card(n, day, next_wake):
 %s      <div class="trail">
 %s
       </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-%s
-        </ul>
-      </div>
     </div>
   </div><!-- /day%d -->
 ''' % (n, n, n, d.isoformat(), day.get('aria') or aria_default(d), day['icon'], inline(day['title']), stats,
-       day_rows(day, next_wake), notes, n)
+       day_rows(day, next_wake), n)
 
 def ftable(g):
     head = g['name']
@@ -138,21 +131,27 @@ def ftable(g):
       </div>
 ''' % (head, sub[0], sub[1], body, '' if g.get('subtotal') is False else '          <tfoot><tr><td colspan="2">小計</td><td>%s</td></tr></tfoot>\n' % yen(sum(vals) if vals else None))
 
-SHORT = {'交通費': '交通', '宿泊費': '宿泊', '食事ほか': '食事ほか'}
+SHORT = {'交通費': '交通', '宿泊費': '宿泊', '食事ほか': '食事'}
+def excl_line(x):
+    """補足を短く：「AとBは含まない。」→「含まない：AとB」"""
+    x = str(x).strip()
+    m = re.match(r'^(.*?)は含まない。?$', x)
+    if m and '。' not in m.group(1): return '含まない：' + m.group(1)
+    return x
 def pack(C):
     costs = C['costs']
     parts, tot, expl = [], 0, []
     for g in costs['groups']:
         parts.append(ftable(g))
         s = sum(c for _, _, c in g['rows'] if c); tot += s
-        if s: expl.append('%s%s' % (g.get('short') or SHORT.get(g['name'], g['name'].rstrip('費')), '{:,}円'.format(s)))
-    lis = []
-    if costs.get('total', True):
-        lis.append('<span class="hl">%s</span>　%s' % (yen(tot), '＋'.join(expl)))
-    if 'excl' in costs:
-        lis.append('金額の分かっている分だけの合計。%s' % costs['excl'])
-    lis += [inline(x) for x in costs.get('notes', [])]
-    return '''  <!-- ══════════ 準備タブ ══════════ -->
+        if s: expl.append((g.get('short') or SHORT.get(g['name'], re.sub(r'(費|料)$', '', g['name'])), s))
+    total = """      <div class="mt total">
+        <div class="tot-row"><span class="tot-l">総額</span><span class="tot-v">%s</span></div>
+        <div class="tot-sub">%s</div>
+%s      </div>
+""" % (yen(tot), ''.join('<span>%s<b>%s</b></span>' % (k, '{:,}円'.format(v)) for k, v in expl),
+       ('        <div class="tot-ex">%s</div>\n' % inline(excl_line(costs['excl']))) if costs.get('excl') else '')
+    return """  <!-- ══════════ 準備タブ ══════════ -->
   <div class="tab-panel is-active" id="pack">
 
     <div class="card pack">
@@ -162,17 +161,11 @@ def pack(C):
       </div>
 
 %s
-      <div class="note">
-        <div class="note-h">総額</div>
-        <ul>
-%s
-        </ul>
-      </div>
-    </div>
+%s    </div>
 
   </div><!-- /pack -->
 
-''' % ('\n'.join(parts), '\n'.join('          <li>%s</li>' % x for x in lis)), tot
+""" % (total, '\n'.join(parts)), tot
 
 def cover_html(C, tdir):
     p = cover_path(tdir)
@@ -186,6 +179,12 @@ def cover_path(tdir):
         p = os.path.join(tdir, 'cover.' + ext)
         if os.path.exists(p): return p
     return None
+
+def tab_cols(k):
+    """タブ k 枚を等幅で並べる列数。4枚までは1行、5〜8枚は2行、9枚以上は1行5枚"""
+    if k <= 4: return k
+    if k <= 8: return -(-k // 2)
+    return 5
 
 def render(C, tdir):
     days = C['days']
@@ -224,13 +223,13 @@ def render(C, tdir):
   </div>
 
   <!-- ══════════ タブ ══════════ -->
-  <div class="tabs" role="tablist">
+  <div class="tabs" role="tablist" style="--cols:%d">
     <button class="tab-btn t0 active" data-tab="pack" role="tab">準備<small>費用</small></button>
 %s
   </div>
 
 
-''' % (cover_html(C, tdir), html.escape(C['title']), C.get('daterange') or range_label(start, end), tabs) + packhtml + cards + '\n\n</div>\n\n\n'
+''' % (cover_html(C, tdir), html.escape(C['title']), C.get('daterange') or range_label(start, end), tab_cols(n + 1), tabs) + packhtml + cards + '\n\n</div>\n\n\n'
     t = open(TEMPLATE).read()
     rep = {
         'apptitle': C.get('apptitle') or (C['place'] + 'しおり'),

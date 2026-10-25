@@ -293,6 +293,19 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
   .tab-panel{display:block !important;}
 }
 
+
+/* ── 全冊共通の変更（2026.10）：タブを等幅で画面内に・総額欄 ── */
+.tabs{display:grid!important;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));overflow:visible!important;-webkit-mask-image:none!important;mask-image:none!important;}
+.tab-btn{min-width:0!important;flex:none!important;}
+.tab-btn small{white-space:normal!important;overflow-wrap:anywhere;line-height:1.25;}
+/* 費用の総額 */
+.total{background:var(--c-bg);}
+.tot-row{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem;}
+.tot-l{font-size:.8rem;font-weight:700;color:var(--c);letter-spacing:.06em;}
+.tot-v{font-family:var(--font-display);font-weight:900;font-size:1.5rem;line-height:1.2;font-variant-numeric:tabular-nums;color:var(--ink);}
+.tot-sub{margin-top:.2rem;display:flex;flex-wrap:wrap;gap:.1rem .7rem;font-size:.74rem;color:var(--ink-2);font-variant-numeric:tabular-nums;}
+.tot-sub b{font-weight:700;color:var(--ink);margin-left:.25rem;}
+.tot-ex{margin-top:.35rem;font-size:.72rem;line-height:1.5;color:var(--ink-3);}
 </style>
 </head>
 <body>
@@ -333,7 +346,7 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
   </div>
 
   <!-- ══════════ タブ ══════════ -->
-  <div class="tabs" role="tablist">
+  <div class="tabs" role="tablist" style="--cols:3">
     <button class="tab-btn t0 active" data-tab="pack" role="tab">準備<small>持ち物</small></button>
     <button class="tab-btn t1" data-tab="day1" role="tab">9/26<span class="dow">土</span><small>燕・キャンプ</small></button>
     <button class="tab-btn t2" data-tab="day2" role="tab">9/27<span class="dow">日</span><small>寺泊</small></button>
@@ -415,6 +428,11 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
         <span class="tag"><svg class="ic"><use href="#i-coin"/></svg>費用</span>
         <div class="card-title">概算まとめ</div>
       </div>
+      <div class="mt total">
+        <div class="tot-row"><span class="tot-l">総額</span><span class="tot-v">9,955円</span></div>
+        <div class="tot-sub"><span>サイト・温泉<b>4,400円</b></span><span>食材<b>5,555円</b></span></div>
+      </div>
+
       <div class="kv-block">
         <div class="kv-h">サイト・温泉 <span class="badge ok">小計 4,400円</span></div>
         <table class="ftable">
@@ -449,13 +467,6 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
           <tfoot><tr><td colspan="2">小計</td><td>5,555円</td></tr></tfoot>
         </table>
       </div>
-
-      <div class="note">
-        <div class="note-h">総額</div>
-        <ul>
-          <li><span class="hl">9,955円</span>　サイト・温泉4,400円＋食材5,555円</li>
-        </ul>
-      </div>
     </div>
 
   </div><!-- /pack -->
@@ -479,14 +490,6 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
         <div class="tl" data-t="19:30"><div class="t-start">19:30</div><div class="t-dur">1:00</div><div class="t-ico"><svg class="ic"><use href="#i-bath"/></svg></div><div class="t-sum">てまりの湯</div><div class="t-det"><span class="hl">17:00以降割引</span> 大人300円・子供100円／チケット1,000円分あり</div></div>
         <div class="tl" data-t="20:30"><div class="t-start">20:30</div><div class="t-dur">1:00</div><div class="t-ico"><svg class="ic"><use href="#i-fire"/></svg></div><div class="t-sum">自由時間</div></div>
         <div class="tl stay" data-t="21:30"><div class="t-start">21:30</div><div class="t-dur">8:30</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div></div>
-      </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>9月下旬は<span class="warn">17時半を過ぎると急に暗くなる</span>。17:00から設営を始めて、明るいうちに終わらせる。ランタンは手元に出しておく。</li>
-          <li>てまりの湯は区画料金に含まれるチケット1,000円分を使い、差額400円を払う。</li>
-          <li>日中は動くと暑いが、朝晩の国上山は冷え込む。防寒具を忘れずに。</li>
-        </ul>
       </div>
     </div>
   </div><!-- /day1 -->
@@ -515,15 +518,6 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
           <div><dt><span class="sw" style="--sw:#8cbfb3"></span>シーグラス（ビーチグラス）</dt><dd>石ではないが、波と砂で角が削れてすりガラス状になったガラス片。青・緑・茶色などを宝探し感覚で集められる</dd></div>
           <div><dt><span class="sw" style="--sw:#b4533c"></span>ジャスパー（碧玉）</dt><dd>赤や濃い緑、黄色などカラフルで不透明な硬い石</dd></div>
         </dl>
-      </div>
-      <div class="note">
-        <div class="note-h">この日のポイント</div>
-        <ul>
-          <li>石は波打ち際近くの、<span class="hl">砂利（小石）が帯状にたまっている場所</span>が見つけやすい。乾いた石より、波打ち際で濡れている石のほうが色や透明感が分かりやすい。</li>
-          <li>寺泊水族博物館は9:00開館。石拾いの時間を優先して10:00に入館する。</li>
-          <li>7:30撤収開始、8:00には海水浴場へ。朝食後すぐに片付けに入る。</li>
-          <li>海遊びのあとは足元が濡れる。着替え・タオルを車に出しておくと帰りが快適。</li>
-        </ul>
       </div>
     </div>
   </div><!-- /day2 -->
