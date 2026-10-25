@@ -1,0 +1,66 @@
+# 手作りのしおり：index.html をそのまま公開する（あとで型に移す）。ここは本棚に出す情報だけ
+title: ハワイ旅行のしおり
+start: '2026-08-11'
+end: '2026-08-17'
+raw: true
+history:
+  versions: 11
+  first: '2026-06-24'
+  last: '2026-08-09'
+hues:
+  brand: 188
+tabs: [概要, DAY1, DAY2, DAY3, DAY4, DAY5, DAY6]
+stays:
+- date: '2026-08-11'
+  name: ルネッサンス
+  short: ルネッサンス ホノルル
+  group: マリオット
+  area: ホノルル
+  nights: 3
+  kind: ホテル
+  price: 134764
+  note: キッチン・洗濯乾燥機付き
+- date: '2026-08-14'
+  name: ザ・リッツ・カールトン・オアフ
+  short: リッツ・カールトン オアフ
+  group: マリオット
+  area: タートルベイ
+  nights: 1
+  kind: ホテル
+  price: 134985
+  note: 現地払い19,000円を含む
+- date: '2026-08-15'
+  name: ルネッサンス
+  short: ルネッサンス ホノルル
+  group: マリオット
+  area: ホノルル
+  nights: 1
+  kind: ホテル
+  price: 44000
+  note: 現地決済
+spots:
+- cat: museum
+  name: ビショップ博物館
+  at: ハワイ・ホノルル
+  visited: "2026.8"
+  facts:
+  - [創立, 1889年]
+  - [見どころ, ハワイ王家の宝物とハワイ・太平洋の文化、自然史]
+- cat: museum
+  name: パールハーバー国立記念公園
+  at: ハワイ・ホノルル
+  visited: "2026.8"
+  facts:
+  - [見どころ, 戦艦ミズーリと戦艦アリゾナ記念館]
+- cat: park
+  name: クアロア・ランチ
+  at: ハワイ・オアフ島東海岸
+  visited: "2026.8"
+  facts:
+  - [見どころ, 映画『ジュラシック・パーク』などのロケ地をオープンエアの車でめぐる]
+- cat: park
+  name: ポリネシア文化センター
+  at: ハワイ・オアフ島ライエ
+  visited: "2026.8"
+  facts:
+  - [見どころ, ポリネシアの島々の暮らしを村ごとに体験。夜のショー]

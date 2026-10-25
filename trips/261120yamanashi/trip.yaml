@@ -1,0 +1,76 @@
+# 手作りのしおり：index.html をそのまま公開する（あとで型に移す）。ここは本棚に出す情報だけ
+title: 3泊4日山梨旅行
+start: '2026-11-20'
+end: '2026-11-23'
+raw: true
+history:
+  versions: 11
+  first: '2026-09-30'
+  last: '2026-10-24'
+hues:
+  base: 40
+  brand: 205
+  pack: 175
+  d1: 225
+  d2: 30
+  d3: 95
+  d4: 335
+tabs: [準備 持ち物・費用, 11/20 金 甲府, 11/21 土 瑞牆山, 11/22 日 金峰山, 11/23 月 新宿]
+stays:
+- date: '2026-11-20'
+  name: ドーミーイン甲府丸の内
+  group: ドーミーイン
+  area: 甲府
+  nights: 1
+  kind: ホテル
+  price: 38955
+  note: 天然温泉
+- date: '2026-11-21'
+  name: 富士見平小屋
+  area: 瑞牆山
+  nights: 1
+  kind: 山小屋
+  price: 39000
+  approx: true
+  note: 1泊2食
+- date: '2026-11-22'
+  name: ドーミーインPREMIUM渋谷神宮前
+  short: ドーミーイン渋谷神宮前
+  group: ドーミーイン
+  area: 原宿
+  nights: 1
+  kind: ホテル
+  price: 56090
+  note: 大浴場
+peaks:
+- date: '2026-11-21'
+  name: 瑞牆山
+  elev: 2230
+  coursetime: "5:26"
+  const: 19
+  level: ふつう
+  hyaku: 17
+- date: '2026-11-22'
+  name: 金峰山
+  elev: 2599
+  coursetime: "8:10"
+  const: 26
+  level: きつい
+  hyaku: 18
+spots:
+- cat: shop
+  name: タイトーステーション 新宿南口ゲームワールド店
+  at: 東京都新宿区
+  facts:
+  - [種類, アーケードとクレーンゲーム]
+- cat: shop
+  name: ハンズ新宿店
+  at: 東京都渋谷区（タカシマヤ タイムズスクエア内）
+  facts:
+  - [種類, 生活雑貨・トラベルギア]
+- cat: shop
+  name: Alpen TOKYO
+  at: 東京都新宿区
+  facts:
+  - [開業, 2022年]
+  - [種類, アルペンの旗艦店。アウトドア用品・ウェア]

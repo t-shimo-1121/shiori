@@ -1,0 +1,65 @@
+# 手作りのしおり：index.html をそのまま公開する（あとで型に移す）。ここは本棚に出す情報だけ
+title: 5泊6日台湾旅行
+start: '2027-04-30'
+end: '2027-05-05'
+raw: true
+history:
+  versions: 3
+  first: '2026-09-13'
+  last: '2026-10-07'
+hues:
+  base: 32
+  brand: 216
+  pack: 205
+  d1: 219
+  d2: 42
+  d3: 18
+  d4: 62
+  d5: 200
+  d6: 190
+tabs: [準備 持ち物, 4/30金 台北へ, 5/1土 台北, 5/2日 阿里山, 5/3月 排雲山荘, 5/4火 玉山, 5/5水 帰路]
+stays:
+- date: '2027-04-30'
+  name: ホテルグレイスリー台北
+  short: グレイスリー台北
+  group: グレイスリー
+  area: 台北
+  nights: 2
+  kind: ホテル
+  note: 未手配
+- date: '2027-05-02'
+  name: 阿里山英迪格酒店
+  short: インディゴ阿里山
+  group: IHG
+  area: 阿里山
+  nights: 1
+  kind: ホテル
+  note: 未手配・高所順応
+- date: '2027-05-03'
+  name: 排雲山荘
+  area: 玉山 3,402m
+  nights: 1
+  kind: 山小屋
+  note: 未手配・外国人枠
+- date: '2027-05-04'
+  name: ホテルグレイスリー台北
+  short: グレイスリー台北
+  group: グレイスリー
+  area: 台北
+  nights: 1
+  kind: ホテル
+  note: 未手配
+peaks:
+- date: '2027-05-04'
+  name: 玉山主峰
+  elev: 3952
+  coursetime: "7:30"
+  const: 23
+  level: きつい
+spots:
+- cat: museum
+  name: 国立故宮博物院
+  at: 台湾・台北
+  facts:
+  - [収蔵, 中国歴代王朝の美術品 約70万点]
+  - [見どころ, 翠玉白菜と肉形石]

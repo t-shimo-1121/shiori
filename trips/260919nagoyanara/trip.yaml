@@ -1,0 +1,75 @@
+# 手作りのしおり：index.html をそのまま公開する（あとで型に移す）。ここは本棚に出す情報だけ
+title: 4泊5日滋賀・名古屋・奈良旅行
+start: '2026-09-19'
+end: '2026-09-23'
+raw: true
+history:
+  versions: 16
+  first: '2026-07-05'
+  last: '2026-10-21'
+hues:
+  base: 85
+  brand: 195
+  pack: 205
+  d1: 22
+  d2: 215
+  d3: 152
+  d4: 96
+  d5: 320
+tabs: [準備 持ち物, 9/19土 伊吹山, 9/20日 彦根→奈良, 9/21月 大台ヶ原, 9/22火 八経ヶ岳, 9/23水 帰路]
+stays:
+- date: '2026-09-19'
+  name: ホテルサンルート彦根
+  short: サンルート彦根
+  group: サンルート
+  area: 彦根
+  nights: 1
+  kind: ホテル
+  price: 61800
+  note: ひこにゃんルーム
+- date: '2026-09-20'
+  name: CANDEO HOTELS 奈良橿原
+  short: カンデオ奈良橿原
+  group: カンデオ
+  area: 橿原
+  nights: 3
+  kind: ホテル
+  price: 109980
+  note: 朝食付き
+peaks:
+- date: '2026-09-19'
+  name: 伊吹山
+  elev: 1377
+  coursetime: "1:15"
+  const: 3
+  level: やさしい
+  hyaku: 13
+- date: '2026-09-21'
+  name: 大台ヶ原
+  subs: [日出ヶ岳]
+  elev: 1695
+  coursetime: "3:46"
+  const: 13
+  level: ふつう
+  hyaku: 14
+- date: '2026-09-22'
+  name: 八経ヶ岳
+  elev: 1915
+  coursetime: "6:48"
+  const: 26
+  level: きつい
+  hyaku: 15
+spots:
+- cat: museum
+  name: 名古屋市科学館
+  at: 愛知県名古屋市中区
+  visited: "2026.9"
+  facts:
+  - [見どころ, ドーム内径35mのプラネタリウム「Brother Earth」（世界最大としてギネス認定）]
+  - [展示, 竜巻ラボ・放電ラボなど大型の実験装置]
+- cat: shop
+  name: GiGO アル・プラザ彦根
+  at: 滋賀県彦根市
+  visited: "2026.9"
+  facts:
+  - [種類, 彦根駅前の平和堂4階にあるゲームセンター]

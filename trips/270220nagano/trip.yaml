@@ -1,0 +1,69 @@
+# 手作りのしおり：index.html をそのまま公開する（あとで型に移す）。ここは本棚に出す情報だけ
+title: 3泊4日長野旅行
+start: '2027-02-20'
+end: '2027-02-23'
+raw: true
+history:
+  versions: 3
+  first: '2026-10-07'
+  last: '2026-10-21'
+hues:
+  base: 210
+  brand: 206
+  pack: 40
+  d1: 196
+  d2: 24
+  d3: 214
+  d4: 8
+tabs: [準備 持ち物, 2/20 土 赤城山, 2/21 日 霧ヶ峰, 2/22 月 美ヶ原, 2/23 火 善光寺]
+stays:
+- date: '2027-02-20'
+  name: 御宿 野乃松本
+  short: 野乃 松本
+  group: ドーミーイン
+  area: 松本
+  nights: 1
+  kind: ホテル
+  price: 40489
+  note: あづみの湯・クーポン後（定価42,620円）
+- date: '2027-02-21'
+  name: 山本小屋ふる里館
+  area: 美ヶ原
+  nights: 1
+  kind: 山の宿
+  price: 57000
+  note: 雪上車ツアー・星空観測
+- date: '2027-02-22'
+  name: 御宿 野乃松本
+  short: 野乃 松本
+  group: ドーミーイン
+  area: 松本
+  nights: 1
+  kind: ホテル
+  price: 28063
+  note: 無料洗濯機・クーポン後（定価33,014円）
+peaks:
+- date: '2027-02-20'
+  name: 赤城山
+  subs: [黒檜山]
+  elev: 1828
+  coursetime: "3:47"
+  const: 13
+  level: ふつう
+  hyaku: 22
+- date: '2027-02-21'
+  name: 霧ヶ峰
+  subs: [車山]
+  elev: 1925
+  coursetime: "0:27"
+  const: 0
+  level: やさしい
+  hyaku: 23
+- date: '2027-02-22'
+  name: 美ヶ原
+  subs: [王ヶ頭]
+  elev: 2034
+  coursetime: "3:14"
+  const: 9
+  level: やさしい
+  hyaku: 24

@@ -1,0 +1,31 @@
+# しおりのない記録（しおり以前の山・施設）
+peaks:
+- date: '2022-10-22'
+  name: 磐梯山
+  elev: 1816
+  coursetime: "5:46"
+  const: 21
+  level: ふつう
+  hyaku: 1
+  note: YAMAPの記録（しおり以前）
+- date: '2022-11-05'
+  name: 安達太良山
+  elev: 1700
+  coursetime: "4:33"
+  const: 13
+  level: ふつう
+  hyaku: 2
+  note: YAMAPの記録（しおり以前）
+spots:
+- cat: museum
+  name: フォッサマグナミュージアム
+  at: 新潟県糸魚川市
+  visited: "2026.10"
+  facts:
+  - [見どころ, ヒスイと鉱物、日本列島を東西に分けるフォッサマグナの成り立ち]
+- cat: museum
+  name: 燕市産業史料館
+  at: 新潟県燕市
+  visited: "2026.9"
+  facts:
+  - [見どころ, 和釘から洋食器・鎚起銅器へ続く燕の金属加工の歴史]

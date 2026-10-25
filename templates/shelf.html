@@ -1,0 +1,788 @@
+<title>旅行のしおり集</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+/* Layout: ホーム画面に置く「本棚アプリ」。次の旅を大きく、表紙を押すとその場でしおりが全画面で開く */
+:root{
+  --paper:hsl(210 22% 96%);
+  --sheet:hsl(210 30% 99%);
+  --ink:hsl(214 32% 18%);
+  --mute:hsl(213 12% 44%);
+  --line:hsl(212 18% 86%);
+  --accent:hsl(208 58% 36%);
+  --soft:hsl(208 40% 92%);
+  --warn:hsl(14 70% 44%);
+  --f-head:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Noto Sans JP",sans-serif;
+  --f-body:"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif;
+  --l:42%; --s:46%;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:hsl(214 22% 11%);--sheet:hsl(214 20% 15%);--ink:hsl(210 20% 90%);--mute:hsl(212 12% 64%);
+  --line:hsl(213 16% 25%);--accent:hsl(206 60% 68%);--soft:hsl(210 28% 22%);--warn:hsl(14 80% 66%);
+  --l:66%;--s:44%;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:hsl(214 22% 11%);--sheet:hsl(214 20% 15%);--ink:hsl(210 20% 90%);--mute:hsl(212 12% 64%);
+  --line:hsl(213 16% 25%);--accent:hsl(206 60% 68%);--soft:hsl(210 28% 22%);--warn:hsl(14 80% 66%);
+  --l:66%;--s:44%;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:1080px;margin:0 auto}
+a{color:var(--accent)}
+button,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* 見出し */
+header{padding-block:28px 12px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px}
+h1{font-family:var(--f-head);font-weight:700;font-size:clamp(1.7rem,5vw,2.4rem);line-height:1.2;margin:0;letter-spacing:.04em}
+.lede{margin:.3rem 0 0;color:var(--mute);font-size:.92rem}
+.tally{display:flex;gap:20px;margin:0}
+.tally div{display:flex;flex-direction:column}
+.tally dt{font-size:.72rem;color:var(--mute);letter-spacing:.08em}
+.tally dd{margin:0;font-family:var(--f-head);font-weight:700;font-size:1.5rem;line-height:1.2}
+.tally small{font-size:.75rem;font-weight:500;margin-left:2px}
+
+nav.views{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);
+  display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;padding-block:10px;border-bottom:1px solid var(--line);margin-bottom:20px}
+nav.views button{border:0;background:none;padding:6px 0;border-radius:999px;font-weight:500;cursor:pointer;white-space:nowrap;color:var(--mute);
+  font-size:clamp(.82rem,3.9vw,1rem);min-width:0}
+nav.views button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.view[hidden]{display:none}
+h2{font-family:var(--f-head);font-size:1.15rem;margin:28px 0 12px;display:flex;align-items:baseline;gap:10px;text-wrap:balance}
+h2 .n{font-family:var(--f-body);font-size:.8rem;color:var(--mute);font-weight:400}
+.hint{color:var(--mute);font-size:.85rem;margin:-4px 0 14px}
+
+/* 本棚 */
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:18px}
+@media (max-width:520px){.shelf{grid-template-columns:1fr 1fr;gap:12px}}
+.book{--h:210;display:flex;flex-direction:column;background:var(--sheet);border-radius:10px;overflow:hidden;
+  box-shadow:0 1px 0 var(--line),0 6px 18px -12px hsl(214 40% 20% / .35);min-width:0}
+.book .cv{position:relative;aspect-ratio:3/4;max-width:100%;background:hsl(var(--h) var(--s) var(--l) / .2);overflow:hidden}
+.book .cv img{width:100%;height:100%;object-fit:cover;display:block}
+.book .spine{height:6px;background:hsl(var(--h) var(--s) var(--l))}
+.badge{position:absolute;top:8px;left:8px;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:999px;
+  background:var(--sheet);color:var(--ink);letter-spacing:.04em}
+.badge.now{background:var(--warn);color:var(--sheet)}
+.book .bd{padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px;flex:1;min-width:0}
+.book h3{font-family:var(--f-head);font-size:1.02rem;line-height:1.35;margin:0;text-wrap:balance}
+.book .when{font-size:.8rem;color:var(--mute)}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chip{font-size:.72rem;padding:1px 7px;border-radius:5px;background:hsl(var(--h) var(--s) var(--l) / .14);color:var(--ink);white-space:nowrap}
+.book .meta{font-size:.72rem;color:var(--mute);margin-top:auto}
+@media (max-width:520px){.book .chips{display:none}.book h3{font-size:.92rem}}
+a.book{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
+a.book:active{transform:scale(.98)}
+.off{display:inline-block;margin-left:6px;font-size:.64rem;font-weight:700;color:var(--accent);
+  border:1px solid currentColor;border-radius:999px;padding:0 6px;line-height:1.5;vertical-align:1px}
+
+/* 仮の表紙（表紙イラストがまだないしおり）：行き先を縦書きで、下に日ごとの色の帯 */
+.ph{position:absolute;inset:0;container-type:inline-size;display:flex;flex-direction:column;align-items:center;
+  background:linear-gradient(170deg,hsl(var(--c) 30% 95%),hsl(var(--c) 26% 88%));color:hsl(var(--c) 34% 26%)}
+.ph::before{content:"";position:absolute;inset:7cqw 7cqw 13cqw;border:1px solid hsl(var(--c) 24% 50% / .35);border-radius:4px;pointer-events:none}
+.ph-y{margin-top:13cqw;font-family:var(--f-head);font-weight:700;font-size:8cqw;letter-spacing:.18em;opacity:.62;font-variant-numeric:tabular-nums}
+.ph-t{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--f-head);font-weight:700;
+  font-size:min(20cqw,calc(74cqw / var(--n)));line-height:1.12;padding-bottom:8cqw}
+.ph-t i{font-style:normal;display:block}
+.ph-t i.r{transform:rotate(90deg)}
+.ph-band{display:flex;width:100%;height:6cqw;margin-top:auto}
+.book.is-ph .spine{display:none}
+.ph-band i{flex:1;background:hsl(var(--h) 48% 52%)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ph{background:linear-gradient(170deg,hsl(var(--c) 18% 24%),hsl(var(--c) 18% 18%));color:hsl(var(--c) 30% 84%)}
+  :root:not([data-theme="light"]) .ph-band i{background:hsl(var(--h) 40% 58%)}}
+:root[data-theme="dark"] .ph{background:linear-gradient(170deg,hsl(var(--c) 18% 24%),hsl(var(--c) 18% 18%));color:hsl(var(--c) 30% 84%)}
+:root[data-theme="dark"] .ph-band i{background:hsl(var(--h) 40% 58%)}
+.h-cv{position:relative;overflow:hidden}
+
+/* 地方・種類・系列の札（画面内で折り返す） */
+.jump{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 12px;scroll-margin-top:calc(env(safe-area-inset-top,0px) + 70px)}
+.jump button{border:1px solid var(--line);background:var(--sheet);border-radius:999px;padding:4px 12px;font-size:.84rem;font-weight:500;cursor:pointer;color:var(--ink)}
+.jump button small{color:var(--mute);margin-left:5px;font-size:.72rem;font-variant-numeric:tabular-nums}
+.jump button[aria-selected="true"],.jump button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.jump button[aria-selected="true"] small,.jump button[aria-pressed="true"] small{color:inherit;opacity:.75}
+.scat{scroll-margin-top:calc(env(safe-area-inset-top,0px) + 70px)}
+
+/* これまで：年ごとの棚 */
+.yr-jump{display:flex;flex-wrap:wrap;gap:6px;margin:-2px 0 4px}
+.yr-jump::-webkit-scrollbar{display:none}
+.yr-jump button{flex:none;border:1px solid var(--line);background:var(--sheet);border-radius:999px;padding:3px 12px;font-size:.82rem;
+  font-weight:500;cursor:pointer;font-variant-numeric:tabular-nums}
+.yr-jump button small{color:var(--mute);margin-left:4px;font-size:.72rem}
+.yr{display:flex;align-items:center;gap:10px;margin:22px 0 10px;font-family:var(--f-head);font-size:1rem;font-weight:700;
+  scroll-margin-top:calc(env(safe-area-inset-top,0px) + 76px);font-variant-numeric:tabular-nums}
+.yr::after{content:"";flex:1;height:1px;background:var(--line)}
+.yr .n{font-family:var(--f-body);font-size:.76rem;color:var(--mute);font-weight:400}
+
+/* 次の旅 */
+#hero:empty{display:none}
+.hero{--h:210;display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);background:var(--sheet);border-radius:14px;overflow:hidden;
+  color:inherit;text-decoration:none;margin-top:4px;-webkit-tap-highlight-color:transparent;
+  box-shadow:0 1px 0 var(--line),0 10px 28px -16px hsl(214 40% 20% / .45)}
+.hero:active{transform:scale(.99)}
+.h-cv{display:block;aspect-ratio:3/4;max-width:100%;background:hsl(var(--h) var(--s) var(--l) / .2);border-right:6px solid hsl(var(--h) var(--s) var(--l))}
+.h-cv img{width:100%;height:100%;object-fit:cover;display:block}
+.h-bd{display:flex;flex-direction:column;gap:6px;padding:16px 18px;min-width:0}
+.h-eye{font-size:.74rem;font-weight:700;letter-spacing:.12em;color:hsl(var(--h) var(--s) var(--l))}
+.h-t{font-family:var(--f-head);font-weight:700;font-size:1.35rem;line-height:1.3;text-wrap:balance}
+.h-d{font-size:.84rem;color:var(--mute)}
+.h-big{font-size:.9rem;font-weight:700;margin-top:auto}
+.h-big b{font-family:var(--f-head);font-size:2.6rem;line-height:1;margin:0 4px;font-variant-numeric:tabular-nums;color:hsl(var(--h) var(--s) var(--l))}
+.h-go{display:inline-flex;align-items:center;gap:2px;align-self:flex-start;margin-top:4px;padding:8px 12px 8px 16px;border-radius:999px;
+  background:hsl(var(--h) var(--s) var(--l));color:var(--sheet);font-size:.86rem;font-weight:700}
+.h-bd .off{align-self:flex-start;margin:2px 0 0}
+.h-go svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:520px){
+  .hero{grid-template-columns:minmax(0,128px) minmax(0,1fr)}
+  .h-bd{padding:12px 14px;gap:4px}
+  .h-t{font-size:1.08rem}
+  .h-big b{font-size:2rem}
+  .h-go{padding:6px 10px 6px 12px;font-size:.8rem}
+}
+
+/* しおりビューア：全画面。右から入り、左端から右へスワイプで本棚に戻る */
+.viewer{position:fixed;inset:0;z-index:60;background:var(--paper);
+  transform:translateX(100%);visibility:hidden;transition:transform .3s cubic-bezier(.2,.8,.2,1),visibility 0s .3s;
+  box-shadow:-12px 0 28px -10px hsl(214 40% 10% / .35)}
+.viewer.open{transform:none;visibility:visible;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.viewer.drag{transition:none}
+.vframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:var(--paper)}
+/* 戻るボタン：ページの一番上にいる時だけ左上に小さく出す */
+.vback{position:absolute;z-index:2;top:calc(10px + env(safe-area-inset-top,0px));left:max(10px,env(safe-area-inset-left,0px));
+  width:40px;height:40px;border-radius:50%;border:0;padding:0;cursor:pointer;display:grid;place-items:center;
+  background:hsl(210 30% 99% / .78);color:hsl(214 32% 18%);box-shadow:0 2px 10px hsl(214 40% 10% / .25);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);-webkit-tap-highlight-color:transparent;
+  transition:opacity .2s,transform .2s}
+.vback svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;margin-left:-2px}
+.vback.off{opacity:0;transform:scale(.8);pointer-events:none}
+/* 一時的なお知らせ（保存した版で開いた時・最初の数回の操作ヒント） */
+.vtoast{position:absolute;z-index:2;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translate(-50%,8px);
+  max-width:calc(100% - 32px);padding:8px 14px;border-radius:999px;background:hsl(214 32% 18% / .88);color:hsl(210 30% 99%);
+  font-size:.8rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+.vtoast.on{opacity:1;transform:translate(-50%,0)}
+body.viewing{overflow:hidden}
+@media (prefers-reduced-motion:reduce){.viewer,.viewer.open,.vback,.vtoast{transition:none}}
+
+/* 山 */
+.peaks{background:var(--sheet);border-radius:10px;overflow-x:auto}
+.peaks table{border-collapse:collapse;width:100%;min-width:620px;font-size:.88rem}
+#t-peaks{min-width:900px}
+.peaks td.mt{white-space:nowrap}
+.peaks .sb{font-weight:400}
+.peaks td.trip{font-size:.8rem;white-space:nowrap}
+.peaks th{white-space:nowrap;font-size:.72rem;color:var(--mute);font-weight:500;text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);letter-spacing:.06em}
+.peaks th button{border:0;background:none;padding:0;font:inherit;color:inherit;letter-spacing:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.peaks th button::after{content:"↕";opacity:.35;font-size:.9em}
+.peaks th[aria-sort="ascending"] button,.peaks th[aria-sort="descending"] button{color:var(--ink);font-weight:700}
+.peaks th[aria-sort="ascending"] button::after{content:"↑";opacity:1;color:var(--accent)}
+.peaks th[aria-sort="descending"] button::after{content:"↓";opacity:1;color:var(--accent)}
+.peaks .yen{text-align:right;white-space:nowrap}
+.peaks td:nth-child(2){min-width:11em}
+#t-stays td.hn,#t-stays td.grp,#t-stays td.trip{white-space:nowrap}
+#t-stays td.grp{font-size:.8rem}
+.peaks td.tnum{white-space:nowrap}
+#t-stays{min-width:0}
+#st-sum,#pk-sum{grid-template-columns:repeat(2,minmax(0,1fr))}
+.peaks .kd{font-size:.72rem;padding:1px 8px;border-radius:5px;background:hsl(var(--h) var(--s) var(--l) / .14);white-space:nowrap}
+.peaks .nt{font-size:.75rem;color:var(--mute)}
+.peaks td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+.peaks tr:last-child td{border-bottom:0}
+.peaks .num{font-family:var(--f-head);font-weight:700;font-size:1.05rem;width:3.2em}
+.peaks .nm{font-weight:700}
+.peaks .tr{font-size:.75rem;color:var(--mute);display:block}
+.peaks tr.future td{color:var(--mute)}
+.peaks tr.future .nm{color:var(--ink)}
+.bar{position:relative;height:8px;border-radius:4px;background:var(--soft);width:100%;min-width:120px}
+.bar i{position:absolute;inset:0 auto 0 0;border-radius:4px;background:hsl(var(--h) var(--s) var(--l))}
+.bar+span{font-size:.78rem}
+.lvl{display:inline-block;font-size:.72rem;padding:1px 8px;border-radius:999px;border:1px solid var(--line)}
+.lvl.k{border-color:var(--warn);color:var(--warn)}
+.flag{font-size:.7rem;color:var(--warn);margin-left:6px;white-space:nowrap}
+.axis{display:flex;justify-content:space-between;font-size:.68rem;color:var(--mute)}
+
+/* 集計の帯 */
+.sumrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:4px 0 6px}
+#sp-sum{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:520px){#sp-sum{grid-template-columns:repeat(2,minmax(0,1fr))}.sm{padding:8px 10px}.sm dd{font-size:1.3rem}.sm dd small{display:block;margin:0}}
+.sm{background:var(--sheet);border-radius:10px;padding:10px 14px;min-width:0}
+.sm dt{font-size:.74rem;color:var(--mute);font-weight:700}
+.sm dd{margin:2px 0 0;font-family:var(--f-head);font-weight:700;font-size:1.5rem;line-height:1.2;font-variant-numeric:tabular-nums}
+.sm dd small{font-family:var(--f-body);font-size:.74rem;font-weight:500;color:var(--mute);margin-left:3px}
+.sm .bar{margin-top:6px;min-width:0}
+.sm .bar i{background:hsl(357 72% 50%)}
+.sorter{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 12px}
+.sorter button{border:1px solid var(--line);background:var(--sheet);border-radius:999px;padding:4px 12px;font-size:.8rem;cursor:pointer;color:var(--mute)}
+.sorter button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.src{margin-top:18px}
+
+/* 旅先：地方 → 都道府県 → 市区町村 */
+.region{margin-top:26px}
+.region>h2{margin:0 0 10px}
+.pref{background:var(--sheet);border-radius:12px;margin-bottom:12px;overflow:hidden;box-shadow:0 1px 0 var(--line)}
+.pref-h{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:12px 14px;align-items:baseline;
+  background:var(--soft);border-left:5px solid var(--accent)}
+.pref.plan .pref-h{border-left-style:dashed}
+.pref-n{font-family:var(--f-head);font-weight:700;font-size:1.25rem;line-height:1.3}
+.pv{font-size:.76rem;color:var(--mute);white-space:nowrap;text-align:right}
+.pv.plan{color:var(--accent);font-weight:700}
+.pref-ft{grid-column:1/-1;font-size:.86rem;color:var(--ink)}
+.facts{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:2px 16px;font-size:.78rem;color:var(--mute);font-variant-numeric:tabular-nums}
+.facts b{color:var(--ink);font-weight:700}
+.cities{padding:2px 0}
+.city{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 12px;padding:10px 14px 10px 24px;border-top:1px solid var(--line);position:relative}
+.cities .city:first-child{border-top:0}
+.city::before{content:"";position:absolute;left:12px;top:18px;width:5px;height:5px;border-radius:50%;background:var(--mute);opacity:.6}
+.city-n{font-weight:700;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px}
+.city-n>.cn{white-space:nowrap}
+.city-n.yo{padding-top:.75em}
+.ry{position:relative;display:inline-block}
+.city:has(.yo)::before{top:calc(18px + .75em)}
+.ry>i{position:absolute;left:0;bottom:100%;font-style:normal;font-size:.62rem;font-weight:500;line-height:1;
+  color:var(--mute);white-space:nowrap;margin-bottom:1px;letter-spacing:.04em}
+.cap{font-size:.68rem;font-weight:700;padding:0 7px;border-radius:999px;border:1px solid var(--accent);color:var(--accent);white-space:nowrap;line-height:1.6}
+.city.plan{background:hsl(208 60% 50% / .05)}
+.city.plan .city-n{color:var(--mute)}
+.role{display:flex;flex-wrap:wrap;gap:4px;grid-column:1/-1}
+.rl{font-size:.72rem;border-radius:5px;padding:0 7px;background:var(--soft);max-width:100%}
+.rl b{font-weight:700;margin-right:4px}
+.rl.k-登山 b{color:hsl(150 45% 32%)}.rl.k-宿泊 b{color:hsl(265 35% 45%)}.rl.k-観光 b{color:hsl(24 70% 42%)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rl.k-登山 b{color:hsl(150 45% 62%)}:root:not([data-theme="light"]) .rl.k-宿泊 b{color:hsl(265 45% 75%)}:root:not([data-theme="light"]) .rl.k-観光 b{color:hsl(24 75% 65%)}}
+:root[data-theme="dark"] .rl.k-登山 b{color:hsl(150 45% 62%)}:root[data-theme="dark"] .rl.k-宿泊 b{color:hsl(265 45% 75%)}:root[data-theme="dark"] .rl.k-観光 b{color:hsl(24 75% 65%)}
+.city .pref-ft{font-size:.82rem;color:var(--mute)}
+.abroad .pref-h{border-left-color:var(--mute)}
+
+/* 施設 */
+.scat{margin-top:22px}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:12px}
+.spot{background:var(--sheet);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.spot.plan{background:hsl(208 60% 50% / .05);outline:1px dashed var(--line)}
+.spot-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.spot-n{font-family:var(--f-head);font-weight:700;font-size:1.02rem;line-height:1.35}
+.spot-at{font-size:.78rem;color:var(--mute)}
+.spot dl{margin:2px 0 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:3px 10px;font-size:.84rem}
+.spot dt{color:var(--mute);font-size:.76rem;white-space:nowrap;padding-top:1px}
+.spot dd{margin:0}
+.spot-tr{font-size:.74rem;color:var(--mute)}
+.empty{background:var(--sheet);border-radius:12px;padding:18px;text-align:center;color:var(--mute);font-size:.86rem}
+
+/* デザイン */
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:12px;align-items:start}
+.dcard{background:var(--sheet);border-radius:12px;padding:14px 16px}
+.dcard h3{font-family:var(--f-head);font-size:1.02rem;margin:0 0 8px}
+.dcard ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px}
+.dcard li{font-size:.86rem;line-height:1.6;padding-left:14px;position:relative}
+.dcard li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+</style>
+
+<div class="wrap">
+<header>
+  <div>
+    <h1>旅行のしおり集</h1>
+  </div>
+  <dl class="tally" id="tally"></dl>
+</header>
+
+<nav class="views" role="tablist" aria-label="表示の切り替え">
+  <button role="tab" data-v="trips" aria-selected="true">しおり</button>
+  <button role="tab" data-v="places" aria-selected="false">旅先</button>
+  <button role="tab" data-v="stays" aria-selected="false">宿泊</button>
+  <button role="tab" data-v="peaks" aria-selected="false">山</button>
+  <button role="tab" data-v="spots" aria-selected="false">施設</button>
+  <button role="tab" data-v="design" aria-selected="false">制作</button>
+</nav>
+
+<section class="view" id="v-trips">
+  <div id="hero"></div>
+  <h2 id="up-h" style="margin-top:4px">これから<span class="n" id="n-up"></span></h2>
+  <div class="shelf" id="up"></div>
+  <h2>これまで<span class="n" id="n-past"></span></h2>
+  <div class="yr-jump" id="yr-jump" aria-label="年へ移動"></div>
+  <div id="past"></div>
+</section>
+
+<section class="view" id="v-places" hidden>
+  <div class="sumrow" id="pl-sum"></div>
+  <div class="jump" id="pl-tabs" role="tablist" aria-label="地方"></div>
+  <div id="places"></div>
+  <p class="hint src">人口・面積は2020年国勢調査（citypopulation.de／Wikipedia）。市区町村はメインのアクティビティをした所と泊まった所だけ（地元の新潟県内は除く）。しおり以前の山は登山口の市町村</p>
+</section>
+
+<section class="view" id="v-peaks" hidden>
+  <div class="sumrow" id="pk-sum"></div>
+  <h2>登った山・登る山<span class="n" id="n-peaks"></span></h2>
+  <p class="hint">見出しを押すと並び替え（もう一度押すと逆順）。バーは標高（0〜4,000m）。しおり以前の山のコースタイムはYAMAPの実績タイム</p>
+  <div class="peaks"><table id="t-peaks">
+    <thead><tr>
+      <th data-k="n"><button type="button">百名山</button></th>
+      <th data-k="nm"><button type="button">山</button></th>
+      <th data-k="d"><button type="button">日付</button></th>
+      <th data-k="e" style="width:30%"><button type="button">標高</button></th>
+      <th data-k="ctm"><button type="button">コースタイム</button></th>
+      <th data-k="k"><button type="button">コース定数</button></th>
+      <th data-k="tt"><button type="button">しおり</button></th>
+    </tr></thead>
+    <tbody></tbody>
+  </table></div>
+</section>
+
+<section class="view" id="v-stays" hidden>
+  <div class="sumrow" id="st-sum"></div>
+  <h2>宿<span class="n" id="n-stays"></span></h2>
+  <p class="hint">料金は1泊あたりの家族分の合計で、割引・クーポンがあるものは実際に払う額。入湯税・宿泊税は含まない。「—」は金額が分からないもの・未確定のもの</p>
+  <div class="jump" id="st-grp" aria-label="系列で絞り込み"></div>
+  <div class="peaks"><table id="t-stays">
+    <thead><tr>
+      <th data-k="d"><button type="button">宿泊日</button></th>
+      <th data-k="sn"><button type="button">宿</button></th>
+      <th data-k="g"><button type="button">系列</button></th>
+      <th data-k="n"><button type="button">泊数</button></th>
+      <th data-k="pn"><button type="button">料金</button></th>
+      <th data-k="tt"><button type="button">しおり</button></th>
+    </tr></thead>
+    <tbody></tbody>
+  </table></div>
+</section>
+
+<section class="view" id="v-spots" hidden>
+  <div class="jump" id="sp-jump" aria-label="種類へ移動" style="margin-top:4px"></div>
+  <div id="spots"></div>
+</section>
+
+<section class="view" id="v-design" hidden>
+  <p class="hint">今のしおりの作り方。新しいしおりを作る時・直す時の決まりごと</p>
+  <div class="dgrid" id="design"></div>
+</section>
+
+</div>
+
+<div class="viewer" id="viewer" aria-hidden="true">
+  <iframe class="vframe" id="vframe" title="しおり"></iframe>
+  <button class="vback" type="button" id="vclose" aria-label="本棚に戻る"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <div class="vtoast" id="vtoast" role="status"></div>
+</div>
+
+<script type="application/json" id="data">__DATA__</script>
+<script type="application/json" id="ledger">__LEDGER__</script>
+<script>
+(function(){
+"use strict";
+var BASE="./";
+var TRIPS=JSON.parse(document.getElementById("data").textContent);
+var LEDGER=JSON.parse(document.getElementById("ledger").textContent);
+/* 手で補う情報：初期のしおりのテーマ色 */
+var EXTRA={};
+var PEAKS=LEDGER.PEAKS;
+/* ══ 旅先 ══
+   人口・面積は 2020年国勢調査（出典：citypopulation.de、Wikipedia）。
+   都道府県は壁の地図の赤丸。市区町村は「メインのアクティビティをした所」と「泊まった所」だけ。
+   v＝初めて行った年月（"地元"・1＝不明もあり）／t＝これから行くしおり */
+var PREFS=LEDGER.PREFS;
+/* 市区町村：r＝何をしたか（登山／宿泊／観光） */
+var CITIES=LEDGER.CITIES;
+var ABROAD=LEDGER.ABROAD;
+
+/* ══ 施設 ══ 訪れた（予定の）博物館・水族館・テーマパーク・商業施設 */
+var SPOT_CATS=LEDGER.SPOT_CATS;
+var SPOTS=LEDGER.SPOTS;
+
+/* ══ デザイン：今のしおりの機能とルール ══ */
+var DESIGN=LEDGER.DESIGN;
+
+var STAYS=LEDGER.STAYS;
+/* 宿の短い名前（表で1行に収める）と系列 */
+var STAY_SHORT=LEDGER.STAY_SHORT;
+STAYS.forEach(function(x){var m=STAY_SHORT[x.nm]||[];x.sn=m[0]||x.nm;x.g=m[1]||null;});
+var WD="日月火水木金土";
+var byId={};
+TRIPS.forEach(function(t){
+  var x=EXTRA[t.id]||{};
+  t.brand=t.hues.brand!=null?t.hues.brand:(x.brand||210);
+  t.url=x.url||(BASE+t.repo+"/");
+  t.places=t.tabs.map(function(s){var p=s.split(" ");return p.length>1?p[p.length-1]:"";})
+    .filter(function(s){return s&&!/持ち物|手配|費用/.test(s);});
+  byId[t.id]=t;
+});
+function D(s){return new Date(s+"T00:00:00");}
+var today=new Date();today.setHours(0,0,0,0);
+function md(s,y){var d=D(s);return (y?d.getFullYear()+".":"")+(d.getMonth()+1)+"."+d.getDate()+"("+WD[d.getDay()]+")";}
+function span(t){var a=D(t.start),b=D(t.end),n=Math.round((b-a)/864e5);return n?n+"泊"+(n+1)+"日":"日帰り";}
+function range(t){var a=D(t.start),b=D(t.end);
+  return md(t.start,true)+(t.start===t.end?"":" — "+(a.getFullYear()!==b.getFullYear()?md(t.end,true):md(t.end)));}
+function state(t){if(D(t.end)<today)return"past";if(D(t.start)>today)return"up";return"now";}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function visible(){return TRIPS;}
+
+/* 表紙：イラストがあれば画像、なければ仮の表紙を描く */
+function cover(t,lazy){
+  if(t.cover)return '<img'+(lazy?' loading="lazy"':'')+' src="'+t.cover+'" alt="'+esc(t.title)+'の表紙">';
+  var dest=t.title.replace(/^(\d+泊\d+日|日帰り)/,"").replace(/旅行$/,"")||t.title;
+  var ds=Object.keys(t.hues).filter(function(k){return /^d\d+$/.test(k);}).sort(function(a,b){return a.slice(1)-b.slice(1);});
+  var c=ds.length?t.hues[ds[0]]:t.brand;
+  return '<span class="ph" style="--c:'+c+'" role="img" aria-label="'+esc(t.title)+'（表紙は準備中）">'+
+    '<span class="ph-y">'+t.start.slice(0,4)+'</span><span class="ph-t" style="--n:'+Math.max(dest.length,3)+'">'+Array.from(dest).map(function(ch){return'<i'+(/[ー〜～\-]/.test(ch)?' class="r"':'')+'>'+esc(ch)+'</i>';}).join("")+'</span>'+
+    '<span class="ph-band">'+ds.map(function(k){return'<i style="--h:'+t.hues[k]+'"></i>';}).join("")+'</span></span>';
+}
+function hero(t){
+  var st=state(t),days=Math.round((D(t.start)-today)/864e5),day=Math.round((today-D(t.start))/864e5)+1;
+  var big=st==="now"?'<span class="h-big">旅の<b>'+day+'</b>日目</span>':'<span class="h-big">あと<b>'+days+'</b>日</span>';
+  return '<a class="hero" href="'+t.url+'" target="_blank" rel="noopener" data-open="'+t.id+'" style="--h:'+t.brand+'">'+
+    '<span class="h-cv">'+cover(t)+'</span>'+
+    '<span class="h-bd"><span class="h-eye">'+(st==="now"?"旅行中":"次の旅")+'</span>'+
+    '<span class="h-t">'+esc(t.title)+'</span><span class="h-d tnum">'+range(t)+'</span>'+big+
+    '<span class="h-go">しおりを開く<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span>'+
+    '</span></a>';
+}
+function book(t){
+  var st=state(t),days=Math.round((D(t.start)-today)/864e5);
+  var badge=st==="now"?'<span class="badge now">旅行中</span>':st==="up"?'<span class="badge tnum">あと'+days+'日</span>':"";
+  return '<a class="book'+(t.cover?'':' is-ph')+'" href="'+t.url+'" target="_blank" rel="noopener" data-open="'+t.id+'" style="--h:'+t.brand+'">'+
+    '<div class="cv">'+cover(t,true)+badge+'</div>'+
+    '<div class="spine"></div><div class="bd">'+
+    '<h3>'+esc(t.title)+'</h3><div class="when tnum">'+md(t.start,true)+'</div>'+
+    (t.places.length?'<div class="chips">'+t.places.map(function(p){return'<span class="chip">'+esc(p)+'</span>';}).join("")+'</div>':"")+
+    '<div class="meta tnum">'+t.versions+'版・最終更新 '+t.last.slice(5).replace("-","/")+'</div>'+
+    '</div></a>';
+}
+function renderTrips(){
+  var v=visible(),up=v.filter(function(t){return state(t)!=="past";}).sort(function(a,b){return a.start<b.start?-1:1;}),
+      past=v.filter(function(t){return state(t)==="past";}).sort(function(a,b){return a.start>b.start?-1:1;});
+  document.getElementById("hero").innerHTML="";
+  document.getElementById("up").innerHTML=up.map(book).join("");
+  document.getElementById("up-h").hidden=!up.length;
+  /* これまで：出発した年ごとに区切る（新しい年が上） */
+  var years=[],byY={};
+  past.forEach(function(t){var y=t.start.slice(0,4);if(!byY[y]){byY[y]=[];years.push(y);}byY[y].push(t);});
+  document.getElementById("past").innerHTML=years.map(function(y){
+    return '<h3 class="yr" id="yr-'+y+'">'+y+'<span class="n">'+byY[y].length+'冊</span></h3><div class="shelf">'+byY[y].map(book).join("")+'</div>';
+  }).join("");
+  var jump=document.getElementById("yr-jump");
+  jump.hidden=years.length<3;
+  jump.innerHTML=years.map(function(y){return '<button type="button" data-y="'+y+'">'+y+'<small>'+byY[y].length+'</small></button>';}).join("");
+  jump.onclick=function(e){var b=e.target.closest("button");if(b)document.getElementById("yr-"+b.dataset.y).scrollIntoView({behavior:"smooth"});};
+  document.getElementById("n-up").textContent=up.length+"冊";
+  document.getElementById("n-past").textContent=past.length+"冊";
+  document.getElementById("tally").innerHTML=
+    '<div><dt>しおり</dt><dd class="tnum">'+v.length+'<small>冊</small></dd></div>'+
+    '<div><dt>都道府県</dt><dd class="tnum">'+PREFS.filter(been).length+'<small>/ 47</small></dd></div>'+
+    '<div><dt>百名山</dt><dd class="tnum">'+hyakuDone()+'<small>/ 100</small></dd></div>';
+}
+/* 並び替え：見出しを押すたびに 昇順→降順。空欄はいつも末尾 */
+var SORT={peaks:{k:"d",dir:1},stays:{k:"d",dir:1}};
+function mins(c){if(!c)return null;var a=c.split(":");return +a[0]*60+ +a[1];}
+PEAKS.forEach(function(p){p.ctm=mins(p.ct);});
+STAYS.forEach(function(x){if(byId[x.t])x.tt=byId[x.t].start;});
+PEAKS.forEach(function(p){if(byId[p.t])p.tt=byId[p.t].start;});
+STAYS.forEach(function(x){x.pn=x.p?Math.round(x.p/x.n):null;});
+function sorted(list,st){
+  return list.slice().sort(function(a,b){var x=a[st.k],y=b[st.k];
+    if(x==null&&y==null)return a.d<b.d?-1:1;if(x==null)return 1;if(y==null)return-1;
+    var c=typeof x==="string"?x.localeCompare(y,"ja"):x-y;
+    return c?c*st.dir:(a.d<b.d?-1:1);});
+}
+function markHead(id,st){
+  document.querySelectorAll("#"+id+" th").forEach(function(th){
+    if(th.dataset.k===st.k)th.setAttribute("aria-sort",st.dir>0?"ascending":"descending");else th.removeAttribute("aria-sort");});
+}
+function yen(v,ap){return v==null?"—":(ap?"約":"")+v.toLocaleString()+"円";}
+function renderPeaks(){
+  var seen={};PEAKS.forEach(function(p){if(p.n)seen[p.n]=(seen[p.n]||0)+1;});
+  var NOSHIORI={title:"",brand:210};
+  var list=PEAKS;
+  document.getElementById("n-peaks").textContent=list.length+"件";
+  var done=hyakuDone(),plan=PEAKS.filter(function(p){return p.n&&D(p.d)>today;}).length;
+  document.getElementById("pk-sum").innerHTML=sm("日本百名山",done,"/ 100",done)+sm("これから登る百名山",plan,"座");
+  document.querySelector("#t-peaks tbody").innerHTML=sorted(list,SORT.peaks).map(function(p){
+    var t=byId[p.t]||NOSHIORI,fut=D(p.d)>=today;
+    return '<tr class="'+(fut?"future":"")+'" style="--h:'+t.brand+'">'+
+      '<td class="num tnum">'+(p.n||"—")+(p.n&&seen[p.n]>1?'<span class="flag">重複</span>':"")+'</td>'+
+      '<td class="mt"><span class="nm">'+p.nm+'</span>'+(p.sub?p.sub.split("・").map(function(x){return'　<span class="sb">'+x+'</span>';}).join(""):"")+'</td>'+
+      '<td class="tnum">'+md(p.d,true)+'</td>'+
+      '<td><div class="bar"><i style="width:'+(p.e/4000*100).toFixed(1)+'%"></i></div><span class="tnum">'+p.e.toLocaleString()+'m</span></td>'+
+      '<td class="tnum">'+(p.ct||"—")+'</td>'+
+      '<td>'+(p.k!=null?'<span class="tnum">'+p.k+'</span> <span class="lvl'+(p.lv==="きつい"?" k":"")+'">'+p.lv+'</span>':"—")+'</td>'+
+      '<td class="trip">'+(p.t&&byId[p.t]?esc(byId[p.t].title):"—")+'</td></tr>';
+  }).join("")+'<tr><td></td><td></td><td></td><td><div class="axis tnum"><span>0</span><span>2,000</span><span>4,000m</span></div></td><td></td><td></td><td></td></tr>';
+  markHead("t-peaks",SORT.peaks);
+}
+var stGrp="";
+function renderStays(){
+  var all=STAYS.filter(function(x){return byId[x.t];});
+  var cnt={};all.forEach(function(x){if(x.g)cnt[x.g]=(cnt[x.g]||0)+1;});
+  var gs=Object.keys(cnt).filter(function(g){return cnt[g]>1;}).sort(function(a,b){return cnt[b]-cnt[a]||a.localeCompare(b,"ja");});
+  if(stGrp&&gs.indexOf(stGrp)<0)stGrp="";
+  document.getElementById("st-grp").innerHTML='<button type="button" data-g="" aria-pressed="'+!stGrp+'">すべて<small>'+all.length+'</small></button>'+
+    gs.map(function(g){return '<button type="button" data-g="'+esc(g)+'" aria-pressed="'+(g===stGrp)+'">'+esc(g)+'<small>'+cnt[g]+'</small></button>';}).join("");
+  var list=stGrp?all.filter(function(x){return x.g===stGrp;}):all;
+  var nights=list.reduce(function(s,x){return s+x.n;},0);
+  document.getElementById("n-stays").textContent=list.length+"軒・"+nights+"泊";
+  var paid=list.filter(function(x){return x.pn;});
+  document.getElementById("st-sum").innerHTML=sm("宿",list.length,"軒・"+nights+"泊")+
+    sm("1泊あたりの平均",paid.length?Math.round(paid.reduce(function(s,x){return s+x.p;},0)/paid.reduce(function(s,x){return s+x.n;},0)).toLocaleString():"—","円");
+  document.querySelector("#t-stays tbody").innerHTML=sorted(list,SORT.stays).map(function(x){
+    var t=byId[x.t],d=D(x.d);
+    return '<tr style="--h:'+t.brand+'">'+
+      '<td class="tnum">'+d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()+'</td>'+
+      '<td class="hn"><span class="nm" title="'+esc(x.nm)+'">'+esc(x.sn)+'</span></td>'+
+      '<td class="grp">'+(x.g?esc(x.g):"—")+'</td>'+
+      '<td class="tnum">'+x.n+'泊</td>'+
+      '<td class="tnum yen">'+yen(x.pn,x.approx)+'</td>'+
+      '<td class="trip">'+esc(t.title)+'</td></tr>';
+  }).join("");
+  markHead("t-stays",SORT.stays);
+}
+document.querySelectorAll("#t-peaks th,#t-stays th").forEach(function(th){
+  th.querySelector("button").addEventListener("click",function(){
+    var tb=th.closest("table").id.slice(2),st=SORT[tb],k=th.dataset.k;
+    if(st.k===k)st.dir=-st.dir;else{st.k=k;st.dir=1;}
+    tb==="peaks"?renderPeaks():renderStays();
+  });
+});
+document.getElementById("st-grp").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;stGrp=b.dataset.g;renderStays();});
+function renderAll(){renderTrips();renderPlaces();renderStays();renderPeaks();renderSpots();renderDesign();}
+
+/* ── 旅先・施設・デザイン ── */
+function been(x){return !!x.v||(x.t&&byId[x.t]&&state(byId[x.t])!=="up");} /* 行った（旅行中も含む） */
+function planOf(x){var t=x.t&&byId[x.t];if(!t)return"";var d=D(t.start);return d.getFullYear()+"."+(d.getMonth()+1)+" 予定";}
+function visitTxt(x){return x.v?(x.v===1?"訪問済み":x.v==="地元"?"地元":x.v+" 初訪問"):been(x)?"今回の旅":planOf(x);}
+function ym(v){if(v==="地元")return 0;var m=/(\d{4})\.(\d{1,2})/.exec(String(v||""));return m?(+m[1])*100+(+m[2]):(v===1?999998:999999);}
+function man(n){return n>=10000?(n/10000).toFixed(n>=1e6?0:1).replace(/\.0$/,"")+"万人":n.toLocaleString()+"人";}
+function km2(a){return (a>=1000?Math.round(a).toLocaleString():a.toFixed(a>=100?1:2).replace(/0$/,""))+"km²";}
+function sm(dt,dd,unit,bar){return '<dl class="sm"><dt>'+dt+'</dt><dd>'+dd+(unit?'<small>'+unit+'</small>':"")+'</dd>'+(bar!=null?'<div class="bar"><i style="width:'+bar+'%"></i></div>':"")+'</dl>';}
+function hyakuDone(){return PEAKS.filter(function(p){return p.n&&D(p.d)<=today;}).length;}
+
+var plReg="北海道";try{plReg=localStorage.getItem("arc-plreg")||"北海道";}catch(e){}
+/* 読みにくい市区町村のふりがな（地名の部分だけ） */
+var YOMI=LEDGER.YOMI;
+function cityName(nm){var y=YOMI[nm];if(!y)return esc(nm);var stem=nm.replace(/[市区町村]$/,"");
+  return '<span class="ry"><i>'+y+'</i>'+esc(stem)+'</span>'+nm.slice(stem.length);}
+var REGIONS=[["北海道",1,1],["東北",2,7],["関東",8,14],["中部",15,23],["近畿",24,30],["中国",31,35],["四国",36,39],["九州・沖縄",40,47]];
+function capLabel(p){return p.nm==="北海道"?"道庁所在地":p.nm==="東京都"?"都庁所在地":/府$/.test(p.nm)?"府庁所在地":"県庁所在地";}
+function cityRow(c,p){
+  var b=been(c);
+  return '<div class="city'+(b?"":" plan")+'"><span class="city-n'+(YOMI[c.nm]?" yo":"")+'"><span class="cn">'+cityName(c.nm)+'</span>'+(p&&p.cap===c.nm?'<span class="cap">'+capLabel(p)+'</span>':"")+'</span>'+
+    pvTag(c)+
+    '<span class="role">'+c.r.map(function(r){return'<span class="rl k-'+r[0]+'"><b>'+r[0]+'</b>'+esc(r[1])+'</span>';}).join("")+'</span>'+
+    '<span class="facts"><span>人口 <b>'+man(c.pop)+'</b></span><span>面積 <b>'+km2(c.area)+'</b></span></span>'+
+    '<span class="pref-ft">'+esc(c.ft)+'</span></div>';
+}
+function renderPlaces(){
+  var vis=PREFS.filter(been),cs=CITIES.filter(been);
+  document.getElementById("pl-sum").innerHTML=
+    sm("都道府県",vis.length,"/ 47",(vis.length/47*100).toFixed(1))+
+    sm("市区町村",cs.length,"+ 予定 "+(CITIES.length-cs.length))+
+    sm("海外",ABROAD.filter(been).length,"+ 予定 "+ABROAD.filter(function(a){return!been(a);}).length);
+  var tabs=REGIONS.map(function(r){var all=r[2]-r[1]+1,n=PREFS.filter(function(p){return p.no>=r[1]&&p.no<=r[2]&&been(p);}).length;return [r[0],n+"/"+all];})
+    .concat([["海外",String(ABROAD.filter(been).length)]]);
+  if(!tabs.some(function(t){return t[0]===plReg;}))plReg="北海道";
+  document.getElementById("pl-tabs").innerHTML=tabs.map(function(t){
+    return '<button type="button" role="tab" data-r="'+t[0]+'" aria-selected="'+(t[0]===plReg)+'">'+t[0]+'<small>'+t[1]+'</small></button>';}).join("");
+  /* 都道府県は北から。市区町村は県庁所在地を先頭に、あとは人口の多い順 */
+  var html;
+  if(plReg==="海外"){
+    html=ABROAD.map(function(a){var b=been(a);
+      return '<article class="pref abroad'+(b?"":" plan")+'"><div class="pref-h"><span class="pref-n">'+a.nm+'</span>'+
+        (b?"":'<span class="pv plan">'+planOf(a)+'</span>')+(a.sub?'<span class="facts">'+esc(a.sub)+'</span>':"")+'<span class="pref-ft">'+esc(a.ft)+'</span></div></article>';}).join("");
+  }else{
+    var r=REGIONS.filter(function(x){return x[0]===plReg;})[0];
+    var list=PREFS.filter(function(p){return p.no>=r[1]&&p.no<=r[2];}).sort(function(a,b){return a.no-b.no;});
+    html=list.map(function(p){
+      var cs=CITIES.filter(function(c){return c.p===p.nm;}).sort(function(a,b){return ((b.nm===p.cap)-(a.nm===p.cap))||(b.pop-a.pop);});
+      var b=been(p);
+      return '<article class="pref'+(b?"":" plan")+'"><div class="pref-h"><span class="pref-n">'+p.nm+'</span>'+pvTag(p)+
+        '<span class="facts"><span>人口 <b>'+man(p.pop)+'</b></span><span>面積 <b>'+km2(p.area)+'</b></span></span>'+
+        '<span class="pref-ft">'+esc(p.ft)+'</span></div>'+(cs.length?'<div class="cities">'+cs.map(function(c){return cityRow(c,p);}).join("")+'</div>':"")+'</article>';
+    }).join("")||'<div class="empty">まだ行っていません</div>';
+  }
+  document.getElementById("places").innerHTML=html;
+}
+/* 右上の札：予定と地元だけ（初訪問の年月は出さない） */
+function pvTag(x){return !been(x)?'<span class="pv plan">'+planOf(x)+'</span>':x.v==="地元"?'<span class="pv">地元</span>':"";}
+document.getElementById("pl-tabs").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+  plReg=b.dataset.r;try{localStorage.setItem("arc-plreg",plReg);}catch(e2){}renderPlaces();
+  var top=document.getElementById("pl-tabs").getBoundingClientRect().top;if(top<0)document.getElementById("pl-tabs").scrollIntoView();});
+
+document.getElementById("sp-jump").addEventListener("click",function(e){var b=e.target.closest("button");
+  if(b)document.getElementById("sc-"+b.dataset.c).scrollIntoView({behavior:"smooth"});});
+function renderSpots(){
+  document.getElementById("sp-jump").innerHTML=SPOT_CATS.map(function(c){
+    return '<button type="button" data-c="'+c[0]+'">'+c[1]+'<small>'+SPOTS.filter(function(x){return x.c===c[0]&&been(x);}).length+'</small></button>';}).join("");
+  document.getElementById("spots").innerHTML=SPOT_CATS.map(function(c){
+    var l=SPOTS.filter(function(x){return x.c===c[0];}).sort(function(a,b){return (been(b)-been(a))||(ym(b.v)-ym(a.v));});
+    return '<section class="scat" id="sc-'+c[0]+'"><h2>'+c[1]+'<span class="n">'+l.filter(been).length+'施設</span></h2>'+
+      (l.length?'<div class="sgrid">'+l.map(function(x){var bn=been(x),tr=byId[x.tr||x.t];
+        return '<article class="spot'+(bn?"":" plan")+'"><div class="spot-h"><span class="spot-n">'+esc(x.nm)+'</span><span class="pv'+(bn?"":" plan")+'">'+visitTxt(x)+'</span></div>'+
+          '<span class="spot-at">'+esc(x.at)+'</span><dl>'+x.d.map(function(d){return'<dt>'+d[0]+'</dt><dd>'+esc(d[1])+'</dd>';}).join("")+'</dl>'+
+          (tr?'<span class="spot-tr">しおり：'+esc(tr.title)+'</span>':"")+'</article>';}).join("")+'</div>'
+       :'<div class="empty">まだ記録がありません</div>')+'</section>';
+  }).join("");
+}
+function renderDesign(){
+  document.getElementById("design").innerHTML=DESIGN.map(function(g){
+    return '<section class="dcard"><h3>'+g[0]+'</h3><ul>'+g[1].map(function(li){return'<li>'+esc(li)+'</li>';}).join("")+'</ul></section>';}).join("");
+}
+
+/* 表示の切り替え（#trips など） */
+var VIEWS=["trips","places","stays","peaks","spots","design"];
+function show(v){if(VIEWS.indexOf(v)<0)v="trips";
+  document.querySelectorAll("nav.views button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.v===v);});
+  VIEWS.forEach(function(x){document.getElementById("v-"+x).hidden=x!==v;});
+  try{history.replaceState(null,"","#"+v);}catch(e){}
+}
+document.querySelector("nav.views").addEventListener("click",function(e){var b=e.target.closest("button");if(b)show(b.dataset.v);});
+/* ── しおりを開く ──
+   GitHub Pages 上では、本棚の中に全画面で開く（ホーム画面アプリから出ないので、戻るのも1タップ）。
+   開くたびに最新版を取りに行き、電波がない・遅いときは端末に保存した版で開く。 */
+var PAGES=/github\.io$/.test(location.hostname);
+function dkey(){return today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();}
+var CACHE="shiori-v1",OFF={};
+var viewer=document.getElementById("viewer"),vframe=document.getElementById("vframe"),vback=document.getElementById("vclose"),vtoast=document.getElementById("vtoast");
+var toastTimer=null;
+function toast(msg,ms){
+  clearTimeout(toastTimer);vtoast.textContent=msg;vtoast.classList.add("on");
+  toastTimer=setTimeout(function(){vtoast.classList.remove("on");},ms||2600);
+}
+/* ステータスバーの色をしおりの紙色に合わせる */
+var themeMetas=[].slice.call(document.querySelectorAll('meta[name="theme-color"]')),themeOrig=themeMetas.map(function(m){return m.content;});
+function setTheme(c){themeMetas.forEach(function(m,i){m.content=c||themeOrig[i];});}
+var blobUrl=null,openId=null;
+function cacheOk(){return PAGES&&"caches" in window;}
+function withBase(html,url){ /* 保存した版でも相対パスが本物のURLを向くように */
+  return /<base\s/i.test(html)?html:html.replace(/<head[^>]*>/i,function(m){return m+'<base href="'+url+'">';});
+}
+function fetchFresh(t,ms){
+  return new Promise(function(ok,ng){
+    var done=false,timer=setTimeout(function(){done=true;ng(new Error("timeout"));},ms||3000);
+    fetch(t.url,{cache:"no-cache"}).then(function(r){
+      if(!r.ok)throw new Error(r.status);
+      return r.clone().text().then(function(txt){
+        if(cacheOk())caches.open(CACHE).then(function(c){c.put(t.url,r);}).then(function(){OFF[t.id]=1;});
+        clearTimeout(timer);if(!done)ok(txt);
+      });
+    }).catch(function(e){clearTimeout(timer);if(!done)ng(e);});
+  });
+}
+function fromCache(t){
+  if(!cacheOk())return Promise.reject(new Error("nocache"));
+  return caches.open(CACHE).then(function(c){return c.match(t.url);}).then(function(r){if(!r)throw new Error("miss");return r.text();});
+}
+/* iframeは毎回作り直す（srcの付け替えだと履歴が増え、「戻る」でしおりの中が戻ってしまうため） */
+function mount(src){
+  var f=document.createElement("iframe");f.className="vframe";f.id="vframe";f.title="しおり";
+  if(src){f.src=src;f.addEventListener("load",function(){hookFrame(f);});}
+  vframe.replaceWith(f);vframe=f;
+}
+/* しおりの中のスクロールとスワイプを拾う（しおりは本棚と同じドメインなので中に手が届く） */
+function hookFrame(f){
+  var w,doc;
+  try{w=f.contentWindow;doc=f.contentDocument;if(!doc||!doc.body)return;}catch(e){return;}
+  try{setTheme(w.getComputedStyle(doc.body).backgroundColor);}catch(e){}
+  var top=function(){vback.classList.toggle("off",(w.scrollY||doc.documentElement.scrollTop||0)>40);};
+  w.addEventListener("scroll",top,{passive:true});top();
+  /* 左端から右へスワイプで本棚へ */
+  var sx=0,sy=0,dx=0,t0=0,mode=0; /* 0:なし 1:判定中 2:スワイプ中 */
+  doc.addEventListener("touchstart",function(e){
+    if(e.touches.length!==1){mode=0;return;}
+    var p=e.touches[0];
+    if(p.clientX>28){mode=0;return;}
+    sx=p.clientX;sy=p.clientY;dx=0;t0=Date.now();mode=1;
+  },{passive:true,capture:true});
+  doc.addEventListener("touchmove",function(e){
+    if(!mode)return;
+    var p=e.touches[0],mx=p.clientX+dx-sx,my=p.clientY-sy; /* しおり自体が dx だけ右にずれているので足し戻す */
+    if(mode===1){
+      if(Math.abs(my)>10&&Math.abs(my)>Math.abs(mx)){mode=0;return;}
+      if(mx>10){mode=2;viewer.classList.add("drag");}
+      else return;
+    }
+    e.preventDefault();e.stopPropagation();
+    dx=Math.max(0,mx);viewer.style.transform="translateX("+dx+"px)";
+  },{passive:false,capture:true});
+  var end=function(e){
+    if(mode!==2){mode=0;return;}
+    mode=0;e.stopPropagation();
+    viewer.classList.remove("drag");
+    var fast=dx>60&&dx/Math.max(1,Date.now()-t0)>.5;
+    if(dx>innerWidth*.35||fast){closeTrip(false,true);}
+    else{viewer.style.transform="";}
+  };
+  doc.addEventListener("touchend",end,{capture:true});
+  doc.addEventListener("touchcancel",end,{capture:true});
+}
+function showHtml(t,html,note){
+  if(blobUrl)URL.revokeObjectURL(blobUrl);
+  blobUrl=URL.createObjectURL(new Blob([withBase(html,t.url)],{type:"text/html"}));
+  mount(blobUrl);if(note)toast(note);
+}
+function openTrip(id,push){
+  var t=byId[id];if(!t)return;
+  if(!PAGES){window.open(t.url,"_blank","noopener");return;}
+  openId=id;
+  mount("");vback.classList.remove("off");viewer.style.transform="";
+  viewer.classList.add("open");viewer.setAttribute("aria-hidden","false");document.body.classList.add("viewing");
+  if(push!==false){try{history.pushState({shiori:id},"","#"+id);}catch(e){}}
+  fetchFresh(t,3000).then(function(html){if(openId===id)showHtml(t,html,"");})
+    .catch(function(){
+      fromCache(t).then(function(html){if(openId===id)showHtml(t,html,"保存した版");})
+        .catch(function(){if(openId===id){mount(t.url);}});
+    });
+  /* 最初の数回だけ戻り方を案内 */
+  var n=0;try{n=+(localStorage.getItem("arc-hint")||0);}catch(e){}
+  if(n<3){setTimeout(function(){if(openId===id)toast("左端から右へスワイプすると本棚に戻ります",3200);},900);
+    try{localStorage.setItem("arc-hint",n+1);}catch(e){}}
+  try{localStorage.setItem("arc-last",id);}catch(e){}
+}
+function closeTrip(fromPop,swiped){
+  if(!openId)return;
+  openId=null;setTheme("");vtoast.classList.remove("on");
+  if(swiped){viewer.style.transform="";} /* スワイプの位置から右へ抜けていく */
+  viewer.classList.remove("open");viewer.setAttribute("aria-hidden","true");document.body.classList.remove("viewing");
+  setTimeout(function(){if(!openId){mount("");if(blobUrl){URL.revokeObjectURL(blobUrl);blobUrl=null;}}},320);
+  if(!fromPop){try{if(history.state&&history.state.shiori)history.back();else history.replaceState(null,"","#trips");}catch(e){}}
+  try{localStorage.setItem("arc-closed",dkey());}catch(e){}
+  renderTrips();
+}
+document.addEventListener("click",function(e){
+  var a=e.target.closest("[data-open]");if(!a)return;
+  if(!PAGES)return; /* プレビューでは普通のリンクとして別タブで開く */
+  e.preventDefault();openTrip(a.dataset.open);
+});
+document.getElementById("vclose").addEventListener("click",function(){closeTrip(false);});
+window.addEventListener("popstate",function(){if(openId)closeTrip(true);});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&openId)closeTrip(false);});
+
+/* 全冊を端末に保存（オフライン用）。電波があるときに起動するたび更新 */
+function syncAll(){
+  if(!cacheOk())return;
+  var sync={}; /* 保存の状況は表示しない */
+  try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();}catch(e){}
+  caches.open(CACHE).then(function(c){
+    return Promise.all(TRIPS.map(function(t){return c.match(t.url).then(function(r){if(r)OFF[t.id]=1;});}));
+  }).then(function(){
+    renderTrips();
+    if(!navigator.onLine){sync.textContent="オフライン：保存してある "+Object.keys(OFF).length+" 冊を開けます";return;}
+    var n=0;
+    return Promise.all(TRIPS.map(function(t){
+      return fetchFresh(t,20000).then(function(){n++;}).catch(function(){});
+    })).then(function(){
+      setTimeout(function(){renderTrips();sync.textContent=Object.keys(OFF).length+" 冊を端末に保存済み（電波がなくても開けます）";},300);
+    });
+  });
+}
+
+renderAll();
+var h0=location.hash.slice(1);
+show(byId[h0]?"trips":h0);
+syncAll();
+/* 起動時：#しおりID ならそれを、旅行中ならその旅のしおりを自動で開く（その日に閉じたら次からは本棚） */
+(function(){
+  if(!PAGES)return;
+  if(byId[h0]){try{history.replaceState(null,"","#trips");}catch(e){}openTrip(h0);return;}
+  var now=visible().filter(function(t){return state(t)==="now";})[0];
+  var closed="";try{closed=localStorage.getItem("arc-closed")||"";}catch(e){}
+  if(now&&closed!==dkey())openTrip(now.id);
+})();
+})();
+</script>

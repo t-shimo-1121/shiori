@@ -1,0 +1,50 @@
+# 手作りのしおり：index.html をそのまま公開する（あとで型に移す）。ここは本棚に出す情報だけ
+title: 2泊3日福井旅行
+start: '2026-10-10'
+end: '2026-10-12'
+raw: true
+history:
+  versions: 13
+  first: '2026-07-26'
+  last: '2026-10-07'
+hues:
+  base: 38
+  brand: 216
+  pack: 42
+  d1: 150
+  d2: 205
+  d3: 18
+tabs: [準備 持ち物・費用, 10/10 土 恐竜博物館, 10/11 日 荒島岳, 10/12 月 東尋坊]
+stays:
+- date: '2026-10-10'
+  name: 勝山ニューホテル
+  area: 勝山
+  nights: 1
+  kind: ホテル
+  price: 61830
+  note: 大浴場・夕食なし
+- date: '2026-10-11'
+  name: 御宿 野乃 福井
+  short: 野乃 福井
+  group: ドーミーイン
+  area: 福井
+  nights: 1
+  kind: ホテル
+  price: 57372
+  note: 天然温泉
+peaks:
+- date: '2026-10-11'
+  name: 荒島岳
+  elev: 1523
+  coursetime: "7:36"
+  const: 28
+  level: きつい
+  hyaku: 16
+spots:
+- cat: museum
+  name: 福井県立恐竜博物館
+  at: 福井県勝山市
+  visited: "2026.10"
+  facts:
+  - [開館, 2000年（2023年に増築リニューアル）]
+  - [見どころ, 恐竜の全身骨格。発掘現場で化石を探す「野外恐竜博物館」]

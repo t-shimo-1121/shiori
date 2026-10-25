@@ -1,0 +1,56 @@
+# 手作りのしおり：index.html をそのまま公開する（あとで型に移す）。ここは本棚に出す情報だけ
+title: 白馬岳登山
+start: '2026-07-17'
+end: '2026-07-20'
+raw: true
+history:
+  versions: 17
+  first: '2026-06-23'
+  last: '2026-10-21'
+hues:
+  brand: 205
+tabs: [持ち物, Day1, Day2, Day3, Day4]
+stays:
+- date: '2026-07-17'
+  name: 白馬ハイランドホテル
+  area: 白馬姫川温泉
+  nights: 1
+  kind: ホテル
+  price: 37800
+  note: 前泊・コインランドリー
+- date: '2026-07-18'
+  name: 白馬山荘
+  area: 白馬岳
+  nights: 1
+  kind: 山小屋
+  price: 66000
+  note: 特別個室（8畳）
+- date: '2026-07-19'
+  name: ドーミーイン長野
+  group: ドーミーイン
+  area: 長野
+  nights: 1
+  kind: ホテル
+  price: 41990
+  note: 善光の湯・クーポン適用（定価44,200円）
+peaks:
+- date: '2026-07-18'
+  name: 白馬岳
+  elev: 2932
+  coursetime: "12:32"
+  const: 44
+  level: きつい
+  hyaku: 12
+spots:
+- cat: shop
+  name: LABI1高崎
+  at: 群馬県高崎市
+  visited: "2026.7"
+  facts:
+  - [種類, 大型家電店。ヤマダデンキの本拠地・高崎の旗艦店]
+- cat: shop
+  name: 高崎オーパ
+  at: 群馬県高崎市
+  visited: "2026.7"
+  facts:
+  - [種類, 高崎駅西口直結のショッピングセンター]

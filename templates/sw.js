@@ -1,0 +1,26 @@
+/* 旅行のしおり集：本棚と全冊を端末に保存し、電波がなくても開けるようにする
+   開くたびにネットの最新版を取りに行き、つながらない時だけ保存した版を出す */
+var CACHE = 'site-__VER__';
+var PAGES = __PAGES__;
+var SHELL = ['./', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png'];
+self.addEventListener('install', function (e) {
+  e.waitUntil(caches.open(CACHE).then(function (c) {
+    /* 1冊でも取れなくても他は保存する */
+    return Promise.all(SHELL.concat(PAGES).map(function (u) { return c.add(u).catch(function () {}); }));
+  }).then(function () { return self.skipWaiting(); }));
+});
+self.addEventListener('activate', function (e) {
+  e.waitUntil(caches.keys().then(function (keys) {
+    return Promise.all(keys.filter(function (k) { return k.indexOf('site-') === 0 && k !== CACHE; }).map(function (k) { return caches.delete(k); }));
+  }).then(function () { return self.clients.claim(); }));
+});
+self.addEventListener('fetch', function (e) {
+  var req = e.request, url = new URL(req.url);
+  if (req.method !== 'GET' || url.origin !== location.origin) return;
+  e.respondWith(fetch(req).then(function (r) {
+    if (r.ok) { var c = r.clone(); caches.open(CACHE).then(function (ca) { ca.put(req, c); }); }
+    return r;
+  }).catch(function () {
+    return caches.match(req, { ignoreSearch: true }).then(function (r) { return r || caches.match('./'); });
+  }));
+});

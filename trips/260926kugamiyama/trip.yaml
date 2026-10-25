@@ -1,0 +1,17 @@
+# 手作りのしおり：index.html をそのまま公開する（あとで型に移す）。ここは本棚に出す情報だけ
+title: 1泊2日国上山キャンプ
+start: '2026-09-26'
+end: '2026-09-27'
+raw: true
+shelf: false
+history:
+  versions: 2
+  first: '2026-09-24'
+  last: '2026-09-25'
+hues:
+  base: 88
+  brand: 8
+  pack: 42
+  d1: 132
+  d2: 214
+tabs: [準備 持ち物, 9/26土 燕・キャンプ, 9/27日 寺泊]

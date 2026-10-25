@@ -1,0 +1,18 @@
+# 手作りのしおり：index.html をそのまま公開する（あとで型に移す）。ここは本棚に出す情報だけ
+title: 糸魚川 石拾い
+start: '2026-10-18'
+end: '2026-10-18'
+raw: true
+shelf: false
+history:
+  versions: 3
+  first: '2026-10-13'
+  last: '2026-10-14'
+hues:
+  base: 34
+  brand: 204
+  pack: 28
+  d1: 168
+  d2: 205
+  d3: 18
+tabs: [準備 持ち物・費用, 当日 青海の海岸]
