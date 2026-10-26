@@ -118,8 +118,8 @@ spots:   [{cat, name, at, visited, facts: [[開館, 2011年], ...]}]            
 
 ## 移行の状況
 
-- yaml から作る冊：2017〜2026.3 の37冊（古い HTML から import_html.py で変換。本文は元と一致を確認済み）
-- raw（HTML のまま預かっている冊）：260626camp・260717hakuba・260811hawaii・260919nagoyanara・260926kugamiyama・261010fukui・261018itoigawa・261120yamanashi・261228kyushu・270220nagano・270430taiwan・271109okinawa
+- yaml から作る冊：2017〜2026.3 の37冊（古い HTML から import_html.py で変換。本文は元と一致を確認済み）＋ 260717hakuba・260811hawaii（2026.10 に手で yaml 化。予約番号などは外した）
+- raw（HTML のまま預かっている冊）：260626camp・260919nagoyanara・260926kugamiyama・261010fukui・261018itoigawa・261120yamanashi・261228kyushu・270220nagano・270430taiwan・271109okinawa
   - 持ち物・手配・カウントダウンなど、型にない欄がある。型に足してから1冊ずつ yaml に移す
   - 型の変更は自動では効かない。同じ変更を index.html に手で当てる（2026.10 のタブ等幅・総額欄・ポイント削除は当て済み。費用表のない冊は総額欄なし）
 - 本棚に出さない冊（shelf: false）：260626camp・260926kugamiyama・261018itoigawa・271109okinawa
