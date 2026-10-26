@@ -103,6 +103,20 @@ def ledger(all_trips):
     L['CITIES'] = [vis(c, {'p': c['pref'], 'nm': c['name'], 'pop': c['pop'], 'area': c['area'], 'r': c['did'], 'ft': c['note']}) for c in P['cities']]
     L['YOMI'] = {c['name']: c['yomi'] for c in P['cities'] if c.get('yomi')}
     L['ABROAD'] = [vis(a, {'nm': a['name'], 'sub': a.get('sub', ''), 'ft': a['note']}) for a in P['abroad']]
+    # 旅先ランキング：市区町村ごとの観光・宿泊スポットの数（「・」で分けて数え、同じ名前は1つ）
+    KEEP = ['ユニバーサル・スタジオ・ジャパン', 'レゴランド・ディスカバリー・センター大阪', '大阪・関西万博', 'レゴランド・ジャパン・ホテル',
+            'レゴランド・シーライフ名古屋', 'リニア・鉄道館', 'BOSS E・ZO FUKUOKA', 'スーパーホテル沖縄・名護', 'ザ・グローバルウエスト']
+    def items(v):
+        for i, k in enumerate(KEEP): v = v.replace(k, '\x00%d\x00' % i)
+        return [re.sub(r'\x00(\d+)\x00', lambda m: KEEP[int(m.group(1))], x).strip() for x in v.split('・') if x.strip()]
+    L['CITY_SPOTS'] = {}
+    for c in P['cities']:
+        seen = {}
+        for k, v in c['did']:
+            if k in ('観光', '宿泊'):
+                for x in items(v): seen.setdefault(x, k)
+        L['CITY_SPOTS'][c['name']] = [list(seen.values()).count('観光'), list(seen.values()).count('宿泊')]
+    L['GUIDE'] = load(os.path.join(ROOT, 'data', 'guide.yaml'))
     Dz = load(os.path.join(ROOT, 'data', 'design.yaml'))
     L['SPOT_CATS'] = [[c['id'], c['name']] for c in Dz['cats']]
     L['DESIGN'] = [[g['name'], g['items']] for g in Dz['design']]
