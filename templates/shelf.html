@@ -50,7 +50,7 @@ h1{font-family:var(--f-head);font-weight:900;font-size:clamp(1.7rem,5vw,2.4rem);
 .tally small{font-size:.75rem;font-weight:500;margin-left:2px}
 
 nav.views{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);
-  display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;padding-block:10px;border-bottom:1px solid var(--line);margin-bottom:20px}
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px;padding-block:10px;border-bottom:1px solid var(--line);margin-bottom:20px}
 nav.views button{border:0;background:none;padding:6px 0;border-radius:999px;font-weight:500;cursor:pointer;white-space:nowrap;color:var(--mute);
   font-size:clamp(.82rem,3.9vw,1rem);min-width:0}
 nav.views button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
@@ -187,6 +187,12 @@ body.viewing{overflow:hidden}
 #t-stays td.grp{font-size:.8rem}
 .peaks td.tnum{white-space:nowrap}
 #t-stays{min-width:0}
+#t-rides td,#t-costs td{white-space:nowrap}
+#t-rides .rk-ic{color:var(--accent);margin-right:5px}
+#t-rides td:nth-child(2){white-space:normal;min-width:10em}
+#t-rides .rsub{display:block;font-size:.72rem;color:var(--mute);white-space:normal;max-width:16em}
+#t-rides,#t-costs{min-width:0}
+.peaks tr.future td{color:var(--mute)}
 #st-sum,#pk-sum{grid-template-columns:repeat(2,minmax(0,1fr))}
 .peaks .kd{font-size:.72rem;padding:1px 8px;border-radius:5px;background:hsl(var(--h) var(--s) var(--l) / .14);white-space:nowrap}
 .peaks .nt{font-size:.75rem;color:var(--mute)}
@@ -365,6 +371,8 @@ h2 .tg,.rank-h .tg,.intro .tg{display:inline-grid;place-items:center;width:1.9re
   <button role="tab" data-v="stays" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-lodge"/></svg>宿泊</button>
   <button role="tab" data-v="peaks" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-mtn"/></svg>山</button>
   <button role="tab" data-v="spots" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-eye"/></svg>施設</button>
+  <button role="tab" data-v="rides" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-train"/></svg>乗物</button>
+  <button role="tab" data-v="costs" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-coin"/></svg>費用</button>
   <button role="tab" data-v="design" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-gear"/></svg>制作</button>
 </nav>
 
@@ -430,6 +438,39 @@ h2 .tg,.rank-h .tg,.intro .tg{display:inline-grid;place-items:center;width:1.9re
   <div id="sp-rank" style="margin-top:4px"></div>
   <div class="jump" id="sp-jump" aria-label="種類へ移動"></div>
   <div id="spots"></div>
+</section>
+
+<section class="view" id="v-rides" hidden>
+  <div id="rd-rank" style="margin-top:4px"></div>
+  <div class="jump" id="rd-tabs" role="tablist" aria-label="乗り物の種類"></div>
+  <h2><span class="tg"><svg class="ic" aria-hidden="true"><use href="#i-train"/></svg></span>乗った乗り物<span class="n" id="n-rides"></span></h2>
+  <p class="hint">各しおりの費用表の交通費の行から集めたもの。料金は1回分（往復・家族分をまとめた行はその合計）。「—」は金額が分からないもの</p>
+  <div class="peaks"><table id="t-rides">
+    <thead><tr>
+      <th data-k="d"><button type="button">日付</button></th>
+      <th data-k="nm"><button type="button">乗り物</button></th>
+      <th data-k="p"><button type="button">料金</button></th>
+      <th data-k="tt"><button type="button">しおり</button></th>
+    </tr></thead>
+    <tbody></tbody>
+  </table></div>
+</section>
+
+<section class="view" id="v-costs" hidden>
+  <div id="cs-rank" style="margin-top:4px"></div>
+  <h2><span class="tg"><svg class="ic" aria-hidden="true"><use href="#i-coin"/></svg></span>しおりごとの費用<span class="n" id="n-costs"></span></h2>
+  <p class="hint">各しおりの費用表の総額（金額の分かっている分だけ）。「予定」はこれからの旅の見込み</p>
+  <div class="peaks"><table id="t-costs">
+    <thead><tr>
+      <th data-k="d"><button type="button">出発</button></th>
+      <th data-k="tt"><button type="button">しおり</button></th>
+      <th data-k="tot"><button type="button">総額</button></th>
+      <th data-k="tr"><button type="button">交通</button></th>
+      <th data-k="st"><button type="button">宿泊</button></th>
+      <th data-k="ot"><button type="button">その他</button></th>
+    </tr></thead>
+    <tbody></tbody>
+  </table></div>
 </section>
 
 <section class="view" id="v-design" hidden>
@@ -550,7 +591,7 @@ function renderTrips(){
     '<div><dt>百名山</dt><dd class="tnum">'+hyakuDone()+'<small>/ 100</small></dd></div>';
 }
 /* 並び替え：見出しを押すたびに 昇順→降順。空欄はいつも末尾 */
-var SORT={peaks:{k:"d",dir:1},stays:{k:"d",dir:1}};
+var SORT={peaks:{k:"d",dir:1},stays:{k:"d",dir:1},rides:{k:"d",dir:1},costs:{k:"d",dir:1}};
 function mins(c){if(!c)return null;var a=c.split(":");return +a[0]*60+ +a[1];}
 PEAKS.forEach(function(p){p.ctm=mins(p.ct);});
 STAYS.forEach(function(x){if(byId[x.t])x.tt=byId[x.t].start;});
@@ -627,16 +668,57 @@ function renderStays(){
   }).join("");
   markHead("t-stays",SORT.stays);
 }
-document.querySelectorAll("#t-peaks th,#t-stays th").forEach(function(th){
+document.querySelectorAll("#t-peaks th,#t-stays th,#t-rides th,#t-costs th").forEach(function(th){
   th.querySelector("button").addEventListener("click",function(){
     var tb=th.closest("table").id.slice(2),st=SORT[tb],k=th.dataset.k;
     if(st.k===k)st.dir=-st.dir;else{st.k=k;st.dir=1;}
-    tb==="peaks"?renderPeaks():renderStays();
+    ({peaks:renderPeaks,stays:renderStays,rides:renderRides,costs:renderCosts})[tb]();
   });
 });
 document.getElementById("st-grp").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;stGrp=b.dataset.g;renderStays();});
 document.getElementById("pk-tabs").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;pkRg=b.dataset.r;renderPeaks();});
-function renderAll(){renderTrips();renderPlaces();renderStays();renderPeaks();renderSpots();renderDesign();}
+/* ── 乗物：各しおりの交通費の行 ── */
+var RIDES=(LEDGER.RIDES||[]).filter(function(x){return byId[x.t];}),RIDE_CATS=LEDGER.RIDE_CATS||[],rdCat="すべて";
+RIDES.forEach(function(x){x.tt=byId[x.t].start;});
+var RIDE_IC={"飛行機":"plane","新幹線":"bullet","電車":"train","バス":"bus","タクシー":"taxi","車":"car","船":"ship","その他":"foot"};
+function renderRides(){
+  var cats=[["すべて",RIDES.length]].concat(RIDE_CATS.map(function(c){return [c,RIDES.filter(function(x){return x.c===c;}).length];})).filter(function(c){return c[1];});
+  if(!cats.some(function(c){return c[0]===rdCat;}))rdCat="すべて";
+  document.getElementById("rd-tabs").innerHTML=cats.map(function(c){
+    return '<button type="button" role="tab" data-c="'+c[0]+'" aria-selected="'+(c[0]===rdCat)+'">'+(c[0]==="すべて"?"":ic(RIDE_IC[c[0]]||"foot")+" ")+c[0]+'<small>'+c[1]+'</small></button>';}).join("");
+  var list=rdCat==="すべて"?RIDES:RIDES.filter(function(x){return x.c===rdCat;});
+  var top=list.filter(function(x){return x.p;}).sort(function(a,b){return b.p-a.p;}).slice(0,5);
+  document.getElementById("rd-rank").innerHTML=rankCard(rdCat==="すべて"?"train":(RIDE_IC[rdCat]||"train"),"高かった乗り物"+(rdCat==="すべて"?"":"（"+rdCat+"）"),"料金",top.map(function(x){
+    return {nm:x.nm,sub:x.d.slice(0,4)+"・"+byId[x.t].title+(x.sub?"・"+x.sub:""),v:(x.approx?"約":"")+x.p.toLocaleString()+'<small>円</small>',key:x.p};}));
+  document.getElementById("n-rides").textContent=list.length+"件";
+  document.querySelector("#t-rides tbody").innerHTML=sorted(list,SORT.rides).map(function(x){
+    var d=D(x.d),t=byId[x.t];
+    return '<tr class="'+(D(t.start)>=today?"future":"")+'"><td class="tnum">'+d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()+'</td>'+
+      '<td><span class="nm"><span class="rk-ic" title="'+x.c+'">'+ic(RIDE_IC[x.c]||"foot")+'</span>'+esc(x.nm)+'</span>'+(x.sub?'<span class="rsub">'+esc(x.sub)+'</span>':"")+'</td>'+
+      '<td class="tnum yen">'+yen(x.p,x.approx)+'</td><td class="trip">'+esc(t.title)+'</td></tr>';
+  }).join("");
+  markHead("t-rides",SORT.rides);
+}
+document.getElementById("rd-tabs").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;rdCat=b.dataset.c;renderRides();});
+/* ── 費用：しおりごとの総額 ── */
+var COSTS=(LEDGER.COSTS||[]).filter(function(x){return byId[x.t];});
+COSTS.forEach(function(x){x.tt=byId[x.t].start;var p={};x.parts.forEach(function(q){p[q[0]]=(p[q[0]]||0)+(q[1]||0);});
+  x.tr=p["交通"]||null;x.st=p["宿泊"]||null;var o=x.tot-(x.tr||0)-(x.st||0);x.ot=o>0?o:null;});
+function renderCosts(){
+  var top=COSTS.slice().sort(function(a,b){return b.tot-a.tot;}).slice(0,5);
+  document.getElementById("cs-rank").innerHTML=rankCard("coin","旅費の高かった旅","総額",top.map(function(x){var t=byId[x.t];
+    return {nm:t.title,sub:x.d.slice(0,4)+(D(t.start)>=today?" 予定":"")+"・"+x.parts.map(function(q){return q[0]+" "+(q[1]||0).toLocaleString()+"円";}).join("・"),
+      v:(x.approx?"約":"")+x.tot.toLocaleString()+'<small>円</small>',key:x.tot};}));
+  document.getElementById("n-costs").textContent=COSTS.length+"冊";
+  document.querySelector("#t-costs tbody").innerHTML=sorted(COSTS,SORT.costs).map(function(x){
+    var t=byId[x.t],d=D(x.d),fut=D(t.start)>=today;
+    return '<tr class="'+(fut?"future":"")+'"><td class="tnum">'+d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()+'</td>'+
+      '<td class="trip">'+esc(t.title)+(fut?' <span class="lvl">予定</span>':"")+'</td>'+
+      '<td class="tnum yen"><b>'+yen(x.tot,x.approx)+'</b></td><td class="tnum yen">'+yen(x.tr)+'</td><td class="tnum yen">'+yen(x.st)+'</td><td class="tnum yen">'+yen(x.ot)+'</td></tr>';
+  }).join("");
+  markHead("t-costs",SORT.costs);
+}
+function renderAll(){renderTrips();renderPlaces();renderStays();renderPeaks();renderSpots();renderRides();renderCosts();renderDesign();}
 
 /* ── 旅先・施設・デザイン ── */
 function been(x){return !!x.v||(x.t&&byId[x.t]&&state(byId[x.t])!=="up");} /* 行った（旅行中も含む） */
@@ -751,7 +833,7 @@ function renderDesign(){
 }
 
 /* 表示の切り替え（#trips など） */
-var VIEWS=["trips","places","stays","peaks","spots","design"];
+var VIEWS=["trips","places","stays","peaks","spots","rides","costs","design"];
 function show(v){if(VIEWS.indexOf(v)<0)v="trips";
   document.querySelectorAll("nav.views button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.v===v);});
   VIEWS.forEach(function(x){document.getElementById("v-"+x).hidden=x!==v;});

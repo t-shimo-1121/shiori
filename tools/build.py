@@ -117,6 +117,7 @@ def ledger(all_trips):
                 for x in items(v): seen.setdefault(x, k)
         L['CITY_SPOTS'][c['name']] = [list(seen.values()).count('観光'), list(seen.values()).count('宿泊')]
     L['GUIDE'] = load(os.path.join(ROOT, 'data', 'guide.yaml'))
+    rides_costs(all_trips, L)
     Dz = load(os.path.join(ROOT, 'data', 'design.yaml'))
     L['SPOT_CATS'] = [[c['id'], c['name']] for c in Dz['cats']]
     L['DESIGN'] = [[g['name'], g['items']] for g in Dz['design']]
@@ -127,6 +128,81 @@ def ledger(all_trips):
             for f in ('t', 'tr'):
                 assert x.get(f) is None or x[f] in ids, ('しおりが見つからない', k, x.get('nm'), x[f])
     return L
+
+# ── 乗物・費用タブ：各しおりの費用表から集める ──
+RIDE_CATS = [  # 上から順に当てはめる（名前＋補足で判定）
+    ('船', r'フェリー|船|クルーズ|ボート'),
+    ('飛行機', r'飛行機|航空|ANA|JAL|ZIPAIR|Peach|ジェットスター|スカイマーク|FDA|IBEX|\d+便|エアライン|キャセイ|シンガポール航空'),
+    ('新幹線', r'新幹線|とき|かがやき|はくたか|つるぎ|のぞみ|ひかり|こだま|さくら|みずほ|つばめ|あさま|やまびこ|はやぶさ|こまち|つばさ'),
+    ('バス', r'バス|そらかぜ'),
+    ('タクシー', r'タクシー|Uber|Grab|配車|バン '),
+    ('車', r'レンタカー|ガソリン|高速道路|高速代|駐車|ETC|通行料|^車 '),
+    ('電車', r'特急|JR|電車|線|鉄道|ライナー|エクスプレス|名鉄|踊り子|レール|モノレール|地下鉄|近鉄|ひのとり|しらゆき|かいじ|あずさ|サンダーバード|ロープウェイ|ゴンドラ|ケーブル|MRT|MTR|トラム|乗車券|在来|ゆりかもめ|パノラマ|Suica|オクトパス'),
+]
+def ride_cat(text):
+    for c, rx in RIDE_CATS:
+        if re.search(rx, text): return c
+    return 'その他'
+
+def money(txt):
+    """「約12,000円」→ (12000, True)。不明は (None, False)"""
+    t = re.sub(r'<[^>]+>', '', str(txt))
+    m = re.search(r'([\d,]{2,})', t)
+    if not m: return None, False
+    return int(m.group(1).replace(',', '')), ('約' in t or '〜' in t or '～' in t)
+
+def row_date(md, start):
+    """費用表の「11/22」「9/19-20」→ 年つきの日付（年は旅の出発年。年をまたぐ時は翌年）"""
+    y, sm = int(start[:4]), int(start[5:7])
+    m = re.match(r'(\d{1,2})/(\d{1,2})', str(md))
+    if not m: return start
+    mo, d = int(m.group(1)), int(m.group(2))
+    if mo < sm - 6: y += 1
+    return '%04d-%02d-%02d' % (y, mo, d)
+
+def raw_tables(html_s):
+    """手作りの冊：見出し（mt-h / kv-h）と、その下の費用表の行"""
+    out = []
+    for h, body in re.findall(r'class="(?:mt-h|kv-h)">([\s\S]*?)</div>\s*<table class="ftable">[\s\S]*?<tbody>([\s\S]*?)</tbody>', html_s):
+        rows = [re.findall(r'<td>([\s\S]*?)</td>', r) for r in re.findall(r'<tr>([\s\S]*?)</tr>', body)]
+        out.append((re.sub(r'<[^>]+>', '', h).strip(), [r for r in rows if len(r) == 3]))
+    return out
+
+def rides_costs(all_trips, L):
+    rides, costs = [], []
+    for C in all_trips:
+        if not C.get('shelf', True): continue
+        t = C['id']
+        if C.get('raw'):
+            src = open(os.path.join(ROOT, 'trips', t, 'index.html'), encoding='utf-8').read()
+            groups = [(h, [(a, b, money(c)) for a, b, c in rows]) for h, rows in raw_tables(src)]
+            m = re.search(r'<span class="tot-v">([^<]*)</span></div>\s*<div class="tot-sub">([\s\S]*?)</div>', src)
+            if m:
+                tv, ap = money(m.group(1))
+                parts = [[a, money(b)[0]] for a, b in re.findall(r'<span>([^<]*)<b>([^<]*)</b></span>', m.group(2))]
+                costs.append({'t': t, 'd': C['start'], 'tot': tv, 'approx': ap, 'parts': parts})
+        else:
+            groups = [(g['name'], [(a, b, (c, False)) for a, b, c in g['rows']]) for g in C.get('costs', {}).get('groups', [])]
+            if C.get('costs'):
+                parts, tot = [], 0
+                for g in C['costs']['groups']:
+                    v = sum(c for _, _, c in g['rows'] if c)
+                    if v: parts.append([shiori.SHORT.get(g['name'], re.sub(r'(費|料)$', '', g['name'])), v]); tot += v
+                if tot: costs.append({'t': t, 'd': C['start'], 'tot': tot, 'approx': False, 'parts': parts})
+        for h, rows in groups:
+            if not re.search(r'交通|通行', h): continue
+            for a, b, (v, ap) in rows:
+                nm = re.sub(r'<small>.*?</small>', '', str(b)); nm = re.sub(r'<[^>]+>', '', nm).replace('&amp;', '&').strip()
+                sm = re.search(r'<small>(.*?)</small>', str(b)); sub = re.sub(r'<[^>]+>', '', sm.group(1)).replace('&amp;', '&') if sm else ''
+                if not nm: continue
+                x = {'d': row_date(a, C['start']), 't': t, 'nm': nm, 'c': ride_cat(nm + ' ' + sub)}
+                if sub: x['sub'] = sub
+                if v is not None: x['p'] = v
+                if ap: x['approx'] = True
+                rides.append(x)
+    rides.sort(key=lambda x: x['d'])
+    L['RIDES'] = rides; L['COSTS'] = costs
+    L['RIDE_CATS'] = [c for c, _ in RIDE_CATS] + ['その他']
 
 def build_shelf(all_trips):
     shown = [C for C in all_trips if C.get('shelf', True)]
