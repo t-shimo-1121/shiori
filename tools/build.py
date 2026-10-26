@@ -48,7 +48,7 @@ def shelf_cover(tdir):
 
 def tabs_of(C):
     if C.get('tabs'): return C['tabs']
-    return ['準備 費用'] + ['%s %s' % (d.get('tab_label') or shiori.md_label(shiori.D(d['date'])), d['tab']) for d in C['days']]
+    return ['準備 持ち物・費用' if C.get('packing') else '準備 費用'] + ['%s %s' % (d.get('tab_label') or shiori.md_label(shiori.D(d['date'])), d['tab']) for d in C['days']]
 
 def hues_of(C):
     h = dict(C['hues'])

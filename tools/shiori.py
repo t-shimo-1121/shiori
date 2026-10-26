@@ -138,6 +138,28 @@ def excl_line(x):
     m = re.match(r'^(.*?)は含まない。?$', x)
     if m and '。' not in m.group(1): return '含まない：' + m.group(1)
     return x
+def packing(C):
+    """持ち物：packing＝[{group, items:[…]}]。項目は「品物｜補足」で下に小さく補足"""
+    P = C.get('packing')
+    if not P: return ''
+    body = ''
+    for g in P:
+        body += '      <div class="cat">%s</div>\n' % inline(g['group'])
+        for it in g['items']:
+            t, _, sub = str(it).partition('｜')
+            body += '      <div class="item"><span class="box"></span><span class="txt">%s%s</span></div>\n' % (inline(t), ('<small>%s</small>' % inline(sub)) if sub else '')
+    return '''    <div class="card pack">
+      <div class="card-head">
+        <span class="tag only" aria-hidden="true"><svg class="ic"><use href="#i-bag"/></svg></span>
+        <div class="card-title">持ち物</div>
+        <button class="fold" type="button" aria-pressed="false">済みを隠す</button>
+        <span class="counter"></span>
+      </div>
+%s      <div class="all-done">全部そろいました</div>
+    </div>
+
+''' % body
+
 def pack(C):
     costs = C['costs']
     parts, tot, expl = [], 0, []
@@ -154,7 +176,7 @@ def pack(C):
     return """  <!-- ══════════ 準備タブ ══════════ -->
   <div class="tab-panel is-active" id="pack">
 
-    <div class="card pack">
+%s    <div class="card pack">
       <div class="card-head">
         <span class="tag only" aria-hidden="true"><svg class="ic"><use href="#i-coin"/></svg></span>
         <div class="card-title">費用</div>
@@ -165,7 +187,7 @@ def pack(C):
 
   </div><!-- /pack -->
 
-""" % (total, '\n'.join(parts)), tot
+""" % (packing(C), total, '\n'.join(parts)), tot
 
 def cover_html(C, tdir):
     p = cover_path(tdir)
@@ -224,12 +246,13 @@ def render(C, tdir):
 
   <!-- ══════════ タブ ══════════ -->
   <div class="tabs" role="tablist" style="--cols:%d">
-    <button class="tab-btn t0 active" data-tab="pack" role="tab">準備<small>費用</small></button>
+    <button class="tab-btn t0 active" data-tab="pack" role="tab">準備<small>%s</small></button>
 %s
   </div>
 
 
-''' % (cover_html(C, tdir), html.escape(C['title']), C.get('daterange') or range_label(start, end), tab_cols(n + 1), tabs) + packhtml + cards + '\n\n</div>\n\n\n'
+''' % (cover_html(C, tdir), html.escape(C['title']), C.get('daterange') or range_label(start, end), tab_cols(n + 1),
+       '持ち物・費用' if C.get('packing') else '費用', tabs) + packhtml + cards + '\n\n</div>\n\n\n'
     t = open(TEMPLATE).read()
     rep = {
         'apptitle': C.get('apptitle') or (C['place'] + 'しおり'),

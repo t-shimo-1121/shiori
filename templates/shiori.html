@@ -263,6 +263,45 @@ a.map:active{background:var(--c-bg);}
 }
 
 /* ───────── ポイント欄 ───────── */
+/* ───────── 持ち物（チェックリスト。チェックは端末に保存） ───────── */
+.cat{
+  font-weight:700;font-size:.78rem;letter-spacing:.06em;color:var(--ink-2);
+  padding:.8rem .75rem .25rem;display:flex;align-items:center;gap:.4rem;
+}
+.cat::before{content:"";width:.38rem;height:.38rem;border-radius:50%;background:var(--c);flex:none;}
+.item{
+  display:flex;gap:.6rem;align-items:flex-start;
+  padding:.6rem .75rem;border-bottom:1px solid var(--line-soft);
+  cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:background .15s;
+}
+.item:last-child{border-bottom:none;}
+.item:active{background:var(--paper-2);}
+.box{flex:none;width:1.45rem;height:1.45rem;margin-top:.15rem;border-radius:6px;border:2px solid var(--line);position:relative;transition:background .15s,border-color .15s;}
+.item.checked .box{background:var(--c);border-color:var(--c);}
+.item.checked .box::after{
+  content:"";position:absolute;left:50%;top:47%;
+  width:.3rem;height:.56rem;border:solid #fff;border-width:0 .16rem .16rem 0;
+  transform:translate(-50%,-58%) rotate(45deg);
+}
+.item .txt{font-size:.92rem;font-weight:500;line-height:1.5;}
+.item .txt small{display:block;font-size:.76rem;font-weight:400;color:var(--ink-3);line-height:1.55;margin-top:.05rem;}
+.item.checked .txt{text-decoration:line-through;color:var(--ink-3);}
+.item.checked .txt small{color:var(--ink-3);}
+.fold{
+  margin-left:auto;font-family:var(--font-body);font-size:.7rem;font-weight:700;color:var(--ink-2);
+  background:none;border:1px solid var(--line);border-radius:999px;padding:.12rem .65rem;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.fold[aria-pressed="true"]{color:var(--c);border-color:var(--c);}
+.hide-done .item.checked:not(.just),.hide-done .cat.done{display:none;}
+.all-done{display:none;padding:1.1rem .75rem;text-align:center;font-size:.86rem;font-weight:700;color:var(--c);}
+.hide-done.complete .all-done{display:block;}
+.counter{
+  margin-left:0;font-size:.74rem;font-weight:700;color:var(--c);
+  background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:.1rem .6rem;
+  font-variant-numeric:tabular-nums;
+}
+
 /* 費用の総額 */
 .total{background:var(--c-bg);}
 .tot-row{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem;}
@@ -394,6 +433,60 @@ a.map:active{background:var(--c-bg);}
   btns.forEach(function(b){
     b.addEventListener('click', function(){ activate(b.getAttribute('data-tab'), true); });
   });
+
+  /* ── チェックリスト（端末に保存） ── */
+  var state = {};
+  try{ state = JSON.parse(localStorage.getItem(NS+'checks') || '{}') || {}; }catch(e){ state = {}; }
+  function save(){ try{ localStorage.setItem(NS+'checks', JSON.stringify(state)); }catch(e){} }
+
+  function refreshCounters(){
+    [].slice.call(document.querySelectorAll('.counter')).forEach(function(c){
+      var card  = c.closest('.card');
+      var items = [].slice.call(card.querySelectorAll('.item'));
+      var done  = items.filter(function(i){ return i.classList.contains('checked'); }).length;
+      c.textContent = done + ' / ' + items.length;
+    });
+  }
+  [].slice.call(document.querySelectorAll('.item')).forEach(function(item){
+    var key = 'c:' + (item.textContent || '').replace(/\s+/g,' ').trim();
+    if (state[key]) item.classList.add('checked');
+    item.addEventListener('click', function(){
+      var on = item.classList.toggle('checked');
+      if (on) state[key] = 1; else delete state[key];
+      if (on){ item.classList.add('just'); setTimeout(function(){ item.classList.remove('just'); refreshFold(); }, 450); }
+      save(); refreshCounters(); refreshFold();
+    });
+  });
+  refreshCounters();
+
+  /* ── チェック済みを折りたたむ（端末に保存） ── */
+  var hideDone = false;
+  try{ hideDone = localStorage.getItem(NS+'hideDone') === '1'; }catch(e){}
+  function refreshFold(){
+    [].slice.call(document.querySelectorAll('.fold')).forEach(function(b){
+      var card = b.closest('.card');
+      var items = [].slice.call(card.querySelectorAll('.item'));
+      var done = items.filter(function(i){ return i.classList.contains('checked'); }).length;
+      card.classList.toggle('hide-done', hideDone);
+      card.classList.toggle('complete', done === items.length);
+      b.setAttribute('aria-pressed', hideDone ? 'true' : 'false');
+      b.textContent = hideDone ? '済みを表示' + (done ? '（' + done + '）' : '') : '済みを隠す';
+      /* 全部済んだ分類は見出しごと隠す */
+      [].slice.call(card.querySelectorAll('.cat')).forEach(function(c){
+        var all = true, n = c.nextElementSibling;
+        while (n && n.classList.contains('item')){ if (!n.classList.contains('checked') || n.classList.contains('just')) all = false; n = n.nextElementSibling; }
+        c.classList.toggle('done', all);
+      });
+    });
+  }
+  [].slice.call(document.querySelectorAll('.fold')).forEach(function(b){
+    b.addEventListener('click', function(){
+      hideDone = !hideDone;
+      try{ localStorage.setItem(NS+'hideDone', hideDone ? '1' : '0'); }catch(e){}
+      refreshFold();
+    });
+  });
+  refreshFold();
 
   /* ── 出発までのカウントダウン ── */
   var DAYS = {{days_json}};
