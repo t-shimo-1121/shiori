@@ -3,7 +3,7 @@
 家族旅行のしおり（1冊＝1回の旅）と、それを並べる本棚アプリ。全部このリポジトリから作り、GitHub Pages で公開する。
 
 - 本棚：https://t-shimo-1121.github.io/shiori/
-- しおり：https://t-shimo-1121.github.io/shiori/<id>/（id は「YYMMDD地名」の小文字。出発日で付ける。例 251122okutama）
+- しおり：https://t-shimo-1121.github.io/shiori/<id>/（id は「YYMMDD地名」の小文字。出発日で付ける。例 251122kumotori）
 - 公開リポジトリなので、データにも個人を特定できる情報は書かない（下の「載せないもの」）
 
 ## 作り
@@ -31,8 +31,8 @@ main に push すると GitHub Actions（.github/workflows/pages.yml）が build
 
 ```
 python3 tools/build.py                 # 全部（dist/）
-python3 tools/build.py 251122okutama   # その冊と本棚だけ
-node tools/check.js 251122okutama      # 390px・明暗の検査。スクショは check/ に
+python3 tools/build.py 251122kumotori   # その冊と本棚だけ
+node tools/check.js 251122kumotori      # 390px・明暗の検査。スクショは check/ に
 ```
 - 直したら build → check → 390px・明暗のスクショで確かめてから commit・push
 - 本文の確認はページのテキストで行う（スクショはキャッシュで古いことがある）
@@ -43,8 +43,8 @@ node tools/check.js 251122okutama      # 390px・明暗の検査。スクショ�
 ## trip.yaml の書き方
 
 ```yaml
-title: 2泊3日奥多摩旅行          # 1行で「N泊N日〇〇旅行」
-place: 奥多摩                    # アプリ名（〇〇しおり）・タブの題に使う
+title: 2泊3日雲取山旅行          # 1行で「N泊N日〇〇旅行」
+place: 雲取山                    # アプリ名（〇〇しおり）・タブの題に使う
 start: '2025-11-22'
 end: '2025-11-24'
 shelf: false                     # 本棚に出さない時だけ

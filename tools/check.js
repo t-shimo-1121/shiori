@@ -1,6 +1,6 @@
 const { chromium } = require('playwright');
 /* しおりの検査：390px・明暗で各タブを開き、2行に折り返した行・はみ出しを列挙する
-   node tools/check.js 251122okutama [251122okutama ...]   （引数なしなら yaml から作る全冊）
+   node tools/check.js 251122kumotori [251122kumotori ...]   （引数なしなら yaml から作る全冊）
    スクショは check/<id>_<明暗>_<タブ>.png に保存（git には入れない） */
 const fs = require('fs'), path = require('path');
 const ROOT = path.resolve(__dirname, '..');

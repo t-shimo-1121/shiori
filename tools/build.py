@@ -3,7 +3,7 @@
   dist/<id>/index.html       しおり（yaml から作る。raw: true の冊は trips/<id>/index.html をそのまま）
   dist/sw.js・manifest・icon 本棚と全冊をオフラインで開けるようにする
 python3 tools/build.py            … 全部
-python3 tools/build.py 251122okutama … その冊と本棚だけ（確認用）"""
+python3 tools/build.py 251122kumotori … その冊と本棚だけ（確認用）"""
 import base64, hashlib, io, json, os, re, shutil, subprocess, sys
 from datetime import date
 import yaml
