@@ -67,8 +67,8 @@ h2 .n{font-family:var(--f-body);font-size:var(--fs-s);color:var(--mute);font-wei
 .book .cv{position:relative;aspect-ratio:3/4;max-width:100%;background:hsl(var(--h) var(--s) var(--l) / .2);overflow:hidden}
 .book .cv img{width:100%;height:100%;object-fit:cover;display:block}
 .book .spine{height:6px;background:hsl(var(--h) var(--s) var(--l))}
-.badge{position:absolute;top:8px;left:8px;font-size:var(--fs-s);font-weight:700;padding:2px 8px;border-radius:999px;
-  background:var(--sheet);color:var(--ink);letter-spacing:.04em}
+.badge{align-self:flex-start;font-size:var(--fs-s);font-weight:700;padding:2px 8px;border-radius:999px;
+  background:hsl(var(--h) var(--s) var(--l));color:var(--sheet);letter-spacing:.04em}
 .badge.now{background:var(--warn);color:var(--sheet)}
 .book .bd{padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px;flex:1;min-width:0}
 .book h3{font-family:var(--f-head);font-size:var(--fs-m);line-height:1.35;margin:0;text-wrap:balance}
@@ -561,8 +561,8 @@ function book(t){
   var st=state(t),days=Math.round((D(t.start)-today)/864e5);
   var badge=st==="now"?'<span class="badge now">旅行中</span>':st==="up"?'<span class="badge tnum">あと'+days+'日</span>':"";
   return '<a class="book'+(t.cover?'':' is-ph')+'" href="'+t.url+'" target="_blank" rel="noopener" data-open="'+t.id+'" style="--h:'+t.brand+'">'+
-    '<div class="cv">'+cover(t,true)+badge+'</div>'+
-    '<div class="spine"></div><div class="bd">'+
+    '<div class="cv">'+cover(t,true)+'</div>'+
+    '<div class="spine"></div><div class="bd">'+badge+
     '<h3>'+esc(t.title)+'</h3><div class="when tnum">'+md(t.start,true)+'</div>'+
     (t.places.length?'<div class="chips">'+t.places.map(function(p){return'<span class="chip">'+esc(p)+'</span>';}).join("")+'</div>':"")+
     '</div></a>';
