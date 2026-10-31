@@ -98,7 +98,7 @@ def card(n, day, next_wake):
     stats = ''
     if day.get('stats'):
         stats = '      <div class="mt">\n        <div class="stats stats-%d">%s</div>\n      </div>\n' % (len(day['stats']), ''.join(
-            '<div class="s"><div class="n">%s</div><div class="l">%s</div></div>' % (inline(a), inline(b)) for a, b in day['stats']))
+            '<div class="s"><div class="n">%s</div><div class="l">%s</div></div>' % (inline(a), re.sub(r'(百名山)(?=\d)', r'\1<wbr>', inline(b))) for a, b in day['stats']))
     return '''  <!-- ══════════ Day%d ══════════ -->
   <div class="tab-panel" id="day%d">
     <div class="card day%d" data-date="%s">

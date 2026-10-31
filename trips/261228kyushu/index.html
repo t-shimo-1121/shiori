@@ -14,7 +14,7 @@
 <title>九州旅行 2026.12.28-2027.1.3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════════════════════
    ① テーマ設定 ── 表紙が決まったら、基本ここだけ触れば色が変わります
@@ -37,9 +37,9 @@
   --h-d6:   24;     /* Day6 阿蘇山（表紙の山肌の赤褐色） */
   --h-d7:   62;     /* Day7 博多・帰路（ススキの黄） */
 
-  --fs-base: 20px;  /* ② 全体の文字サイズ（大きくしたい時はここ／小画面は下部で自動調整） */
-  --font-display:'Zen Maru Gothic', system-ui, sans-serif;
-  --font-body:'Noto Sans JP', system-ui, sans-serif;
+  --fs-s:1.06rem;--fs-m:1.16rem;--fs-l:1.36rem;--fs-xl:1.7rem;  /* ② 全体の文字サイズ（大きくしたい時はここ／小画面は下部で自動調整） */
+  --font-display:"BIZ UDPGothic",sans-serif;
+  --font-body:"BIZ UDPGothic",sans-serif;
 
   /* ─ 以下は自動で決まる派生色（通常は触らなくてOK） ─ */
   --paper:      hsl(var(--h-base), 30%, 94%);
@@ -55,16 +55,16 @@
   --alert:      hsl(14, 62%, 44%);   /* 未予約・要注意の朱 */
 
   --radius: 14px;
-  --col-time: 2.75rem;  /* 時刻カラムの幅（"10:30" がぴったり入る幅） */
-  --col-ico:  1.3rem;   /* アイコンカラムの幅 */
-  --col-gap:  .32rem;
-  --row-pad:  .5rem;    /* タイムライン左右の余白 */
+  --col-time: 3.18rem;  /* 時刻カラムの幅（"10:30" がぴったり入る幅） */
+  --col-ico:  1.5rem;   /* アイコンカラムの幅 */
+  --col-gap:  .37rem;
+  --row-pad:  .58rem;    /* タイムライン左右の余白 */
   --lh-main:  29px;     /* 上段の行高（px固定で行ズレを防ぐ） */
   --lh-sub:   25px;     /* 下段の行高 */
 }
 
 *{box-sizing:border-box;margin:0;padding:0;}
-html{font-size:var(--fs-base);-webkit-text-size-adjust:100%;}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
 body{
   font-family:var(--font-body);
   color:var(--ink);
@@ -72,60 +72,60 @@ body{
   background-color:var(--paper);
   background-image:radial-gradient(hsla(var(--h-base),25%,45%,.10) 1.1px, transparent 1.1px);
   background-size:22px 22px;
-  padding:0 0 3rem;
+  padding:0 0 3.47rem;
   -webkit-font-smoothing:antialiased;
 }
 body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
   content:"";position:fixed;top:0;left:0;right:0;z-index:50;
   height:env(safe-area-inset-top);background:var(--paper);
 }
-.wrap{max-width:680px;margin:0 auto;padding:.65rem .4rem 0;}
+.wrap{max-width:680px;margin:0 auto;padding:.75rem .46rem 0;}
 .ic{width:1em;height:1em;display:inline-block;fill:currentColor;stroke:none;
     fill-rule:evenodd;clip-rule:evenodd;vertical-align:-.08em;}
 
 /* ───────── 表紙 ───────── */
-.cover{margin:.15rem 0 .8rem;filter:drop-shadow(0 8px 18px hsla(var(--h-base),30%,25%,.18));}
+.cover{margin:.17rem 0 .93rem;filter:drop-shadow(0 8px 18px hsla(var(--h-base),30%,25%,.18));}
 .cover-frame{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:9px;}
 .cover-frame img{width:100%;display:block;border-radius:8px;}
-.cover-cap{padding:.65rem .2rem .2rem;text-align:center;}
+.cover-cap{padding:.75rem .23rem .23rem;text-align:center;}
 .cover-cap h1{
-  font-family:var(--font-display);font-weight:900;font-size:1.65rem;
+  font-family:var(--font-display);font-weight:700;font-size:var(--fs-xl);
   line-height:1.25;letter-spacing:.02em;color:var(--ink);
 }
 .cover-cap .date{
-  margin-top:.15rem;font-size:.86rem;font-weight:700;color:var(--brand);letter-spacing:.06em;
+  margin-top:.17rem;font-size:var(--fs-s);font-weight:700;color:var(--brand);letter-spacing:.06em;
   font-variant-numeric:tabular-nums;
 }
-.cover-cap .count{margin-top:.1rem;font-size:.76rem;color:var(--ink-3);letter-spacing:.04em;}
-.cover-cap .count b{font-family:var(--font-display);font-weight:900;font-size:1.5rem;color:var(--brand);
-  margin:0 .15rem;vertical-align:-.12em;font-variant-numeric:tabular-nums;}
+.cover-cap .count{margin-top:.12rem;font-size:var(--fs-s);color:var(--ink-3);letter-spacing:.04em;}
+.cover-cap .count b{font-family:var(--font-display);font-weight:700;font-size:var(--fs-xl);color:var(--brand);
+  margin:0 .17rem;vertical-align:-.12em;font-variant-numeric:tabular-nums;}
 /* 旅行当日：表紙を細い帯に */
-.trip .cover{display:flex;align-items:center;gap:.7rem;margin:.1rem 0 .3rem;filter:none;}
-.trip .cover-frame{flex:none;width:4.2rem;padding:3px;border-radius:12px;}
+.trip .cover{display:flex;align-items:center;gap:.81rem;margin:.12rem 0 .35rem;filter:none;}
+.trip .cover-frame{flex:none;width:4.86rem;padding:3px;border-radius:12px;}
 .trip .cover-frame img{aspect-ratio:1;object-fit:cover;border-radius:9px;}
 .trip .cover-cap{padding:0;text-align:left;}
-.trip .cover-cap h1{font-size:1.1rem;}
-.trip .cover-cap .date{font-size:.72rem;margin-top:0;}
-.trip .cover-cap .count{font-size:.72rem;margin-top:0;}
-.trip .cover-cap .count b{font-size:1rem;vertical-align:0;}
+.trip .cover-cap h1{font-size:var(--fs-l);}
+.trip .cover-cap .date{font-size:var(--fs-s);margin-top:0;}
+.trip .cover-cap .count{font-size:var(--fs-s);margin-top:0;}
+.trip .cover-cap .count b{font-size:var(--fs-m);vertical-align:0;}
 
 /* ───────── タブ（8枚＝4列×2段） ───────── */
 .tabs{
   position:sticky;top:env(safe-area-inset-top);z-index:30;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:.35rem;
-  padding:.55rem .1rem .6rem;margin-bottom:.75rem;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;
+  padding:.64rem .12rem .69rem;margin-bottom:.87rem;
   background:linear-gradient(var(--paper) 80%, hsla(var(--h-base),30%,94%,0));
 }
 .tab-btn{
   min-width:0;
-  font-family:var(--font-body);font-weight:700;font-size:.78rem;white-space:nowrap;
-  padding:.6rem .5rem;border-radius:11px;border:1px solid var(--line);
+  font-family:var(--font-body);font-weight:700;font-size:var(--fs-s);white-space:nowrap;
+  padding:.69rem .2rem;border-radius:11px;border:1px solid var(--line);
   background:var(--panel);color:var(--ink-2);cursor:pointer;
   text-align:center;line-height:1.15;
   transition:transform .12s, background .15s, color .15s, border-color .15s;
   -webkit-tap-highlight-color:transparent;
 }
-.tab-btn small{display:block;font-size:.62rem;font-weight:500;opacity:.75;letter-spacing:.02em;margin-top:.1rem;white-space:nowrap;}
+.tab-btn small{display:block;font-size:var(--fs-s);font-weight:400;opacity:.75;letter-spacing:.02em;margin-top:.12rem;white-space:nowrap;}
 .tab-btn:active{transform:scale(.96);}
 .tab-btn:focus-visible{outline:3px solid var(--brand);outline-offset:2px;}
 .tab-btn.active{color:#fff;border-color:transparent;box-shadow:0 4px 12px hsla(var(--h-base),30%,25%,.20);}
@@ -144,21 +144,21 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
 /* ───────── カード共通 ───────── */
 .card{
   background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
-  overflow:hidden;margin-bottom:1rem;box-shadow:0 2px 0 var(--line);
+  overflow:hidden;margin-bottom:1.16rem;box-shadow:0 2px 0 var(--line);
 }
 .card-head{
-  padding:.8rem .75rem;background:var(--c-bg);border-bottom:1px dashed var(--line);
-  display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;
+  padding:.93rem .87rem;background:var(--c-bg);border-bottom:1px dashed var(--line);
+  display:flex;align-items:center;gap:.64rem;flex-wrap:wrap;
 }
 .tag{
-  display:inline-flex;align-items:center;gap:.35rem;flex:none;
-  background:var(--c);color:#fff;font-weight:700;font-size:.76rem;
-  padding:.28rem .7rem;border-radius:999px;letter-spacing:.02em;
+  display:inline-flex;align-items:center;gap:.4rem;flex:none;
+  background:var(--c);color:#fff;font-weight:700;font-size:var(--fs-s);
+  padding:.32rem .81rem;border-radius:999px;letter-spacing:.02em;
 }
-.tag .ic{font-size:.95rem;}
-.tag.only{padding:0;width:2rem;height:2rem;justify-content:center;}
-.tag.only .ic{font-size:1.1rem;}
-.card-title{font-family:var(--font-display);font-weight:700;font-size:1.02rem;line-height:1.3;}
+.tag .ic{font-size:1.1rem;}
+.tag.only{padding:0;width:2.31rem;height:2.31rem;justify-content:center;}
+.tag.only .ic{font-size:1.27rem;}
+.card-title{font-family:var(--font-display);font-weight:700;font-size:var(--fs-m);line-height:1.3;}
 
 .day1{--c:hsl(var(--h-d1),44%,42%);--c-bg:hsl(var(--h-d1),40%,94%);--c-tint:hsl(var(--h-d1),40%,97%);}
 .day2{--c:hsl(var(--h-d2),52%,42%);--c-bg:hsl(var(--h-d2),52%,94%);--c-tint:hsl(var(--h-d2),52%,97%);}
@@ -170,13 +170,13 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
 .pack{--c:hsl(var(--h-pack),52%,36%);--c-bg:hsl(var(--h-pack),50%,93%);}
 
 /* ───────── 山データ（登山日のカード上部） ───────── */
-.mt{padding:.75rem .75rem .8rem;border-bottom:1px dashed var(--line);}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;margin-top:.6rem;}
+.mt{padding:.87rem .87rem .93rem;border-bottom:1px dashed var(--line);}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.35rem;margin-top:.69rem;}
 .stats.stats-3{grid-template-columns:repeat(3,1fr);}
-.stats .s{background:var(--c-bg);border-radius:10px;padding:.5rem .2rem;text-align:center;}
-.stats .n{font-family:var(--font-display);font-weight:700;font-size:.92rem;line-height:1.25;font-variant-numeric:tabular-nums;}
-.stats .n .u{font-size:.6rem;font-weight:500;margin-left:.05rem;}
-.stats .l{font-size:.62rem;color:var(--ink-2);line-height:1.3;margin-top:.1rem;}
+.stats .s{background:var(--c-bg);border-radius:10px;padding:.58rem .23rem;text-align:center;}
+.stats .n{font-family:var(--font-display);font-weight:700;font-size:var(--fs-l);line-height:1.25;font-variant-numeric:tabular-nums;}
+.stats .n .u{font-size:var(--fs-s);font-weight:400;margin-left:.06rem;}
+.stats .l{word-break:keep-all;font-size:var(--fs-s);color:var(--ink-2);line-height:1.3;margin-top:.12rem;}
 
 /* ───────── タイムライン（2段＋テーブル整列） ───────── */
 .trail{position:relative;}
@@ -190,18 +190,18 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
   display:grid;
   grid-template-columns:var(--col-time) var(--col-ico) 1fr;
   column-gap:var(--col-gap);row-gap:1px;
-  padding:.5rem var(--row-pad);
+  padding:.58rem var(--row-pad);
   border-bottom:1px dashed var(--line-soft);
 }
 .tl:last-child{border-bottom:none;}
 .t-start{
   grid-column:1;grid-row:1;text-align:right;white-space:nowrap;
-  font-weight:700;font-size:1rem;line-height:var(--lh-main);
+  font-weight:700;font-size:var(--fs-m);line-height:var(--lh-main);
   font-variant-numeric:tabular-nums;letter-spacing:.01em;
 }
 .t-dur{
   grid-column:1;grid-row:2;text-align:right;white-space:nowrap;
-  font-size:.76rem;line-height:var(--lh-sub);color:var(--ink-3);
+  font-size:var(--fs-s);line-height:var(--lh-sub);color:var(--ink-3);
   font-variant-numeric:tabular-nums;
 }
 .t-ico{
@@ -209,16 +209,16 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
   display:flex;align-items:center;justify-content:center;
   height:var(--lh-main);color:var(--c);background:var(--panel);
 }
-.t-ico .ic{width:1.2rem;height:1.2rem;}
+.t-ico .ic{width:1.39rem;height:1.39rem;}
 .t-sum{
   grid-column:3;grid-row:1;
-  font-size:1rem;font-weight:500;line-height:var(--lh-main);
+  font-size:var(--fs-m);font-weight:700;line-height:var(--lh-main);
 }
 .t-det{
   grid-column:3;grid-row:2;
-  font-size:.82rem;line-height:var(--lh-sub);color:var(--ink-2);
+  font-size:var(--fs-s);line-height:var(--lh-sub);color:var(--ink-2);
 }
-.hl{font-weight:700;color:var(--c);background:var(--c-bg);padding:.05rem .3rem;border-radius:5px;}
+.hl{font-weight:700;color:var(--c);background:var(--c-bg);padding:.06rem .35rem;border-radius:5px;}
 .warn{font-weight:700;color:var(--alert);}
 a.map{color:inherit;text-decoration:underline dotted var(--c);text-decoration-thickness:2px;
   text-underline-offset:4px;-webkit-tap-highlight-color:transparent;}
@@ -236,71 +236,71 @@ a.map:active{background:var(--c-bg);}
 .sun{
   position:relative;display:grid;grid-template-columns:var(--col-time) var(--col-ico) 1fr;
   column-gap:var(--col-gap);align-items:center;
-  padding:.15rem var(--row-pad);border-bottom:1px dashed var(--line-soft);
-  font-size:.72rem;line-height:22px;color:var(--ink-3);letter-spacing:.04em;
+  padding:.17rem var(--row-pad);border-bottom:1px dashed var(--line-soft);
+  font-size:var(--fs-s);line-height:22px;color:var(--ink-3);letter-spacing:.04em;
 }
 .sun .s-t{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;}
-.sun .s-d{justify-self:center;width:.55rem;height:.55rem;border-radius:50%;
+.sun .s-d{justify-self:center;width:.64rem;height:.64rem;border-radius:50%;
   background:var(--panel);border:2px solid var(--ink-3);position:relative;z-index:1;}
 .sun.set .s-d{background:var(--ink-3);}
 .sun.in-hike{background:var(--c-tint);}
 .sun.in-hike::before{content:"";position:absolute;top:0;bottom:0;left:calc(var(--row-pad) + var(--col-time) + var(--col-gap) + var(--col-ico)/2 - 2px);width:4px;background:var(--c);opacity:.55;}
 .tl.now::after{
-  content:"今ここ";position:absolute;right:.6rem;top:.35rem;
-  font-size:.62rem;font-weight:700;color:#fff;background:var(--c);
-  padding:.1rem .45rem;border-radius:999px;letter-spacing:.04em;
+  content:"今ここ";position:absolute;right:.69rem;top:.4rem;
+  font-size:var(--fs-s);font-weight:700;color:#fff;background:var(--c);
+  padding:.12rem .52rem;border-radius:999px;letter-spacing:.04em;
 }
 
 /* ───────── ポイント欄 ───────── */
-.note{padding:.75rem .75rem .85rem;background:var(--c-bg);border-top:1px dashed var(--line);}
-.note-h{font-size:.74rem;font-weight:700;color:var(--c);letter-spacing:.06em;margin-bottom:.3rem;}
+.note{padding:.87rem .87rem .98rem;background:var(--c-bg);border-top:1px dashed var(--line);}
+.note-h{font-size:var(--fs-s);font-weight:700;color:var(--c);letter-spacing:.06em;margin-bottom:.35rem;}
 .note ul{list-style:none;}
-.note li{font-size:.82rem;line-height:1.6;color:var(--ink-2);padding-left:.9rem;position:relative;}
-.note li+li{margin-top:.3rem;}
-.note li::before{content:"";position:absolute;left:.15rem;top:.62em;width:.32rem;height:.32rem;border-radius:50%;background:var(--c);}
+.note li{font-size:var(--fs-s);line-height:1.6;color:var(--ink-2);padding-left:1.04rem;position:relative;}
+.note li+li{margin-top:.35rem;}
+.note li::before{content:"";position:absolute;left:.17rem;top:.62em;width:.37rem;height:.37rem;border-radius:50%;background:var(--c);}
 
 /* ───────── チェックリスト ───────── */
 .cat{
-  font-weight:700;font-size:.78rem;letter-spacing:.06em;color:var(--ink-2);
-  padding:.8rem .75rem .25rem;display:flex;align-items:center;gap:.4rem;
+  font-weight:700;font-size:var(--fs-s);letter-spacing:.06em;color:var(--ink-2);
+  padding:.93rem .87rem .29rem;display:flex;align-items:center;gap:.46rem;
 }
-.cat::before{content:"";width:.38rem;height:.38rem;border-radius:50%;background:var(--c);flex:none;}
+.cat::before{content:"";width:.44rem;height:.44rem;border-radius:50%;background:var(--c);flex:none;}
 .item{
-  display:flex;gap:.6rem;align-items:flex-start;
-  padding:.6rem .75rem;border-bottom:1px solid var(--line-soft);
+  display:flex;gap:.69rem;align-items:flex-start;
+  padding:.69rem .87rem;border-bottom:1px solid var(--line-soft);
   cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:background .15s;
 }
 .item:last-child{border-bottom:none;}
 .item:active{background:var(--paper-2);}
-.box{flex:none;width:1.45rem;height:1.45rem;margin-top:.15rem;border-radius:6px;border:2px solid var(--line);position:relative;transition:background .15s,border-color .15s;}
+.box{flex:none;width:1.68rem;height:1.68rem;margin-top:.17rem;border-radius:6px;border:2px solid var(--line);position:relative;transition:background .15s,border-color .15s;}
 .item.checked .box{background:var(--c);border-color:var(--c);}
 .item.checked .box::after{
   content:"";position:absolute;left:50%;top:47%;
-  width:.3rem;height:.56rem;border:solid #fff;border-width:0 .16rem .16rem 0;
+  width:.35rem;height:.65rem;border:solid #fff;border-width:0 .18rem .18rem 0;
   transform:translate(-50%,-58%) rotate(45deg);
 }
-.item .txt{font-size:.92rem;font-weight:500;line-height:1.5;}
-.item .txt small{display:block;font-size:.76rem;font-weight:400;color:var(--ink-3);line-height:1.55;margin-top:.05rem;}
+.item .txt{font-size:var(--fs-m);font-weight:400;line-height:1.5;}
+.item .txt small{display:block;font-size:var(--fs-s);font-weight:400;color:var(--ink-3);line-height:1.55;margin-top:.06rem;}
 .item.checked .txt{text-decoration:line-through;color:var(--ink-3);}
 .item.checked .txt small{color:var(--ink-3);}
 .fold{
-  margin-left:auto;font-family:var(--font-body);font-size:.7rem;font-weight:700;color:var(--ink-2);
-  background:none;border:1px solid var(--line);border-radius:999px;padding:.12rem .65rem;cursor:pointer;
+  margin-left:auto;font-family:var(--font-body);font-size:var(--fs-s);font-weight:700;color:var(--ink-2);
+  background:none;border:1px solid var(--line);border-radius:999px;padding:.14rem .75rem;cursor:pointer;
   -webkit-tap-highlight-color:transparent;
 }
 .fold[aria-pressed="true"]{color:var(--c);border-color:var(--c);}
 .hide-done .item.checked:not(.just),.hide-done .cat.done{display:none;}
-.all-done{display:none;padding:1.1rem .75rem;text-align:center;font-size:.86rem;font-weight:700;color:var(--c);}
+.all-done{display:none;padding:1.27rem .87rem;text-align:center;font-size:var(--fs-s);font-weight:700;color:var(--c);}
 .hide-done.complete .all-done{display:block;}
 .counter{
-  margin-left:0;font-size:.74rem;font-weight:700;color:var(--c);
-  background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:.1rem .6rem;
+  margin-left:0;font-size:var(--fs-s);font-weight:700;color:var(--c);
+  background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:.12rem .69rem;
   font-variant-numeric:tabular-nums;
 }
 
 /* ───────── レスポンシブ ───────── */
 @media (max-width:400px){
-  :root{--fs-base:18.5px;--col-time:3.3rem;--row-pad:.6rem;}
+  :root{--col-time:3.82rem;--row-pad:.69rem;}
 }
 @media (prefers-reduced-motion:reduce){
   .tab-panel.is-active{animation:none;}
@@ -511,7 +511,7 @@ a.map:active{background:var(--c-bg);}
       </div>
       <div class="mt">
         <div class="stats stats-3">
-          <div class="s"><div class="n">924<span class="u">m</span></div><div class="l">百名山19座目</div></div>
+          <div class="s"><div class="n">924<span class="u">m</span></div><div class="l">百名山<wbr>19座目</div></div>
           <div class="s"><div class="n">5:35</div><div class="l">休憩15分</div></div>
           <div class="s"><div class="n">20</div><div class="l">ふつう</div></div>
         </div>
@@ -559,7 +559,7 @@ a.map:active{background:var(--c-bg);}
       </div>
       <div class="mt">
         <div class="stats stats-3">
-          <div class="s"><div class="n">1,700<span class="u">m</span></div><div class="l">百名山20座目</div></div>
+          <div class="s"><div class="n">1,700<span class="u">m</span></div><div class="l">百名山<wbr>20座目</div></div>
           <div class="s"><div class="n">3:30</div><div class="l">休憩15分</div></div>
           <div class="s"><div class="n">12</div><div class="l">ふつう</div></div>
         </div>
@@ -632,7 +632,7 @@ a.map:active{background:var(--c-bg);}
       </div>
       <div class="mt">
         <div class="stats stats-3">
-          <div class="s"><div class="n">1,592<span class="u">m</span></div><div class="l">百名山21座目</div></div>
+          <div class="s"><div class="n">1,592<span class="u">m</span></div><div class="l">百名山<wbr>21座目</div></div>
           <div class="s"><div class="n">5:16</div><div class="l">休憩15分</div></div>
           <div class="s"><div class="n">18</div><div class="l">ふつう</div></div>
         </div>
