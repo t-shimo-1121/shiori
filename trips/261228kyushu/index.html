@@ -344,12 +344,38 @@ a.map:active{background:var(--c-bg);}
 .tabs{display:grid!important;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));overflow:visible!important;-webkit-mask-image:none!important;mask-image:none!important;}
 .tab-btn{min-width:0!important;flex:none!important;}
 .tab-btn small{white-space:normal!important;overflow-wrap:anywhere;line-height:1.25;}
+.ftable{width:100%;border-collapse:collapse;margin:.58rem 0 .17rem;}
+.ftable th{
+  font-family:var(--font-body);font-weight:700;font-size:var(--fs-s);color:var(--ink-3);
+  letter-spacing:.03em;text-align:left;padding:.35rem .35rem;border-bottom:2px solid var(--line);
+}
+.ftable th:last-child, .ftable td:last-child{text-align:right;}
+.ftable td{
+  padding:.58rem .35rem;border-bottom:1px solid var(--line-soft);font-size:var(--fs-s);
+  vertical-align:top;
+}
+.ftable td small{display:block;font-size:var(--fs-s);color:var(--ink-3);font-weight:400;line-height:1.45;margin-top:.17rem;}
+.ftable td:first-child{color:var(--ink-3);font-size:var(--fs-s);white-space:nowrap;padding-top:.69rem;}
+.ftable td:last-child{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap;color:var(--ink);}
+.ftable tfoot td{
+  border-bottom:none;border-top:2px solid var(--line);font-weight:700;color:var(--brand);
+  padding-top:.58rem;
+}
+/* 費用の総額 */
+.total{background:var(--c-bg);}
+.tot-row{display:flex;align-items:baseline;justify-content:space-between;gap:.58rem;}
+.tot-l{font-size:var(--fs-s);font-weight:700;color:var(--c);letter-spacing:.06em;}
+.tot-v{font-family:var(--font-display);font-weight:700;font-size:var(--fs-xl);line-height:1.2;font-variant-numeric:tabular-nums;color:var(--ink);}
+.tot-sub{margin-top:.23rem;display:flex;flex-wrap:wrap;gap:.12rem .81rem;font-size:var(--fs-s);color:var(--ink-2);font-variant-numeric:tabular-nums;}
+.tot-sub b{font-weight:700;color:var(--ink);margin-left:.29rem;}
+.tot-ex{margin-top:.4rem;font-size:var(--fs-s);line-height:1.5;color:var(--ink-3);}
 </style>
 </head>
 <body>
 
 <!-- アイコン定義（塗りつぶし式アイコンセット） -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-coin" viewBox="0 0 24 24"><path d="M11.43 21.14C11.43 21.11 11.31 21.04 11.17 20.97C10.52 20.65 10.32 20.22 10.28 19.05L10.25 18.13L7.56 18.1C4.87 18.07 4.87 18.07 4.59 17.94C4.32 17.8 3.92 17.4 3.92 17.27C3.92 17.23 3.88 17.17 3.84 17.13C3.77 17.08 3.75 16.94 3.75 16.64C3.75 16.34 3.77 16.21 3.84 16.15C3.88 16.11 3.92 16.05 3.92 16.0C3.92 15.88 4.32 15.47 4.58 15.33C4.8 15.21 4.87 15.21 7.53 15.18L10.25 15.15L10.25 14.49L10.25 13.83L7.58 13.8L4.92 13.78L4.58 13.6C4.32 13.47 4.19 13.36 4.05 13.14C3.95 12.99 3.84 12.83 3.81 12.79C3.73 12.7 3.73 11.93 3.81 11.88C3.84 11.87 3.9 11.77 3.94 11.67C4.23 10.98 4.57 10.88 6.63 10.88C8.64 10.88 8.52 10.97 7.9 10.02C6.83 8.39 5.08 5.71 4.93 5.48C4.46 4.73 4.68 3.69 5.42 3.15C5.55 3.05 5.69 2.98 5.73 2.98C5.77 2.98 5.83 2.94 5.87 2.89C5.95 2.79 7.02 2.76 7.02 2.86C7.02 2.88 7.1 2.94 7.2 2.98C7.64 3.17 7.75 3.31 10.63 7.7C11.8 9.48 11.91 9.65 12.0 9.65C12.09 9.65 12.2 9.49 13.43 7.61C16.3 3.24 16.35 3.17 16.8 2.98C16.9 2.94 16.98 2.88 16.98 2.86C16.98 2.78 18.06 2.79 18.1 2.86C18.12 2.89 18.22 2.96 18.32 3.0C19.0 3.28 19.44 4.17 19.28 4.91C19.18 5.34 19.25 5.24 16.36 9.62C16.0 10.17 15.69 10.68 15.68 10.75L15.65 10.88L17.36 10.88C19.04 10.88 19.08 10.89 19.36 11.02C19.65 11.15 20.08 11.56 20.08 11.71C20.08 11.75 20.12 11.82 20.16 11.86C20.26 11.94 20.29 12.68 20.19 12.79C20.16 12.83 20.05 12.99 19.95 13.14C19.81 13.36 19.68 13.47 19.42 13.6L19.08 13.78L16.42 13.8L13.75 13.83L13.75 14.49L13.75 15.15L16.47 15.18C19.14 15.21 19.19 15.21 19.43 15.34C19.67 15.47 20.08 15.89 20.08 16.01C20.08 16.05 20.12 16.11 20.16 16.15C20.26 16.23 20.29 17.07 20.2 17.07C20.17 17.07 20.11 17.18 20.05 17.3C19.94 17.54 19.62 17.84 19.3 17.99C19.17 18.06 18.63 18.08 16.44 18.1L13.75 18.13L13.72 19.05C13.68 20.22 13.48 20.65 12.83 20.97C12.69 21.04 12.57 21.11 12.57 21.14C12.57 21.17 12.32 21.2 12.0 21.2C11.68 21.2 11.43 21.17 11.43 21.14Z"/></symbol>
   <symbol id="i-train" viewBox="0 0 24 24"><path d="M7.09 21.45C6.65 21.16 6.27 20.89 6.25 20.86C6.21 20.8 7.87 18.4 8.18 18.06C8.31 17.92 10.23 17.85 10.31 17.99C10.35 18.04 8.11 21.82 7.98 21.92C7.92 21.97 7.69 21.85 7.09 21.45ZM15.94 21.81C15.57 21.32 13.65 18.03 13.7 17.98C13.73 17.95 14.19 17.93 14.75 17.94L15.75 17.96L16.1 18.42C16.93 19.56 17.75 20.72 17.77 20.8C17.79 20.88 17.62 21.0 16.37 21.81L16.07 22.0L15.94 21.81ZM7.7 16.95C6.95 16.84 6.18 16.3 5.89 15.66C5.81 15.49 5.72 15.34 5.69 15.32C5.6 15.26 5.63 5.09 5.73 4.96C5.77 4.9 5.81 4.79 5.81 4.73C5.83 3.7 7.9 2.12 9.25 2.12C9.33 2.12 9.47 2.08 9.56 2.03C9.8 1.9 14.2 1.9 14.44 2.03C14.53 2.08 14.67 2.12 14.75 2.12C16.07 2.12 17.71 3.31 18.13 4.58C18.2 4.79 18.28 4.98 18.31 5.01C18.37 5.08 18.38 15.28 18.31 15.32C18.28 15.34 18.19 15.49 18.1 15.67C17.77 16.35 17.06 16.84 16.22 16.95C15.67 17.03 8.25 17.02 7.7 16.95ZM9.87 14.38C10.94 13.83 10.85 12.28 9.72 11.86C8.82 11.52 7.88 12.18 7.88 13.15C7.88 14.18 8.97 14.85 9.87 14.38ZM15.37 14.38C16.44 13.83 16.35 12.28 15.22 11.86C14.32 11.52 13.38 12.18 13.38 13.15C13.38 14.18 14.47 14.85 15.37 14.38ZM16.27 8.02L16.27 5.93L12.0 5.93L7.73 5.93L7.72 7.96C7.71 9.08 7.71 10.03 7.73 10.07C7.75 10.12 8.63 10.14 12.01 10.12L16.27 10.11L16.27 8.02Z"/></symbol>
   <symbol id="i-bullet" viewBox="0 0 24 24"><path d="M6.1 19.08C6.1 19.06 5.98 18.99 5.83 18.93C3.86 18.18 4.51 15.16 6.64 15.15C8.78 15.15 9.38 17.93 7.45 18.93C7.06 19.13 6.1 19.24 6.1 19.08ZM15.61 19.05C15.57 19.0 15.5 18.96 15.45 18.96C14.87 18.96 14.21 17.95 14.21 17.1C14.23 14.75 17.52 14.39 18.11 16.67C18.33 17.56 17.8 18.61 16.97 18.93C16.82 18.99 16.7 19.06 16.7 19.08C16.7 19.18 15.69 19.14 15.61 19.05ZM3.06 13.85C2.74 13.72 2.2 13.24 2.2 13.08C2.2 13.04 2.16 12.98 2.12 12.97C2.04 12.94 2.03 12.5 2.03 9.48L2.03 6.02L2.2 5.77C2.41 5.46 2.86 5.04 2.98 5.04C3.03 5.04 3.08 5.0 3.1 4.95C3.14 4.85 11.7 4.82 11.81 4.92C11.84 4.96 12.05 5.01 12.29 5.04C14.15 5.28 16.17 6.06 17.84 7.17C19.31 8.15 20.72 9.63 21.48 11.0C21.63 11.27 21.8 11.55 21.86 11.64C22.29 12.26 21.86 13.38 21.03 13.82L20.79 13.95L12.09 13.96L3.38 13.97L3.06 13.85ZM9.41 9.02C9.41 8.01 9.4 7.16 9.38 7.12C9.33 7.04 4.44 7.0 4.32 7.07C4.29 7.1 4.27 7.79 4.27 9.0L4.27 10.88L6.83 10.87L9.39 10.85L9.41 9.02ZM17.36 10.82C17.61 10.41 14.73 8.14 13.17 7.52C12.37 7.2 11.76 7.04 11.66 7.1C11.59 7.14 11.56 10.71 11.63 10.82C11.68 10.91 17.31 10.9 17.36 10.82Z"/></symbol>
   <symbol id="i-bus" viewBox="0 0 24 24"><path d="M6.39 20.17C6.35 20.13 6.25 20.07 6.17 20.05C5.42 19.86 4.87 18.94 4.89 17.89L4.9 17.44L4.48 17.44C3.08 17.44 2.47 17.03 2.12 15.83C1.99 15.38 1.98 5.81 2.11 5.41C2.16 5.27 2.21 5.09 2.22 5.01C2.31 4.62 3.0 3.92 3.3 3.92C3.35 3.92 3.42 3.88 3.46 3.84C3.55 3.73 20.48 3.7 20.48 3.81C20.48 3.84 20.55 3.88 20.64 3.9C21.22 4.04 21.65 4.54 21.86 5.34C22.03 6.0 22.03 15.23 21.86 15.88C21.56 17.01 20.85 17.48 19.52 17.44C19.07 17.42 19.1 17.38 19.09 18.08C19.07 19.0 18.67 19.66 17.93 20.0C17.76 20.08 17.6 20.17 17.58 20.2C17.57 20.23 17.3 20.25 17.0 20.25C15.72 20.25 14.78 19.32 14.78 18.03C14.78 17.75 14.76 17.49 14.74 17.47C14.7 17.43 9.32 17.43 9.25 17.47C9.21 17.49 9.21 17.66 9.23 17.87C9.32 18.75 8.79 19.64 7.93 20.07C7.5 20.28 6.53 20.34 6.39 20.17ZM7.51 13.84C7.59 13.8 7.63 12.0 7.56 11.89C7.51 11.8 4.6 11.81 4.51 11.9C4.42 11.98 4.41 13.62 4.5 13.78C4.56 13.9 7.34 13.96 7.51 13.84ZM19.5 13.78C19.59 13.62 19.58 11.98 19.49 11.9C19.4 11.8 16.35 11.8 16.25 11.9C16.16 11.98 16.16 13.62 16.24 13.78C16.3 13.89 16.38 13.89 17.87 13.89C19.37 13.89 19.45 13.89 19.5 13.78ZM17.62 9.96C17.65 9.94 17.67 9.18 17.67 8.04L17.67 6.16L14.79 6.17L11.91 6.18L11.9 8.06C11.88 9.88 11.89 9.94 12.0 9.98C12.13 10.03 17.54 10.01 17.62 9.96ZM10.25 8.08L10.25 6.18L7.39 6.17C5.14 6.16 4.52 6.17 4.49 6.23C4.43 6.31 4.42 9.77 4.47 9.9C4.5 9.99 4.8 9.99 7.38 9.98L10.25 9.97L10.25 8.08Z"/></symbol>
@@ -397,7 +423,7 @@ a.map:active{background:var(--c-bg);}
 
   <!-- ══════════ タブ ══════════ -->
   <div class="tabs" role="tablist" style="--cols:4">
-    <button class="tab-btn t0 active" data-tab="pack" role="tab">準備<small>持ち物</small></button>
+    <button class="tab-btn t0 active" data-tab="pack" role="tab">準備<small>持ち物・費用</small></button>
     <button class="tab-btn t1" data-tab="day1" role="tab">12/28 月<small>博多</small></button>
     <button class="tab-btn t2" data-tab="day2" role="tab">12/29 火<small>桜島</small></button>
     <button class="tab-btn t3" data-tab="day3" role="tab">12/30 水<small>開聞岳</small></button>
@@ -446,6 +472,33 @@ a.map:active{background:var(--c-bg);}
       <div class="item"><span class="box"></span><span class="txt">体温計・坐薬・ロコイド</span></div>
       <div class="all-done">すべて準備完了</div>
 
+    </div>
+
+    <div class="card pack">
+      <div class="card-head">
+        <span class="tag only" aria-hidden="true"><svg class="ic"><use href="#i-coin"/></svg></span>
+        <div class="card-title">費用</div>
+      </div>
+      <div class="mt total">
+        <div class="tot-row"><span class="tot-l">総額</span><span class="tot-v">195,847円</span></div>
+        <div class="tot-sub"><span>宿泊<b>195,847円</b></span></div>
+        <div class="tot-ex">交通費・入湯税・飲食は含まない</div>
+      </div>
+
+      <div class="mt">
+        <div class="mt-h">宿泊費</div>
+        <table class="ftable">
+          <thead><tr><th>日程</th><th>宿泊先</th><th>金額</th></tr></thead>
+          <tbody>
+            <tr><td>12/28泊</td><td>スーパーホテル博多<small>素泊まり・割引940円</small></td><td>22,580円</td></tr>
+            <tr><td>12/29泊</td><td>指宿白水館<small>朝食付・割引2,640円</small></td><td>63,360円</td></tr>
+            <tr><td>12/30泊</td><td>変なホテル天文館<small>朝食付・割引8,625円</small></td><td>28,875円</td></tr>
+            <tr><td>12/31泊</td><td>スーパーホテル霧島<small>朝食付</small></td><td>21,300円</td></tr>
+            <tr><td>1/1〜2泊</td><td>カンデオ熊本新市街<small>朝食付・割引2,488円</small></td><td>59,732円</td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="2">小計</td><td>195,847円</td></tr></tfoot>
+        </table>
+      </div>
     </div>
 
   </div><!-- /pack -->
