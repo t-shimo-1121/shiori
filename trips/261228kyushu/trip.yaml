@@ -90,7 +90,7 @@ peaks:
   name: 阿蘇山
   subs: [中岳, 高岳]
   elev: 1592
-  coursetime: "4:40"
-  const: null
+  coursetime: "5:07"
+  const: 19
   level: ふつう
   hyaku: 21
