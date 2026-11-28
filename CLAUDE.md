@@ -82,10 +82,11 @@ spots:   [{cat, name, at, visited, facts: [[開館, 2011年], ...]}]            
 行は `"開始 | アイコン | 概要 | 詳細 | @フラグ"`（詳細・フラグは省略可）。
 - 所要時間は次の行の開始から自動。最後の行は翌日の最初の行まで（就寝→起床）、最終日の最後は「—」。5分未満は空欄
 - フラグ：`@hike`（登山中の行）`@stay`（宿での行）`@dur=1:30`（所要を手で指定。空欄は `@dur=-`）`@in`／`@out`（日の出入りを登山中に含める／外す。普通は自動）
-  - `@tt=博多駅>鹿児島中央駅`：概要の右に時計を付け、押すと Googleマップの経路検索（公共交通機関）を開く（日時はリンクで渡せないので、開いてから選ぶ）。飛行機はリンクを付けない。`@tt=https://…` は時刻表のページを直に開く（フェリー・路線バスなど乗換案内にないもの）。手作りの冊は a.tt を手で書く
+  - `@tt=博多駅>鹿児島中央駅`：概要の右に経路のアイコン（route）を付け、押すと Googleマップの経路検索を開く。手段は行のアイコンで決まる（walk＝徒歩、taxi・car＝車、ほか＝公共交通機関）。`@tt=>新潟空港` のように出発地を省くと現在地から。日時はリンクで渡せないので開いてから選ぶ。飛行機は付けない
+  - `@tt=https://…`：時計のアイコン（clock）で公式の時刻表を開く（フェリー・路線バスなど Googleマップで不確かなもの）。手作りの冊は a.tt を手で書く
 - 日の出・日の入は `"6:26 | 日の出"` を時刻の位置に置く（日の出入りは tools/sun.py で計算）
 - 文中：`[白丸ダム]` `[表示名](検索語)` は Google マップのリンク、`**要予約**` は日の色のハイライト、`!!要注意!!` は朱色
-- アイコン：train bullet bus taxi car plane airport walk swap up summit down mtn flag castle lodge bath fork sun moon clock bag gear gift shop eye camera home warn coin pin ship foot check game torii（塗りつぶしの SVG。絵文字は使わない）
+- アイコン：train bullet bus taxi car plane airport walk swap up summit down mtn flag castle lodge bath fork sun moon clock route bag gear gift shop eye camera home warn coin pin ship foot check game torii（塗りつぶしの SVG。絵文字は使わない）
 
 本棚の旅先タブに出す市区町村は data/places.yaml に1行足す（trip: その冊の id。人口・面積は2020年国勢調査）。
 
