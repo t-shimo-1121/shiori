@@ -4,7 +4,7 @@
   "開始 | アイコン | 概要 | 詳細 | @フラグ"   … 詳細・フラグは省略可
   "6:26 | 日の出"  /  "16:33 | 日の入"       … 日の出入りの区切り行
 フラグ：@hike（登山中）@stay（宿で）@dur=1:30（所要を手で指定）@in / @out（日の出入りを登山中に含める／含めない）
-      @tt=博多>鹿児島中央（概要の右に時計を付け、Yahoo!乗換案内をその日・その時刻で開く）
+      @tt=博多駅>鹿児島中央駅（概要の右に時計を付け、Googleマップの経路検索（公共交通機関）を開く。日時は開いてから選ぶ）
       @tt=https://…（時刻表のページを直に開く。フェリー・路線バスなど）
 文中の記法：[白丸ダム] [表示名](検索語) … Googleマップのリンク
             **要予約** … 日の色のハイライト   !!要注意!! … 朱色
@@ -49,16 +49,13 @@ def parse_row(r):
     det = parts[3] if len(parts) > 3 else ''
     return dict(sun=False, t=t, ico=ico, s=s, det=det, flags=flags)
 
-def tt_link(tt, day, t):
+def tt_link(tt, day=None, t=None):
     if tt.startswith('http'):
         url = tt
     else:
         a, _, b = tt.partition('>')
-        d = D(day['date']); hh, mm = str(t).split(':')
-        url = 'https://transit.yahoo.co.jp/search/result?' + urllib.parse.urlencode(dict(
-            **{'from': a}, to=b, y=d.year, m='%02d' % d.month, d='%02d' % d.day,
-            hh='%02d' % int(hh), m1=mm[0], m2=mm[1], type=1))
-    return '<a class="tt" href="%s" target="_blank" rel="noopener" aria-label="時刻表"><svg class="ic"><use href="#i-clock"/></svg></a>' % html.escape(url)
+        url = 'https://www.google.com/maps/dir/?' + urllib.parse.urlencode(dict(api=1, origin=a, destination=b, travelmode='transit'))
+    return '<a class="tt" href="%s" target="_blank" rel="noopener" aria-label="経路・時刻表"><svg class="ic"><use href="#i-clock"/></svg></a>' % html.escape(url)
 
 def day_rows(day, next_wake):
     rows = [parse_row(r) for r in day['rows']]
